@@ -1,0 +1,83 @@
+安装 pip install -r requirements.txt 
+        pip install yara-python
+
+手动执行时只需要输入需要执行的命令
+
+基本信息搜集
+查看内存制作情况    python vol.py -f 镜像 windows.info
+用户及密码哈希      python vol.py -f 镜像 windows.hashdump
+网络情况            python vol.py -f 镜像 windows.netscan
+网络状态            python vol.py -f 镜像 windows.netstat
+获取命令行及参数    python vol.py -f 镜像 windows.cmdline --pid 指定进程ID        
+显示进程环境变量    python vol.py -f 镜像 windows.envars --pid 指定进程ID  --silent(排除常见变量) 
+查看会话信息        python vol.py -f 镜像 windows.sessions --pid 指定进程ID
+TrueCrypt密码查找   python vol.py -f 镜像 Windows.TrueCrypt
+
+进程信息
+列出全部进程        python vol.py -f 镜像 windows.pslist --pid 指定进程ID 
+树形列出进程        python vol.py -f 镜像 windows.pstree --pid 指定进程ID
+列出指定进程        python vol.py -f 镜像 windows.psscan --pid 指定进程ID 
+进程权限            python vol.py -f 镜像 windows.privileges --pid 指定进程ID
+列出进程打开的句柄  python vol.py -f 镜像 windows.handles
+列出进程线程        python vol.py -f 镜像 Windows.Threads
+扫描 Windows 线程   python vol.py -f 镜像 windows.thrdscan
+列出系统调用表      python vol.py -f 镜像 Windows.SSDT
+识别隐藏自身的进程  python vol.py -f 镜像 Windows.PSXVoview
+
+文件搜集
+扫描全部文件        python vol.py -f 镜像 windows.filescan | findstr "txt"
+查找字符串          python vol.py -f 镜像 windows.strings --pid 指定进程ID --strings-file=xxx.txt
+转存全部文件        python vol.py -f 镜像 windows.dumpfiles
+转储lsa             python vol.py -f 镜像 windows.lsadump
+转储缓存            python vol.py -f 镜像 windows.cachedump
+从特定地址提取PE文件python vol.py -f 镜像 windows.pedump
+
+注册表信息
+列出注册表配置      python vol.py -f 镜像 windows.registry.hivelist --filter hive值 
+注册表配置单元      python vol.py -f 镜像 windows.registry.hivescan
+注册表中存在的证书  python vol.py -f 镜像 windows.registry.certificates
+用户注册表项和信息  python vol.py -f 镜像 windows.registry.userassist 
+列出指定注册表项    python vol.py -f 镜像 windows.registry.printkey --offset 指定OFFSET 或 --key 指定键       
+开机启动项          python vol.py -f 镜像 windows.registry.printkey --key "Microsoft\Windows\CurrentVersion\Run" --offset 0x8a8b6c9d9000
+安装的程序          python vol.py -f 镜像 windows.registry.printkey --key "Microsoft\Windows\CurrentVersion\App Paths"
+最近运行的命令      python vol.py -f 镜像 windows.registry.printkey --key "Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
+最近使用的文件      python vol.py -f 镜像 windows.registry.printkey --key "Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU"
+
+内存映射
+列出PE文件的版本信息python vol.py -f 镜像 windows.verinfo
+列出虚拟映射的部分  python vol.py -f 镜像 windows.virtmap
+扫描虚拟地址内存映射python vol.py -f 镜像 windows.vadyarascan
+显示内存映射        python vol.py -f 镜像 windows.memmap
+内存中链接          python vol.py -f 镜像 windows.symlinkscan
+扫描内存中的模块    python vol.py -f 镜像 windows.modscan
+内存中的互斥锁      python vol.py -f 镜像 windows.crashinfo
+
+驱动
+排查驱动程序        python vol.py -f 镜像 windows.drivermodule
+列出驱动程序的IRP   python vol.py -f 镜像 windows.driverirp
+驱动模块            python vol.py -f 镜像 windows.drivermodule
+扫描驱动程序        python vol.py -f 镜像 windows.driverscan
+驱动树              python vol.py -f 镜像 windows.devicetree
+列出全部dll文件     python vol.py -f 镜像 windows.dlllist
+
+恶意软件排查
+排查注入代码的进程  python vol.py -f 镜像 windows.malfind
+排查恶意软件        python vol.py -f 镜像 windows.skeleton_key_check
+
+其他信息
+列出缓冲池          python vol.py -f 镜像 windows.bigpools
+列出内核回调和例程  python vol.py -f 镜像 windows.callbacks
+列出系统调用表      python vol.py -f 镜像 windows.ssdt
+获取服务的ids信息   python vol.py -f 镜像 windows.getservicesids
+获取每个进程的ids   python vol.py -f 镜像 windows.getsids
+扫描备用数据流      python vol.py -f 镜像 windows.mftscan
+流程作业链接信息    python vol.py -f 镜像 windows.joblinks
+扫描主启动记录(MBR) python vol.py -f 镜像 windows.mbrscan
+内核计时器          python vol.py -f 镜像 Windows.Timers
+列出进程内存范围    python vol.py -f 镜像 windows.vadinfo
+VAD树               python vol.py -f 镜像 windows.vadwalk
+列出已卸载的内核模块python vol.py -f 镜像 Windows.UnloadedModules
+
+
+
+

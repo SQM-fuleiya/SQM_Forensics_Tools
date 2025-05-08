@@ -1,0 +1,4 @@
+#!"C:\Program Files\Python312\python.exe"
+# EASY-INSTALL-SCRIPT: 'binwalk==2.3.2','binwalk'
+__requires__ = 'binwalk==2.3.2'
+__import__('pkg_resources').run_script('binwalk==2.3.2', 'binwalk')

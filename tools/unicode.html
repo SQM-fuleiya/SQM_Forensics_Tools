@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!--
+    Copyright (c) 2015 Kei Misawa
+    This software is released under the MIT License.
+    http://opensource.org/licenses/mit-license.php
+-->
+<head>
+<meta charset="utf-8"/>
+<title>零宽字符隐写加解密工具</title>
+</head>
+<body>
+<h1>零宽字符隐写加解密工具</h1>
+<div>
+用于加解密使用Unicode零宽度字符的纯文本的隐写术。<br />
+<br />
+JavaScript 脚本如下 <br />
+<a href="http://330k.github.io/misc_tools/unicode_steganography.js">http://330k.github.io/misc_tools/unicode_steganography.js</a>
+</div>
+<hr style="width: 100%;" />
+<h2>文本中的文本隐写样本</h2>
+<table style="width: 100%;">
+<tr>
+<td style="width: 45%; vertical-align: top;">
+<div>
+原始文本: <button id="input_clear_text">清除</button> <span id="input_length_text"></span>
+<textarea id="input_text" style="width: 100%; height: 150px;">内容</textarea>
+</div>
+<div>
+  隐藏的文本: <button id="hidden_clear_text">清除</button> <span id="hidden_length_text"></span>
+<textarea id="hidden_text" style="width: 100%; height: 150px;">内容</textarea>
+</div>
+</td>
+<td style="width: 10%; text-align: center;">
+<button id="encode_text">加密 &raquo;</button><br /><br />
+<button id="decode_text">&laquo; 解密</button>
+</td>
+<td style="width: 45%; vertical-align: top;">
+<div>
+隐写后的文本: <button id="output_clear_text">清除</button> <span id="output_length_text"></span>
+<textarea id="output_text" style="width: 100%; height: 300px;"></textarea><br />
+<a id="download_stego_text_text" download="stego_text.txt">下载密文作为文件</a>
+</div>
+</td>
+</tr>
+</table>
+<hr style="width: 100%;" />
+<h2>二进制文本隐写样本</h2>
+<table style="width: 100%;">
+<tr>
+<td style="width: 45%; vertical-align: top;">
+<div>
+原始文本: <button id="input_clear_binary">清除</button> <span id="input_length_binary"></span>
+<textarea id="input_binary" style="width: 100%; height: 200px;">显示的字符串</textarea>
+</div>
+<div>
+隐藏数据(请选择文件 &lt; 50kB):
+<input id="input_from_file" type="file" /><br /><br />
+<a id="download_hidden_data" download="hidden_data">以文件形式下载隐藏数据</a><br />
+(必须修改扩展名)
+</div>
+</td>
+<td style="width: 10%; text-align: center;">
+<button id="encode_binary">加密 &raquo;</button><br /><br />
+<button id="decode_binary">&laquo; 解密</button>
+</td>
+<td style="width: 45%; vertical-align: top;">
+<div>
+隐写后的文本: <button id="output_clear_binary">Clear</button> <span id="output_length_binary"></span>
+<textarea id="output_binary" style="width: 100%; height: 300px;"></textarea><br />
+<a id="download_stego_text_binary" download="stego_text.txt">下载密文作为文件</a>
+</div>
+</td>
+</tr>
+<tr>
+<td colspan="3">
+用于隐写术的零宽度字符: <br />
+<div id="used_chars"></div>
+</td>
+</tr>
+</table>
+<hr style="width: 100%;" />
+<h2>Library Usage</h2>
+<h3><code>unicodeSteganographer.encodeText(String, String)</code></h3>
+<div>
+<code>encodeSteganography</code> 返回一个隐密字符串。第一个参数是要嵌入的字符串，第二个参数是要隐藏的字符串。
+</div>
+<h3><code>unicodeSteganographer.encodeBinary(String, Uint8Array)</code></h3>
+<div>
+<code>encodeSteganography</code> 返回一个隐写字符串，它是嵌入的Uint8Array隐写术。
+</div>
+<h3><code>unicodeSteganographer.decodeText(String)</code></h3>
+<div>
+<code>decodeSteganography</code> 返回一个JavaScript对象:{originalText:原始文本(字符串)，hiddenext:隐藏文本(字符串)}。
+</div>
+<h3><code>unicodeSteganographer.decodeBinary(String)</code></h3>
+<div>
+<code>decodeSteganography</code> 返回一个JavaScript对象:{originalText:原始文本(字符串)，hiddenData:隐藏数据(Uint8Array)}。
+</div>
+<h3><code>unicodeSteganographer.setUseChars(String)</code></h3>
+<div>
+<code>setUseChars</code>将用于隐写的字符设置。用于隐写的默认字符有U+200C、U+200D、U+202C和U+FEFF。当从浏览器发送邮件时，在Gmail中删除U+200B(零宽度空间)。<br />
+<br />
+</ul>
+</div>
+</body>
+<script type="text/javascript" src="unicode.js"></script>
+<script>
+'use strict';
+
+// Encode/Decode Buttons
+document.getElementById('encode_text').addEventListener('click', function(){
+  var text1 = document.getElementById('input_text').value;
+  var text2 = document.getElementById('hidden_text').value;
+  var stego = unicodeSteganographer.encodeText(text1, text2);
+  
+  document.getElementById('output_text').value = stego;
+  var b = new Blob([stego], {type: 'text/plain'});
+  var bURL = URL.createObjectURL(b);
+  document.getElementById('download_stego_text_text').href = bURL;
+});
+document.getElementById('decode_text').addEventListener('click', function(){
+  var text1 = document.getElementById('output_text').value;
+  var result = unicodeSteganographer.decodeText(text1);
+  document.getElementById('input_text').value = result.originalText;
+  document.getElementById('hidden_text').value = result.hiddenText;
+});
+document.getElementById('encode_binary').addEventListener('click', function(){
+  var text1 = document.getElementById('input_binary').value;
+  var reader = new FileReader();
+  
+  var blob;
+  if(typeof document.getElementById('input_from_file').files[0] !== 'undefined'){
+    blob = document.getElementById('input_from_file').files[0];
+  }else{
+    alert('Please select a file to be hidden');
+    return false;
+  }
+  
+  reader.onload = function(){
+    var stego = unicodeSteganographer.encodeBinary(text1, new Uint8Array(reader.result));
+    var b = new Blob([stego], {type: 'text/plain'});
+    var bURL = URL.createObjectURL(b);
+    document.getElementById('download_stego_text_binary').href = bURL;
+    
+    if(stego.length < 1000000){
+      document.getElementById('output_binary').value = stego;
+    }else{
+      document.getElementById('output_binary').value = 'Stego text is too long. Please download as a text file. (' + b.size + ' bytes)';
+    }
+  };
+  reader.readAsArrayBuffer(blob);
+});
+document.getElementById('decode_binary').addEventListener('click', function(){
+  var text1 = document.getElementById('output_binary').value;
+  var result = unicodeSteganographer.decodeBinary(text1);
+  
+  document.getElementById('input_binary').value = result.originalText;
+  
+  var blob = new Blob([result.hiddenData], {type: 'application/octet-binary'});
+  var blobURL = URL.createObjectURL(blob);
+  document.getElementById('download_hidden_data').href = blobURL;
+});
+
+// Clear Buttons
+document.getElementById('input_clear_text').addEventListener('click', function(){
+  document.getElementById('input_text').value = '';
+});
+document.getElementById('hidden_clear_text').addEventListener('click', function(){
+  document.getElementById('hidden_text').value = '';
+});
+document.getElementById('output_clear_text').addEventListener('click', function(){
+  document.getElementById('output_text').value = '';
+  document.getElementById('download_stego_text_text').removeAttribute('href');
+});
+document.getElementById('input_clear_binary').addEventListener('click', function(){
+  document.getElementById('input_binary').value = '';
+});
+document.getElementById('output_clear_binary').addEventListener('click', function(){
+  document.getElementById('output_binary').value = '';
+  document.getElementById('download_stego_text_binary').removeAttribute('href');
+});
+
+// Zero-Width Characters Selection
+var chars = [
+//  {'char':'\u034f', 'checked':false, 'name': 'COMBINING GRAPHEME JOINER'},
+  {'char':'\u200b', 'checked':false, 'name': 'ZERO WIDTH SPACE'},
+  {'char':'\u200c', 'checked':true,  'name': 'ZERO WIDTH NON-JOINER'},
+  {'char':'\u200d', 'checked':true,  'name': 'ZERO WIDTH JOINER'},
+  {'char':'\u200e', 'checked':false, 'name': 'LEFT-TO-RIGHT MARK'},
+//  {'char':'\u2028', 'checked':false, 'name': 'LINE SEPARATOR'},
+//  {'char':'\u2029', 'checked':false, 'name': 'PARAGRAPH SEPARATOR'},
+  {'char':'\u202a', 'checked':false, 'name': 'LEFT-TO-RIGHT EMBEDDING'},
+  {'char':'\u202c', 'checked':true,  'name': 'POP DIRECTIONAL FORMATTING'},
+  {'char':'\u202d', 'checked':false, 'name': 'LEFT-TO-RIGHT OVERRIDE'},
+//  {'char':'\u2061', 'checked':false, 'name': 'FUNCTION APPLICATION'},
+  {'char':'\u2062', 'checked':false, 'name': 'INVISIBLE TIMES'},
+  {'char':'\u2063', 'checked':false, 'name': 'INVISIBLE SEPARATOR'},
+  {'char':'\ufeff', 'checked':true,  'name': 'ZERO WIDTH NO-BREAK SPACE'}
+];
+var changeCheckbox = function(){
+  var input = document.getElementsByTagName('input');
+  var chars = '';
+  for(var j = 0; j < input.length; j++){
+    if((input[j].type == 'checkbox') && (input[j].name == 'zerowidthcharacters') && (input[j].checked != false)){
+      chars += input[j].value;
+    }
+  }
+  unicodeSteganographer.setUseChars(chars);
+};
+for(var i = 0; i < chars.length; i++ ){
+  var e1 = document.createElement('label');
+  var e2 = document.createElement('input');
+  var e3 = document.createTextNode('U+' + ('000' + chars[i].char.charCodeAt(0).toString(16).toUpperCase()).slice(-4) + ' ' + chars[i].name);
+  var e4 = document.createElement('br');
+  
+  e2.type = 'checkbox';
+  e2.name = 'zerowidthcharacters';
+  e2.value = chars[i].char;
+  e2.checked = chars[i].checked;
+  e2.addEventListener('change', changeCheckbox);
+  
+  e1.appendChild(e2);
+  e1.appendChild(e3);
+  e1.appendChild(e4);
+  
+  document.getElementById('used_chars').appendChild(e1);
+}
+
+// Watch Text Length
+window.setInterval(function(){
+  document.getElementById('input_length_text').innerText = '(length: ' + document.getElementById('input_text').value.length + ')';
+  document.getElementById('hidden_length_text').innerText = '(length: ' + document.getElementById('hidden_text').value.length + ')';
+  document.getElementById('output_length_text').innerText = '(length: ' + document.getElementById('output_text').value.length + ')';
+  document.getElementById('input_length_binary').innerText = '(length: ' + document.getElementById('input_binary').value.length + ')';
+  document.getElementById('output_length_binary').innerText = '(length: ' + document.getElementById('output_binary').value.length + ')';
+}, 100);
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4RTVKDCC9W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4RTVKDCC9W');
+</script>
+</html>
