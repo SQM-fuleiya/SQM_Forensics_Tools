@@ -97,7 +97,7 @@ def 加载配置(self):  # 加载vol配置文件
                 return json.load(f)
         return {}
     except Exception as e:
-        self.输出(f"加载配置文件出错: {e}")
+        self.输出(f"加载配置文件出错: {e} ,请设置vol的路径")
         return {}  # 当读取失败时也返回空字典
 
 
@@ -169,13 +169,12 @@ def 命令执行(self, 命令):  # 开始执行命令
     if self.file_name:
         self.指令 = 命令
         命令 = f"python {vol3_path} -o {self.file_path} -f {self.file_name} {命令}"
-        print(命令)
         try:
             输出 = subprocess.check_output(命令, shell=True)
             字符串 = 输出.decode("utf-8", errors="ignore")
             分段 = 字符串.splitlines()
             if not 分段:
-                self.输出("无数据，请检查命令是否正确")
+                self.执行结果信号.emit("无数据，请检查命令是否正确")
                 return
             数据行 = [line.split("\t") for line in 分段[1:] if line.strip()]
             table_echo = tabecho(self.file_path, self.指令)
@@ -183,11 +182,11 @@ def 命令执行(self, 命令):  # 开始执行命令
             table_echo.show()  # 显示表格窗口
 
         except Exception as e:
-            self.输出(f"故障命令:{命令},失败代码, {str(e)}")
+            self.执行结果信号.emit(f"故障命令:{命令},失败代码, {str(e)}")
             return
 
     else:
-        self.输出("错误类型, 未选择需要解析的内存文件")
+        self.执行结果信号.emit("错误类型, 未选择需要解析的内存文件")
 
 
 def vol3_win列表(self):  # 列表选择事件处理函数

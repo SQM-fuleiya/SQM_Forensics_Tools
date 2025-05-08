@@ -5,7 +5,7 @@
 import csv
 import os
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QAction, QDragEnterEvent, QDropEvent, QIcon, QStandardItem, QStandardItemModel
 from PySide6.QtWidgets import QApplication, QHeaderView, QMenu, QWidget
 
@@ -17,18 +17,42 @@ from tabprint_ui import Ui_tabprint  # 导入tabprint的UI类
 from zhuye_ui import Ui_zhu_windows
 
 
+class 多线程(QThread):  # 多线程类
+    执行结果信号 = Signal(str)  # 定义信号，参数为str类型，用于传递数据
+    结束信号 = Signal()  # 定义信号，用于传递结束信号
+    进度信号 = Signal(int)  # 定义信号，用于传递进度信息
+
+    def __init__(self, func, *args, **kwargs):  # 初始化函数，func为要执行的函数，*args和**kwargs为函数的参数
+        super().__init__()  # 调用父类的初始化函数
+        self.func = func  # 保存要执行的函数
+        self.args = args  # 保存函数的参数
+        self.kwargs = kwargs  # 保存函数的参数
+
+    def run(self):
+        try:
+            result = self.func(*self.args, **self.kwargs)  # 执行传入的函数
+            self.result_signal.emit(result)  # 发送结果信号
+        except Exception as e:
+            self.error_signal.emit(f"{self.func.__name__} 出错: {str(e)}")
+
+
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()  # 初始化父类
         self.ui = Ui_zhu_windows()  # 实例化UI类
         self.ui.setupUi(self)  # 设置UI
+        self.setAcceptDrops(True)  # 设置 input_text 窗口可以接受拖拽放入文件
+        self.ui.dir_list.currentChanged.connect(self.tab标签事件)  # 设置tab标签切换事件
+        """-----全局变量------"""
+        self.file_name = ""  # 保存文件名称
+        self.file_path = ""  # 保存文件路径
+        self.指令 = ""  # 保存指令
+        """-----按钮设置------"""
         self.file_but()  # 设置文件页面按钮功能
         self.net_but()  # 设置流量分析按钮功能
         self.vol3_but()  # 设置内存分析按钮功能
         self.msic_but()  # 杂项分析按钮功能
-        self.setAcceptDrops(True)  # 设置 input_text 窗口可以接受拖拽放入文件
-
-        # 右键菜单设置
+        """-----右键菜单设置------"""
         self.ui.print_echo.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
         menu = QMenu(self)
         action1 = QAction("base64解码", self, triggered=lambda: fun_file.右键base64解码(self))
@@ -39,7 +63,10 @@ class MainWindow(QWidget):
         menu.addAction(action3)
         self.ui.print_echo.addActions([action1, action2, action3])
 
-        self.ui.dir_list.currentChanged.connect(self.tab标签事件)
+    def start_thread(self, func, *args, **kwargs):  # 启动线程函数，func为要执行的函数，*args和**kwargs为函数的参数
+        thread = 多线程(func, *args, **kwargs)  # 创建线程对象
+        thread.执行结果信号.connect(self.输出)  # 连接线程的执行结果信号到输出函数
+        thread.start()  # 启动线程
 
     def tab标签事件(self, index):
         # tab_text = self.ui.dir_list.tabText(index)
@@ -166,7 +193,7 @@ class MainWindow(QWidget):
         self.ui.vol3_but.clicked.connect(lambda: os.startfile(f"{os.getcwd()}/tools/vol3使用说明.txt"))
         self.ui.vol2_but.clicked.connect(lambda: os.startfile(f"{os.getcwd()}/tools/vol2使用说明.txt"))
         self.ui.vol3_start_but.clicked.connect(lambda: fun_vol.vol手动执行(self))
-        self.ui.v3info_but.clicked.connect(lambda: fun_vol.命令执行(self, "windows.info"))
+        self.ui.v3info_but.clicked.connect(lambda: self.start_thread(fun_vol.命令执行(self, "windows.info")))
 
     def msic_but(self):  # 流量分析按钮功能设置
         self.ui.ceshi111_but.clicked.connect(lambda: self.ui.print_echo.append("测试按钮"))
