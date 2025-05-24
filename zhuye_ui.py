@@ -17,9 +17,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
     QGroupBox, QHBoxLayout, QLabel, QLayout,
-    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QSpacerItem, QTabWidget, QTextBrowser,
-    QTextEdit, QVBoxLayout, QWidget)
+    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QTabWidget, QTextBrowser, QTextEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_zhu_windows(object):
     def setupUi(self, zhu_windows):
@@ -61,8 +61,8 @@ class Ui_zhu_windows(object):
         self.dir_list.setFont(font)
         self.file_tab = QWidget()
         self.file_tab.setObjectName(u"file_tab")
-        self.verticalLayout_7 = QVBoxLayout(self.file_tab)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.gridLayout_2 = QGridLayout(self.file_tab)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.horizontalLayout_26 = QHBoxLayout()
         self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
         self.flag_search_but = QPushButton(self.file_tab)
@@ -85,12 +85,12 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_26.addWidget(self.re_ipnut)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_26)
+        self.gridLayout_2.addLayout(self.horizontalLayout_26, 0, 0, 1, 2)
 
         self.label_9 = QLabel(self.file_tab)
         self.label_9.setObjectName(u"label_9")
 
-        self.verticalLayout_7.addWidget(self.label_9)
+        self.gridLayout_2.addWidget(self.label_9, 1, 0, 1, 1)
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
@@ -139,7 +139,7 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_3.addItem(self.horizontalSpacer_26)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_3)
+        self.gridLayout_2.addLayout(self.horizontalLayout_3, 2, 0, 1, 2)
 
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -186,23 +186,29 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_5.addItem(self.horizontalSpacer_27)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_5)
+        self.gridLayout_2.addLayout(self.horizontalLayout_5, 3, 0, 1, 2)
 
         self.label_10 = QLabel(self.file_tab)
         self.label_10.setObjectName(u"label_10")
 
-        self.verticalLayout_7.addWidget(self.label_10)
+        self.gridLayout_2.addWidget(self.label_10, 4, 0, 1, 1)
 
         self.input_text = QTextEdit(self.file_tab)
         self.input_text.setObjectName(u"input_text")
-        self.input_text.setMinimumSize(QSize(0, 50))
-        self.input_text.setMaximumSize(QSize(16777215, 50))
+        self.input_text.setMinimumSize(QSize(0, 60))
+        self.input_text.setMaximumSize(QSize(16777215, 60))
+        font2 = QFont()
+        font2.setPointSize(10)
+        font2.setBold(False)
+        self.input_text.setFont(font2)
         self.input_text.setReadOnly(False)
 
-        self.verticalLayout_7.addWidget(self.input_text)
+        self.gridLayout_2.addWidget(self.input_text, 5, 0, 1, 2)
 
-        self.horizontalLayout_9 = QHBoxLayout()
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.verticalLayout_7 = QVBoxLayout()
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.html_but = QPushButton(self.file_tab)
         self.html_but.setObjectName(u"html_but")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
@@ -214,8 +220,35 @@ class Ui_zhu_windows(object):
         self.html_but.setMaximumSize(QSize(100, 25))
         self.html_but.setFont(font1)
 
-        self.horizontalLayout_9.addWidget(self.html_but)
+        self.verticalLayout_7.addWidget(self.html_but)
 
+        self.base_but = QPushButton(self.file_tab)
+        self.base_but.setObjectName(u"base_but")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
+        sizePolicy1.setHorizontalStretch(120)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.base_but.sizePolicy().hasHeightForWidth())
+        self.base_but.setSizePolicy(sizePolicy1)
+        self.base_but.setMinimumSize(QSize(100, 25))
+        self.base_but.setMaximumSize(QSize(100, 25))
+        self.base_but.setSizeIncrement(QSize(120, 0))
+        self.base_but.setFont(font1)
+
+        self.verticalLayout_7.addWidget(self.base_but)
+
+        self.fuck_but = QPushButton(self.file_tab)
+        self.fuck_but.setObjectName(u"fuck_but")
+        self.fuck_but.setMinimumSize(QSize(100, 25))
+        self.fuck_but.setMaximumSize(QSize(100, 25))
+        self.fuck_but.setFont(font1)
+
+        self.verticalLayout_7.addWidget(self.fuck_but)
+
+
+        self.horizontalLayout_4.addLayout(self.verticalLayout_7)
+
+        self.verticalLayout_15 = QVBoxLayout()
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.url_but = QPushButton(self.file_tab)
         self.url_but.setObjectName(u"url_but")
         sizePolicy.setHeightForWidth(self.url_but.sizePolicy().hasHeightForWidth())
@@ -224,15 +257,18 @@ class Ui_zhu_windows(object):
         self.url_but.setMaximumSize(QSize(100, 25))
         self.url_but.setFont(font1)
 
-        self.horizontalLayout_9.addWidget(self.url_but)
+        self.verticalLayout_15.addWidget(self.url_but)
 
-        self.fuck_but = QPushButton(self.file_tab)
-        self.fuck_but.setObjectName(u"fuck_but")
-        self.fuck_but.setMinimumSize(QSize(100, 25))
-        self.fuck_but.setMaximumSize(QSize(100, 25))
-        self.fuck_but.setFont(font1)
+        self.kaisa_but = QPushButton(self.file_tab)
+        self.kaisa_but.setObjectName(u"kaisa_but")
+        sizePolicy.setHeightForWidth(self.kaisa_but.sizePolicy().hasHeightForWidth())
+        self.kaisa_but.setSizePolicy(sizePolicy)
+        self.kaisa_but.setMinimumSize(QSize(100, 25))
+        self.kaisa_but.setMaximumSize(QSize(100, 25))
+        self.kaisa_but.setSizeIncrement(QSize(120, 30))
+        self.kaisa_but.setFont(font1)
 
-        self.horizontalLayout_9.addWidget(self.fuck_but)
+        self.verticalLayout_15.addWidget(self.kaisa_but)
 
         self.ook_but = QPushButton(self.file_tab)
         self.ook_but.setObjectName(u"ook_but")
@@ -240,24 +276,20 @@ class Ui_zhu_windows(object):
         self.ook_but.setMaximumSize(QSize(100, 25))
         self.ook_but.setFont(font1)
 
-        self.horizontalLayout_9.addWidget(self.ook_but)
-
-        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_9.addItem(self.horizontalSpacer_8)
+        self.verticalLayout_15.addWidget(self.ook_but)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_9)
+        self.horizontalLayout_4.addLayout(self.verticalLayout_15)
 
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.verticalLayout_17 = QVBoxLayout()
+        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.hex_str_but = QPushButton(self.file_tab)
         self.hex_str_but.setObjectName(u"hex_str_but")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
-        sizePolicy1.setHorizontalStretch(120)
-        sizePolicy1.setVerticalStretch(30)
-        sizePolicy1.setHeightForWidth(self.hex_str_but.sizePolicy().hasHeightForWidth())
-        self.hex_str_but.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
+        sizePolicy2.setHorizontalStretch(120)
+        sizePolicy2.setVerticalStretch(30)
+        sizePolicy2.setHeightForWidth(self.hex_str_but.sizePolicy().hasHeightForWidth())
+        self.hex_str_but.setSizePolicy(sizePolicy2)
         self.hex_str_but.setMinimumSize(QSize(100, 25))
         self.hex_str_but.setMaximumSize(QSize(100, 25))
         self.hex_str_but.setSizeIncrement(QSize(120, 0))
@@ -267,21 +299,7 @@ class Ui_zhu_windows(object):
 #endif // QT_CONFIG(tooltip)
         self.hex_str_but.setAutoExclusive(False)
 
-        self.horizontalLayout_4.addWidget(self.hex_str_but)
-
-        self.base_but = QPushButton(self.file_tab)
-        self.base_but.setObjectName(u"base_but")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
-        sizePolicy2.setHorizontalStretch(120)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.base_but.sizePolicy().hasHeightForWidth())
-        self.base_but.setSizePolicy(sizePolicy2)
-        self.base_but.setMinimumSize(QSize(100, 25))
-        self.base_but.setMaximumSize(QSize(100, 25))
-        self.base_but.setSizeIncrement(QSize(120, 0))
-        self.base_but.setFont(font1)
-
-        self.horizontalLayout_4.addWidget(self.base_but)
+        self.verticalLayout_17.addWidget(self.hex_str_but)
 
         self.zhalan_but = QPushButton(self.file_tab)
         self.zhalan_but.setObjectName(u"zhalan_but")
@@ -294,58 +312,52 @@ class Ui_zhu_windows(object):
         self.zhalan_but.setMaximumSize(QSize(100, 25))
         self.zhalan_but.setFont(font1)
 
-        self.horizontalLayout_4.addWidget(self.zhalan_but)
+        self.verticalLayout_17.addWidget(self.zhalan_but)
 
-        self.kaisa_but = QPushButton(self.file_tab)
-        self.kaisa_but.setObjectName(u"kaisa_but")
-        sizePolicy.setHeightForWidth(self.kaisa_but.sizePolicy().hasHeightForWidth())
-        self.kaisa_but.setSizePolicy(sizePolicy)
-        self.kaisa_but.setMinimumSize(QSize(100, 25))
-        self.kaisa_but.setMaximumSize(QSize(100, 25))
-        self.kaisa_but.setSizeIncrement(QSize(120, 30))
-        self.kaisa_but.setFont(font1)
+        self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.horizontalLayout_4.addWidget(self.kaisa_but)
-
-        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_4.addItem(self.horizontalSpacer_9)
+        self.verticalLayout_17.addItem(self.verticalSpacer_8)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_4)
+        self.horizontalLayout_4.addLayout(self.verticalLayout_17)
 
-        self.horizontalLayout_10 = QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.hexin_but = QPushButton(self.file_tab)
-        self.hexin_but.setObjectName(u"hexin_but")
-        self.hexin_but.setMinimumSize(QSize(100, 25))
-        self.hexin_but.setMaximumSize(QSize(100, 25))
-        self.hexin_but.setFont(font1)
-
-        self.horizontalLayout_10.addWidget(self.hexin_but)
-
-        self.horizontalSpacer_25 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_10.addItem(self.horizontalSpacer_25)
-
+        self.verticalLayout_18 = QVBoxLayout()
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
         self.hex_str = QPushButton(self.file_tab)
         self.hex_str.setObjectName(u"hex_str")
         self.hex_str.setMinimumSize(QSize(100, 25))
         self.hex_str.setMaximumSize(QSize(100, 25))
         self.hex_str.setFont(font1)
 
-        self.horizontalLayout_10.addWidget(self.hex_str)
+        self.verticalLayout_18.addWidget(self.hex_str)
+
+        self.hexin_but = QPushButton(self.file_tab)
+        self.hexin_but.setObjectName(u"hexin_but")
+        self.hexin_but.setMinimumSize(QSize(100, 25))
+        self.hexin_but.setMaximumSize(QSize(100, 25))
+        self.hexin_but.setFont(font1)
+
+        self.verticalLayout_18.addWidget(self.hexin_but)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_18.addItem(self.verticalSpacer_3)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_10)
+        self.horizontalLayout_4.addLayout(self.verticalLayout_18)
+
+
+        self.gridLayout_2.addLayout(self.horizontalLayout_4, 6, 0, 1, 2)
 
         self.label_11 = QLabel(self.file_tab)
         self.label_11.setObjectName(u"label_11")
 
-        self.verticalLayout_7.addWidget(self.label_11)
+        self.gridLayout_2.addWidget(self.label_11, 7, 0, 1, 1)
 
-        self.horizontalLayout_27 = QHBoxLayout()
-        self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.verticalLayout_19 = QVBoxLayout()
+        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.exif_but = QPushButton(self.file_tab)
         self.exif_but.setObjectName(u"exif_but")
         sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
@@ -357,36 +369,88 @@ class Ui_zhu_windows(object):
         self.exif_but.setMaximumSize(QSize(100, 25))
         self.exif_but.setFont(font1)
 
-        self.horizontalLayout_27.addWidget(self.exif_but)
+        self.verticalLayout_19.addWidget(self.exif_but)
 
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.tu_re = QPushButton(self.file_tab)
+        self.tu_re.setObjectName(u"tu_re")
+        self.tu_re.setMinimumSize(QSize(100, 25))
+        self.tu_re.setMaximumSize(QSize(100, 25))
+        self.tu_re.setFont(font1)
 
-        self.horizontalLayout_27.addItem(self.horizontalSpacer_3)
+        self.verticalLayout_19.addWidget(self.tu_re)
 
-        self.mangshuiyin_but_2 = QPushButton(self.file_tab)
-        self.mangshuiyin_but_2.setObjectName(u"mangshuiyin_but_2")
-        sizePolicy.setHeightForWidth(self.mangshuiyin_but_2.sizePolicy().hasHeightForWidth())
-        self.mangshuiyin_but_2.setSizePolicy(sizePolicy)
-        self.mangshuiyin_but_2.setMinimumSize(QSize(100, 25))
-        self.mangshuiyin_but_2.setMaximumSize(QSize(100, 25))
-        self.mangshuiyin_but_2.setSizeIncrement(QSize(120, 30))
-        self.mangshuiyin_but_2.setFont(font1)
+        self.jpg_high_but = QPushButton(self.file_tab)
+        self.jpg_high_but.setObjectName(u"jpg_high_but")
+        self.jpg_high_but.setMinimumSize(QSize(100, 25))
+        self.jpg_high_but.setMaximumSize(QSize(100, 25))
+        self.jpg_high_but.setFont(font1)
 
-        self.horizontalLayout_27.addWidget(self.mangshuiyin_but_2)
+        self.verticalLayout_19.addWidget(self.jpg_high_but)
+
+        self.png_high_but = QPushButton(self.file_tab)
+        self.png_high_but.setObjectName(u"png_high_but")
+        self.png_high_but.setMinimumSize(QSize(100, 25))
+        self.png_high_but.setMaximumSize(QSize(100, 25))
+        self.png_high_but.setFont(font1)
+
+        self.verticalLayout_19.addWidget(self.png_high_but)
+
+        self.gif_fenli_but = QPushButton(self.file_tab)
+        self.gif_fenli_but.setObjectName(u"gif_fenli_but")
+        self.gif_fenli_but.setMinimumSize(QSize(100, 25))
+        self.gif_fenli_but.setMaximumSize(QSize(100, 25))
+        self.gif_fenli_but.setFont(font1)
+
+        self.verticalLayout_19.addWidget(self.gif_fenli_but)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_27)
+        self.horizontalLayout_9.addLayout(self.verticalLayout_19)
 
-        self.horizontalLayout_24 = QHBoxLayout()
-        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
+        self.verticalLayout_20 = QVBoxLayout()
+        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
         self.bin_image_but = QPushButton(self.file_tab)
         self.bin_image_but.setObjectName(u"bin_image_but")
         self.bin_image_but.setMinimumSize(QSize(100, 25))
         self.bin_image_but.setMaximumSize(QSize(100, 25))
         self.bin_image_but.setFont(font1)
 
-        self.horizontalLayout_24.addWidget(self.bin_image_but)
+        self.verticalLayout_20.addWidget(self.bin_image_but)
 
+        self.heibai_but = QPushButton(self.file_tab)
+        self.heibai_but.setObjectName(u"heibai_but")
+        self.heibai_but.setMinimumSize(QSize(100, 25))
+        self.heibai_but.setMaximumSize(QSize(100, 25))
+        self.heibai_but.setFont(font1)
+
+        self.verticalLayout_20.addWidget(self.heibai_but)
+
+        self.jpg_block_but = QPushButton(self.file_tab)
+        self.jpg_block_but.setObjectName(u"jpg_block_but")
+        self.jpg_block_but.setMinimumSize(QSize(100, 25))
+        self.jpg_block_but.setMaximumSize(QSize(100, 25))
+
+        self.verticalLayout_20.addWidget(self.jpg_block_but)
+
+        self.hide_str_but = QPushButton(self.file_tab)
+        self.hide_str_but.setObjectName(u"hide_str_but")
+        self.hide_str_but.setMinimumSize(QSize(100, 25))
+        self.hide_str_but.setMaximumSize(QSize(100, 25))
+
+        self.verticalLayout_20.addWidget(self.hide_str_but)
+
+        self.gif_hebing = QPushButton(self.file_tab)
+        self.gif_hebing.setObjectName(u"gif_hebing")
+        self.gif_hebing.setMinimumSize(QSize(100, 25))
+        self.gif_hebing.setMaximumSize(QSize(100, 25))
+        self.gif_hebing.setFont(font1)
+
+        self.verticalLayout_20.addWidget(self.gif_hebing)
+
+
+        self.horizontalLayout_9.addLayout(self.verticalLayout_20)
+
+        self.verticalLayout_21 = QVBoxLayout()
+        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
         self.rgb2img_but = QPushButton(self.file_tab)
         self.rgb2img_but.setObjectName(u"rgb2img_but")
         sizePolicy4.setHeightForWidth(self.rgb2img_but.sizePolicy().hasHeightForWidth())
@@ -396,92 +460,64 @@ class Ui_zhu_windows(object):
         self.rgb2img_but.setSizeIncrement(QSize(120, 30))
         self.rgb2img_but.setFont(font1)
 
-        self.horizontalLayout_24.addWidget(self.rgb2img_but)
+        self.verticalLayout_21.addWidget(self.rgb2img_but)
 
-        self.heibai_but = QPushButton(self.file_tab)
-        self.heibai_but.setObjectName(u"heibai_but")
-        self.heibai_but.setMinimumSize(QSize(100, 25))
-        self.heibai_but.setMaximumSize(QSize(100, 25))
-        self.heibai_but.setFont(font1)
+        self.mangshuiyin_but = QPushButton(self.file_tab)
+        self.mangshuiyin_but.setObjectName(u"mangshuiyin_but")
+        sizePolicy.setHeightForWidth(self.mangshuiyin_but.sizePolicy().hasHeightForWidth())
+        self.mangshuiyin_but.setSizePolicy(sizePolicy)
+        self.mangshuiyin_but.setMinimumSize(QSize(100, 25))
+        self.mangshuiyin_but.setMaximumSize(QSize(100, 25))
+        self.mangshuiyin_but.setSizeIncrement(QSize(0, 0))
+        self.mangshuiyin_but.setFont(font1)
 
-        self.horizontalLayout_24.addWidget(self.heibai_but)
+        self.verticalLayout_21.addWidget(self.mangshuiyin_but)
 
-        self.tu_re = QPushButton(self.file_tab)
-        self.tu_re.setObjectName(u"tu_re")
-        self.tu_re.setMinimumSize(QSize(100, 25))
-        self.tu_re.setMaximumSize(QSize(100, 25))
-        self.tu_re.setFont(font1)
+        self.verticalSpacer_9 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.horizontalLayout_24.addWidget(self.tu_re)
+        self.verticalLayout_21.addItem(self.verticalSpacer_9)
 
-        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.png_idat_but = QPushButton(self.file_tab)
+        self.png_idat_but.setObjectName(u"png_idat_but")
+        self.png_idat_but.setMinimumSize(QSize(100, 25))
+        self.png_idat_but.setMaximumSize(QSize(100, 25))
 
-        self.horizontalLayout_24.addItem(self.horizontalSpacer_7)
+        self.verticalLayout_21.addWidget(self.png_idat_but)
 
+        self.verticalSpacer_10 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_24)
-
-        self.horizontalLayout_28 = QHBoxLayout()
-        self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
-        self.jpg_high_but = QPushButton(self.file_tab)
-        self.jpg_high_but.setObjectName(u"jpg_high_but")
-        self.jpg_high_but.setMinimumSize(QSize(100, 25))
-        self.jpg_high_but.setMaximumSize(QSize(100, 25))
-        self.jpg_high_but.setFont(font1)
-
-        self.horizontalLayout_28.addWidget(self.jpg_high_but)
-
-        self.png_high_but = QPushButton(self.file_tab)
-        self.png_high_but.setObjectName(u"png_high_but")
-        self.png_high_but.setMinimumSize(QSize(100, 25))
-        self.png_high_but.setMaximumSize(QSize(100, 25))
-        self.png_high_but.setFont(font1)
-
-        self.horizontalLayout_28.addWidget(self.png_high_but)
-
-        self.gif_fenli_but = QPushButton(self.file_tab)
-        self.gif_fenli_but.setObjectName(u"gif_fenli_but")
-        self.gif_fenli_but.setMinimumSize(QSize(100, 25))
-        self.gif_fenli_but.setMaximumSize(QSize(100, 25))
-        self.gif_fenli_but.setFont(font1)
-
-        self.horizontalLayout_28.addWidget(self.gif_fenli_but)
-
-        self.gif_hebing = QPushButton(self.file_tab)
-        self.gif_hebing.setObjectName(u"gif_hebing")
-        self.gif_hebing.setMinimumSize(QSize(100, 25))
-        self.gif_hebing.setMaximumSize(QSize(100, 25))
-        self.gif_hebing.setFont(font1)
-
-        self.horizontalLayout_28.addWidget(self.gif_hebing)
-
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_28.addItem(self.horizontalSpacer_6)
+        self.verticalLayout_21.addItem(self.verticalSpacer_10)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_28)
+        self.horizontalLayout_9.addLayout(self.verticalLayout_21)
 
-        self.horizontalLayout_33 = QHBoxLayout()
-        self.horizontalLayout_33.setObjectName(u"horizontalLayout_33")
-        self.hide_str_but = QPushButton(self.file_tab)
-        self.hide_str_but.setObjectName(u"hide_str_but")
-        self.hide_str_but.setMinimumSize(QSize(100, 25))
-        self.hide_str_but.setMaximumSize(QSize(100, 25))
+        self.verticalLayout_22 = QVBoxLayout()
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.coordinate_img = QPushButton(self.file_tab)
+        self.coordinate_img.setObjectName(u"coordinate_img")
+        self.coordinate_img.setMinimumSize(QSize(100, 25))
+        self.coordinate_img.setMaximumSize(QSize(100, 25))
 
-        self.horizontalLayout_33.addWidget(self.hide_str_but)
+        self.verticalLayout_22.addWidget(self.coordinate_img)
 
-        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.horizontalLayout_33.addItem(self.horizontalSpacer_11)
+        self.verticalLayout_22.addItem(self.verticalSpacer_5)
+
+        self.verticalSpacer_11 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_22.addItem(self.verticalSpacer_11)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_33)
+        self.horizontalLayout_9.addLayout(self.verticalLayout_22)
+
+
+        self.gridLayout_2.addLayout(self.horizontalLayout_9, 8, 0, 1, 2)
 
         self.label_12 = QLabel(self.file_tab)
         self.label_12.setObjectName(u"label_12")
 
-        self.verticalLayout_7.addWidget(self.label_12)
+        self.gridLayout_2.addWidget(self.label_12, 9, 0, 1, 1)
 
         self.horizontalLayout_8 = QHBoxLayout()
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
@@ -514,11 +550,11 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_8.addItem(self.horizontalSpacer_5)
 
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout_8)
+        self.gridLayout_2.addLayout(self.horizontalLayout_8, 10, 0, 1, 2)
 
         self.verticalSpacer = QSpacerItem(20, 335, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout_7.addItem(self.verticalSpacer)
+        self.gridLayout_2.addItem(self.verticalSpacer, 11, 1, 1, 1)
 
         self.dir_list.addTab(self.file_tab, "")
         self.pcap_tab = QWidget()
@@ -834,8 +870,8 @@ class Ui_zhu_windows(object):
         self.dir_list.addTab(self.pcap_tab, "")
         self.vol_tab = QWidget()
         self.vol_tab.setObjectName(u"vol_tab")
-        self.gridLayout = QGridLayout(self.vol_tab)
-        self.gridLayout.setObjectName(u"gridLayout")
+        self.verticalLayout_23 = QVBoxLayout(self.vol_tab)
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
         self.horizontalLayout_47 = QHBoxLayout()
         self.horizontalLayout_47.setObjectName(u"horizontalLayout_47")
         self.set_vol = QPushButton(self.vol_tab)
@@ -860,309 +896,383 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_47.addWidget(self.vol2_but)
 
 
-        self.gridLayout.addLayout(self.horizontalLayout_47, 0, 0, 1, 1)
+        self.verticalLayout_23.addLayout(self.horizontalLayout_47)
+
+        self.horizontalLayout_31 = QHBoxLayout()
+        self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")
+        self.vol_input = QLineEdit(self.vol_tab)
+        self.vol_input.setObjectName(u"vol_input")
+
+        self.horizontalLayout_31.addWidget(self.vol_input)
+
+        self.vol3_start_but = QPushButton(self.vol_tab)
+        self.vol3_start_but.setObjectName(u"vol3_start_but")
+        self.vol3_start_but.setMinimumSize(QSize(100, 25))
+        self.vol3_start_but.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_31.addWidget(self.vol3_start_but)
+
+
+        self.verticalLayout_23.addLayout(self.horizontalLayout_31)
 
         self.tabWidget = QTabWidget(self.vol_tab)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabWidget.setMaximumSize(QSize(400, 16777215))
         self.tab_2 = QWidget()
         self.tab_2.setObjectName(u"tab_2")
-        self.verticalLayout_14 = QVBoxLayout(self.tab_2)
-        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.verticalLayout_12 = QVBoxLayout(self.tab_2)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.horizontalLayout_35 = QHBoxLayout()
+        self.horizontalLayout_35.setObjectName(u"horizontalLayout_35")
         self.label_16 = QLabel(self.tab_2)
         self.label_16.setObjectName(u"label_16")
-        font2 = QFont()
-        font2.setPointSize(10)
-        font2.setBold(True)
-        self.label_16.setFont(font2)
+        font3 = QFont()
+        font3.setPointSize(10)
+        font3.setBold(True)
+        self.label_16.setFont(font3)
 
-        self.verticalLayout_14.addWidget(self.label_16)
+        self.horizontalLayout_35.addWidget(self.label_16)
+
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_35.addItem(self.horizontalSpacer_8)
+
+        self.help = QCheckBox(self.tab_2)
+        self.help.setObjectName(u"help")
+        self.help.setMinimumSize(QSize(50, 0))
+        self.help.setMaximumSize(QSize(16777215, 16777215))
+
+        self.horizontalLayout_35.addWidget(self.help)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_35)
 
         self.horizontalLayout_22 = QHBoxLayout()
         self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
-        self.v3info_but = QPushButton(self.tab_2)
-        self.v3info_but.setObjectName(u"v3info_but")
-        self.v3info_but.setMinimumSize(QSize(90, 25))
-        self.v3info_but.setMaximumSize(QSize(90, 25))
+        self.v3w_info = QPushButton(self.tab_2)
+        self.v3w_info.setObjectName(u"v3w_info")
+        self.v3w_info.setMinimumSize(QSize(90, 25))
+        self.v3w_info.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_22.addWidget(self.v3info_but)
+        self.horizontalLayout_22.addWidget(self.v3w_info)
 
-        self.hashdump_2 = QPushButton(self.tab_2)
-        self.hashdump_2.setObjectName(u"hashdump_2")
-        self.hashdump_2.setMinimumSize(QSize(90, 25))
-        self.hashdump_2.setMaximumSize(QSize(90, 25))
+        self.v3w_hashdump = QPushButton(self.tab_2)
+        self.v3w_hashdump.setObjectName(u"v3w_hashdump")
+        self.v3w_hashdump.setMinimumSize(QSize(90, 25))
+        self.v3w_hashdump.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_22.addWidget(self.hashdump_2)
+        self.horizontalLayout_22.addWidget(self.v3w_hashdump)
 
-        self.netscan_2 = QPushButton(self.tab_2)
-        self.netscan_2.setObjectName(u"netscan_2")
-        self.netscan_2.setMinimumSize(QSize(90, 25))
-        self.netscan_2.setMaximumSize(QSize(90, 25))
+        self.v3w_netstat = QPushButton(self.tab_2)
+        self.v3w_netstat.setObjectName(u"v3w_netstat")
+        self.v3w_netstat.setMinimumSize(QSize(90, 25))
+        self.v3w_netstat.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_22.addWidget(self.netscan_2)
+        self.horizontalLayout_22.addWidget(self.v3w_netstat)
 
-        self.consoles = QPushButton(self.tab_2)
-        self.consoles.setObjectName(u"consoles")
-        self.consoles.setMinimumSize(QSize(90, 25))
-        self.consoles.setMaximumSize(QSize(90, 25))
+        self.v3w_cmdscan = QPushButton(self.tab_2)
+        self.v3w_cmdscan.setObjectName(u"v3w_cmdscan")
+        self.v3w_cmdscan.setMinimumSize(QSize(90, 25))
+        self.v3w_cmdscan.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_22.addWidget(self.consoles)
+        self.horizontalLayout_22.addWidget(self.v3w_cmdscan)
 
 
-        self.verticalLayout_14.addLayout(self.horizontalLayout_22)
+        self.verticalLayout_12.addLayout(self.horizontalLayout_22)
 
         self.horizontalLayout_49 = QHBoxLayout()
         self.horizontalLayout_49.setObjectName(u"horizontalLayout_49")
-        self.amcache_2 = QPushButton(self.tab_2)
-        self.amcache_2.setObjectName(u"amcache_2")
-        self.amcache_2.setMinimumSize(QSize(90, 25))
-        self.amcache_2.setMaximumSize(QSize(90, 25))
+        self.v3w_amcache = QPushButton(self.tab_2)
+        self.v3w_amcache.setObjectName(u"v3w_amcache")
+        self.v3w_amcache.setMinimumSize(QSize(90, 25))
+        self.v3w_amcache.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_49.addWidget(self.amcache_2)
+        self.horizontalLayout_49.addWidget(self.v3w_amcache)
 
-        self.shimcache_2 = QPushButton(self.tab_2)
-        self.shimcache_2.setObjectName(u"shimcache_2")
-        self.shimcache_2.setMinimumSize(QSize(90, 25))
-        self.shimcache_2.setMaximumSize(QSize(90, 25))
+        self.v3w_shimcache = QPushButton(self.tab_2)
+        self.v3w_shimcache.setObjectName(u"v3w_shimcache")
+        self.v3w_shimcache.setMinimumSize(QSize(90, 25))
+        self.v3w_shimcache.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_49.addWidget(self.shimcache_2)
+        self.horizontalLayout_49.addWidget(self.v3w_shimcache)
 
-        self.scheduled_tasks_2 = QPushButton(self.tab_2)
-        self.scheduled_tasks_2.setObjectName(u"scheduled_tasks_2")
-        self.scheduled_tasks_2.setMinimumSize(QSize(90, 25))
-        self.scheduled_tasks_2.setMaximumSize(QSize(90, 25))
+        self.v3w_scheduled_tasks = QPushButton(self.tab_2)
+        self.v3w_scheduled_tasks.setObjectName(u"v3w_scheduled_tasks")
+        self.v3w_scheduled_tasks.setMinimumSize(QSize(90, 25))
+        self.v3w_scheduled_tasks.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_49.addWidget(self.scheduled_tasks_2)
+        self.horizontalLayout_49.addWidget(self.v3w_scheduled_tasks)
 
-        self.psxview = QPushButton(self.tab_2)
-        self.psxview.setObjectName(u"psxview")
-        self.psxview.setMinimumSize(QSize(90, 25))
-        self.psxview.setMaximumSize(QSize(90, 25))
+        self.v3w_psxview = QPushButton(self.tab_2)
+        self.v3w_psxview.setObjectName(u"v3w_psxview")
+        self.v3w_psxview.setMinimumSize(QSize(90, 25))
+        self.v3w_psxview.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_49.addWidget(self.psxview)
+        self.horizontalLayout_49.addWidget(self.v3w_psxview)
 
 
-        self.verticalLayout_14.addLayout(self.horizontalLayout_49)
+        self.verticalLayout_12.addLayout(self.horizontalLayout_49)
 
         self.horizontalLayout_50 = QHBoxLayout()
         self.horizontalLayout_50.setObjectName(u"horizontalLayout_50")
-        self.timeliner_2 = QPushButton(self.tab_2)
-        self.timeliner_2.setObjectName(u"timeliner_2")
-        self.timeliner_2.setMinimumSize(QSize(90, 25))
-        self.timeliner_2.setMaximumSize(QSize(90, 25))
+        self.v3w_timeliner = QPushButton(self.tab_2)
+        self.v3w_timeliner.setObjectName(u"v3w_timeliner")
+        self.v3w_timeliner.setMinimumSize(QSize(90, 25))
+        self.v3w_timeliner.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_50.addWidget(self.timeliner_2)
+        self.horizontalLayout_50.addWidget(self.v3w_timeliner)
 
-        self.filescan_2 = QPushButton(self.tab_2)
-        self.filescan_2.setObjectName(u"filescan_2")
-        self.filescan_2.setMinimumSize(QSize(90, 25))
-        self.filescan_2.setMaximumSize(QSize(90, 25))
+        self.v3w_certificates = QPushButton(self.tab_2)
+        self.v3w_certificates.setObjectName(u"v3w_certificates")
+        self.v3w_certificates.setMinimumSize(QSize(90, 25))
+        self.v3w_certificates.setMaximumSize(QSize(90, 25))
 
-        self.horizontalLayout_50.addWidget(self.filescan_2)
+        self.horizontalLayout_50.addWidget(self.v3w_certificates)
 
-        self.certificates = QPushButton(self.tab_2)
-        self.certificates.setObjectName(u"certificates")
-        self.certificates.setMinimumSize(QSize(90, 25))
-        self.certificates.setMaximumSize(QSize(90, 25))
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.horizontalLayout_50.addWidget(self.certificates)
+        self.horizontalLayout_50.addItem(self.horizontalSpacer_7)
 
-        self.strings = QPushButton(self.tab_2)
-        self.strings.setObjectName(u"strings")
-        self.strings.setMinimumSize(QSize(90, 25))
-        self.strings.setMaximumSize(QSize(90, 25))
+        self.v3w_file_but = QCheckBox(self.tab_2)
+        self.v3w_file_but.setObjectName(u"v3w_file_but")
 
-        self.horizontalLayout_50.addWidget(self.strings)
+        self.horizontalLayout_50.addWidget(self.v3w_file_but)
 
 
-        self.verticalLayout_14.addLayout(self.horizontalLayout_50)
+        self.verticalLayout_12.addLayout(self.horizontalLayout_50)
+
+        self.horizontalLayout_33 = QHBoxLayout()
+        self.horizontalLayout_33.setObjectName(u"horizontalLayout_33")
+        self.v3w_pid = QLineEdit(self.tab_2)
+        self.v3w_pid.setObjectName(u"v3w_pid")
+        self.v3w_pid.setEnabled(False)
+        self.v3w_pid.setMinimumSize(QSize(90, 30))
+        self.v3w_pid.setMaximumSize(QSize(90, 16777215))
+
+        self.horizontalLayout_33.addWidget(self.v3w_pid)
+
+        self.v3w_physaddr = QLineEdit(self.tab_2)
+        self.v3w_physaddr.setObjectName(u"v3w_physaddr")
+        self.v3w_physaddr.setEnabled(False)
+        self.v3w_physaddr.setMinimumSize(QSize(90, 30))
+        self.v3w_physaddr.setMaximumSize(QSize(90, 16777215))
+
+        self.horizontalLayout_33.addWidget(self.v3w_physaddr)
+
+        self.v3w_filter = QLineEdit(self.tab_2)
+        self.v3w_filter.setObjectName(u"v3w_filter")
+        self.v3w_filter.setEnabled(False)
+        self.v3w_filter.setMinimumSize(QSize(90, 30))
+        self.v3w_filter.setMaximumSize(QSize(90, 16777215))
+
+        self.horizontalLayout_33.addWidget(self.v3w_filter)
+
+        self.v3w_str = QLineEdit(self.tab_2)
+        self.v3w_str.setObjectName(u"v3w_str")
+        self.v3w_str.setEnabled(False)
+        self.v3w_str.setMinimumSize(QSize(90, 30))
+        self.v3w_str.setMaximumSize(QSize(90, 30))
+
+        self.horizontalLayout_33.addWidget(self.v3w_str)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_33)
+
+        self.horizontalLayout_34 = QHBoxLayout()
+        self.horizontalLayout_34.setObjectName(u"horizontalLayout_34")
+        self.v3w_filescan = QPushButton(self.tab_2)
+        self.v3w_filescan.setObjectName(u"v3w_filescan")
+        self.v3w_filescan.setMinimumSize(QSize(90, 25))
+        self.v3w_filescan.setMaximumSize(QSize(90, 25))
+
+        self.horizontalLayout_34.addWidget(self.v3w_filescan)
+
+        self.v3w_strings = QPushButton(self.tab_2)
+        self.v3w_strings.setObjectName(u"v3w_strings")
+        self.v3w_strings.setMinimumSize(QSize(90, 25))
+        self.v3w_strings.setMaximumSize(QSize(90, 25))
+
+        self.horizontalLayout_34.addWidget(self.v3w_strings)
+
+        self.v3w_dumpfiles = QPushButton(self.tab_2)
+        self.v3w_dumpfiles.setObjectName(u"v3w_dumpfiles")
+
+        self.horizontalLayout_34.addWidget(self.v3w_dumpfiles)
+
+        self.v3w_dump = QCheckBox(self.tab_2)
+        self.v3w_dump.setObjectName(u"v3w_dump")
+        self.v3w_dump.setEnabled(False)
+        self.v3w_dump.setMinimumSize(QSize(90, 30))
+        self.v3w_dump.setMaximumSize(QSize(90, 30))
+
+        self.horizontalLayout_34.addWidget(self.v3w_dump)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_34)
+
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.v3w_registry_hive = QLineEdit(self.tab_2)
+        self.v3w_registry_hive.setObjectName(u"v3w_registry_hive")
+        self.v3w_registry_hive.setEnabled(False)
+        self.v3w_registry_hive.setMinimumSize(QSize(90, 30))
+        self.v3w_registry_hive.setMaximumSize(QSize(90, 30))
+
+        self.horizontalLayout_10.addWidget(self.v3w_registry_hive)
+
+        self.v3w_registry_key = QLineEdit(self.tab_2)
+        self.v3w_registry_key.setObjectName(u"v3w_registry_key")
+        self.v3w_registry_key.setEnabled(False)
+        self.v3w_registry_key.setMinimumSize(QSize(90, 30))
+        self.v3w_registry_key.setMaximumSize(QSize(90, 16777215))
+
+        self.horizontalLayout_10.addWidget(self.v3w_registry_key)
+
+        self.v3w_recurse = QCheckBox(self.tab_2)
+        self.v3w_recurse.setObjectName(u"v3w_recurse")
+        self.v3w_recurse.setEnabled(False)
+        self.v3w_recurse.setMinimumSize(QSize(90, 30))
+        self.v3w_recurse.setMaximumSize(QSize(90, 30))
+
+        self.horizontalLayout_10.addWidget(self.v3w_recurse)
+
+        self.v3w_printkey = QPushButton(self.tab_2)
+        self.v3w_printkey.setObjectName(u"v3w_printkey")
+        self.v3w_printkey.setEnabled(False)
+
+        self.horizontalLayout_10.addWidget(self.v3w_printkey)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_10)
 
         self.label_17 = QLabel(self.tab_2)
         self.label_17.setObjectName(u"label_17")
-        self.label_17.setFont(font)
+        self.label_17.setFont(font3)
 
-        self.verticalLayout_14.addWidget(self.label_17)
+        self.verticalLayout_12.addWidget(self.label_17)
 
-        self.horizontalLayout_36 = QHBoxLayout()
-        self.horizontalLayout_36.setObjectName(u"horizontalLayout_36")
-        self.fun_list = QListWidget(self.tab_2)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        QListWidgetItem(self.fun_list)
-        self.fun_list.setObjectName(u"fun_list")
-        self.fun_list.setMaximumSize(QSize(130, 200))
-        self.fun_list.setSizeIncrement(QSize(0, 200))
+        self.horizontalLayout_27 = QHBoxLayout()
+        self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
+        self.v3w_fun_list = QComboBox(self.tab_2)
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.addItem("")
+        self.v3w_fun_list.setObjectName(u"v3w_fun_list")
+        self.v3w_fun_list.setMinimumSize(QSize(200, 25))
+        self.v3w_fun_list.setMaximumSize(QSize(200, 25))
 
-        self.horizontalLayout_36.addWidget(self.fun_list)
+        self.horizontalLayout_27.addWidget(self.v3w_fun_list)
 
-        self.verticalLayout_12 = QVBoxLayout()
-        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_27.addItem(self.horizontalSpacer_2)
+
+        self.v3w_fun_but = QPushButton(self.tab_2)
+        self.v3w_fun_but.setObjectName(u"v3w_fun_but")
+        self.v3w_fun_but.setMinimumSize(QSize(100, 25))
+        self.v3w_fun_but.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_27.addWidget(self.v3w_fun_but)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_27)
+
+        self.label_18 = QLabel(self.tab_2)
+        self.label_18.setObjectName(u"label_18")
+        self.label_18.setFont(font3)
+
+        self.verticalLayout_12.addWidget(self.label_18)
+
+        self.horizontalLayout_28 = QHBoxLayout()
+        self.horizontalLayout_28.setObjectName(u"horizontalLayout_28")
+        self.v3l_fun_list = QComboBox(self.tab_2)
+        self.v3l_fun_list.setObjectName(u"v3l_fun_list")
+        self.v3l_fun_list.setMinimumSize(QSize(200, 25))
+        self.v3l_fun_list.setMaximumSize(QSize(200, 25))
+
+        self.horizontalLayout_28.addWidget(self.v3l_fun_list)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_28.addItem(self.horizontalSpacer_3)
+
+        self.v3l_fun_but = QPushButton(self.tab_2)
+        self.v3l_fun_but.setObjectName(u"v3l_fun_but")
+        self.v3l_fun_but.setMinimumSize(QSize(100, 25))
+        self.v3l_fun_but.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_28.addWidget(self.v3l_fun_but)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_28)
+
+        self.label_19 = QLabel(self.tab_2)
+        self.label_19.setObjectName(u"label_19")
+        self.label_19.setFont(font3)
+
+        self.verticalLayout_12.addWidget(self.label_19)
+
         self.horizontalLayout_32 = QHBoxLayout()
         self.horizontalLayout_32.setObjectName(u"horizontalLayout_32")
-        self.help = QCheckBox(self.tab_2)
-        self.help.setObjectName(u"help")
+        self.v3m_fun_list = QComboBox(self.tab_2)
+        self.v3m_fun_list.setObjectName(u"v3m_fun_list")
+        self.v3m_fun_list.setMinimumSize(QSize(200, 25))
+        self.v3m_fun_list.setMaximumSize(QSize(200, 25))
 
-        self.horizontalLayout_32.addWidget(self.help)
+        self.horizontalLayout_32.addWidget(self.v3m_fun_list)
 
-        self.win_dump = QCheckBox(self.tab_2)
-        self.win_dump.setObjectName(u"win_dump")
-        self.win_dump.setEnabled(False)
-        self.win_dump.setMinimumSize(QSize(90, 30))
-        self.win_dump.setMaximumSize(QSize(180, 30))
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.horizontalLayout_32.addWidget(self.win_dump)
+        self.horizontalLayout_32.addItem(self.horizontalSpacer_6)
+
+        self.v3m_fun_but = QPushButton(self.tab_2)
+        self.v3m_fun_but.setObjectName(u"v3m_fun_but")
+        self.v3m_fun_but.setMinimumSize(QSize(100, 25))
+        self.v3m_fun_but.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_32.addWidget(self.v3m_fun_but)
 
 
         self.verticalLayout_12.addLayout(self.horizontalLayout_32)
 
-        self.horizontalLayout_37 = QHBoxLayout()
-        self.horizontalLayout_37.setObjectName(u"horizontalLayout_37")
-        self.label_18 = QLabel(self.tab_2)
-        self.label_18.setObjectName(u"label_18")
-        self.label_18.setMaximumSize(QSize(90, 30))
-        self.label_18.setFont(font)
-        self.label_18.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.verticalSpacer_12 = QSpacerItem(20, 41, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.horizontalLayout_37.addWidget(self.label_18)
-
-        self.win_pid = QLineEdit(self.tab_2)
-        self.win_pid.setObjectName(u"win_pid")
-        self.win_pid.setEnabled(False)
-        self.win_pid.setMinimumSize(QSize(100, 30))
-        self.win_pid.setMaximumSize(QSize(100, 30))
-
-        self.horizontalLayout_37.addWidget(self.win_pid)
-
-
-        self.verticalLayout_12.addLayout(self.horizontalLayout_37)
-
-        self.horizontalLayout_38 = QHBoxLayout()
-        self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
-        self.label_19 = QLabel(self.tab_2)
-        self.label_19.setObjectName(u"label_19")
-        self.label_19.setMaximumSize(QSize(90, 30))
-        self.label_19.setFont(font)
-        self.label_19.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.horizontalLayout_38.addWidget(self.label_19)
-
-        self.win_offset = QLineEdit(self.tab_2)
-        self.win_offset.setObjectName(u"win_offset")
-        self.win_offset.setEnabled(False)
-        self.win_offset.setMinimumSize(QSize(100, 30))
-        self.win_offset.setMaximumSize(QSize(100, 30))
-
-        self.horizontalLayout_38.addWidget(self.win_offset)
-
-
-        self.verticalLayout_12.addLayout(self.horizontalLayout_38)
-
-        self.win_physical = QCheckBox(self.tab_2)
-        self.win_physical.setObjectName(u"win_physical")
-        self.win_physical.setEnabled(False)
-
-        self.verticalLayout_12.addWidget(self.win_physical)
-
-        self.horizontalLayout_39 = QHBoxLayout()
-        self.horizontalLayout_39.setObjectName(u"horizontalLayout_39")
-        self.label_20 = QLabel(self.tab_2)
-        self.label_20.setObjectName(u"label_20")
-        self.label_20.setMinimumSize(QSize(90, 0))
-        self.label_20.setMaximumSize(QSize(90, 16777215))
-        self.label_20.setFont(font)
-        self.label_20.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.label_20.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.horizontalLayout_39.addWidget(self.label_20)
-
-        self.win_filter = QLineEdit(self.tab_2)
-        self.win_filter.setObjectName(u"win_filter")
-        self.win_filter.setEnabled(False)
-        self.win_filter.setMinimumSize(QSize(100, 30))
-        self.win_filter.setMaximumSize(QSize(100, 30))
-
-        self.horizontalLayout_39.addWidget(self.win_filter)
-
-
-        self.verticalLayout_12.addLayout(self.horizontalLayout_39)
-
-        self.horizontalLayout_40 = QHBoxLayout()
-        self.horizontalLayout_40.setObjectName(u"horizontalLayout_40")
-        self.label_21 = QLabel(self.tab_2)
-        self.label_21.setObjectName(u"label_21")
-        self.label_21.setMinimumSize(QSize(100, 0))
-        self.label_21.setMaximumSize(QSize(100, 16777215))
-        self.label_21.setFont(font)
-        self.label_21.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.horizontalLayout_40.addWidget(self.label_21)
-
-        self.registry_key = QLineEdit(self.tab_2)
-        self.registry_key.setObjectName(u"registry_key")
-        self.registry_key.setEnabled(False)
-        self.registry_key.setMinimumSize(QSize(100, 30))
-        self.registry_key.setMaximumSize(QSize(100, 30))
-
-        self.horizontalLayout_40.addWidget(self.registry_key)
-
-
-        self.verticalLayout_12.addLayout(self.horizontalLayout_40)
-
-        self.win_registry_key_recurse = QCheckBox(self.tab_2)
-        self.win_registry_key_recurse.setObjectName(u"win_registry_key_recurse")
-        self.win_registry_key_recurse.setEnabled(False)
-
-        self.verticalLayout_12.addWidget(self.win_registry_key_recurse)
-
-
-        self.horizontalLayout_36.addLayout(self.verticalLayout_12)
-
-
-        self.verticalLayout_14.addLayout(self.horizontalLayout_36)
-
-        self.vol3_win_select_but = QPushButton(self.tab_2)
-        self.vol3_win_select_but.setObjectName(u"vol3_win_select_but")
-        self.vol3_win_select_but.setMinimumSize(QSize(0, 30))
-        self.vol3_win_select_but.setMaximumSize(QSize(16777215, 30))
-
-        self.verticalLayout_14.addWidget(self.vol3_win_select_but)
-
-        self.verticalSpacer_5 = QSpacerItem(20, 213, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_14.addItem(self.verticalSpacer_5)
+        self.verticalLayout_12.addItem(self.verticalSpacer_12)
 
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QWidget()
@@ -1180,24 +1290,7 @@ class Ui_zhu_windows(object):
 
         self.tabWidget.addTab(self.tab_3, "")
 
-        self.gridLayout.addWidget(self.tabWidget, 2, 0, 1, 1)
-
-        self.horizontalLayout_31 = QHBoxLayout()
-        self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")
-        self.vol_input = QLineEdit(self.vol_tab)
-        self.vol_input.setObjectName(u"vol_input")
-
-        self.horizontalLayout_31.addWidget(self.vol_input)
-
-        self.vol3_start_but = QPushButton(self.vol_tab)
-        self.vol3_start_but.setObjectName(u"vol3_start_but")
-        self.vol3_start_but.setMinimumSize(QSize(100, 25))
-        self.vol3_start_but.setMaximumSize(QSize(100, 25))
-
-        self.horizontalLayout_31.addWidget(self.vol3_start_but)
-
-
-        self.gridLayout.addLayout(self.horizontalLayout_31, 1, 0, 1, 1)
+        self.verticalLayout_23.addWidget(self.tabWidget)
 
         self.dir_list.addTab(self.vol_tab, "")
         self.data_tab = QWidget()
@@ -1350,15 +1443,8 @@ class Ui_zhu_windows(object):
         self.dir_list.addTab(self.data_tab, "")
         self.misc_tab = QWidget()
         self.misc_tab.setObjectName(u"misc_tab")
-        self.verticalLayout_5 = QVBoxLayout(self.misc_tab)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4 = QVBoxLayout(self.misc_tab)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.horizontalLayout_43 = QHBoxLayout()
-        self.horizontalLayout_43.setObjectName(u"horizontalLayout_43")
-
-        self.verticalLayout_4.addLayout(self.horizontalLayout_43)
-
         self.label_5 = QLabel(self.misc_tab)
         self.label_5.setObjectName(u"label_5")
 
@@ -1368,8 +1454,8 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_44.setObjectName(u"horizontalLayout_44")
         self.plist_but = QPushButton(self.misc_tab)
         self.plist_but.setObjectName(u"plist_but")
-        self.plist_but.setMinimumSize(QSize(0, 25))
-        self.plist_but.setMaximumSize(QSize(16777215, 25))
+        self.plist_but.setMinimumSize(QSize(100, 25))
+        self.plist_but.setMaximumSize(QSize(100, 25))
 
         self.horizontalLayout_44.addWidget(self.plist_but)
 
@@ -1410,8 +1496,8 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_42.setObjectName(u"horizontalLayout_42")
         self.pushButton_2 = QPushButton(self.misc_tab)
         self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setMinimumSize(QSize(0, 25))
-        self.pushButton_2.setMaximumSize(QSize(16777215, 25))
+        self.pushButton_2.setMinimumSize(QSize(100, 25))
+        self.pushButton_2.setMaximumSize(QSize(100, 25))
 
         self.horizontalLayout_42.addWidget(self.pushButton_2)
 
@@ -1428,30 +1514,93 @@ class Ui_zhu_windows(object):
 
         self.horizontalLayout_46 = QHBoxLayout()
         self.horizontalLayout_46.setObjectName(u"horizontalLayout_46")
-        self.horizontalSpacer_83 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.label_20 = QLabel(self.misc_tab)
+        self.label_20.setObjectName(u"label_20")
+        self.label_20.setMinimumSize(QSize(50, 25))
+        self.label_20.setMaximumSize(QSize(70, 25))
 
-        self.horizontalLayout_46.addItem(self.horizontalSpacer_83)
+        self.horizontalLayout_46.addWidget(self.label_20)
 
-        self.horizontalSpacer_84 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.hook_name = QLineEdit(self.misc_tab)
+        self.hook_name.setObjectName(u"hook_name")
+        self.hook_name.setMinimumSize(QSize(80, 0))
+        self.hook_name.setMaximumSize(QSize(80, 16777215))
 
-        self.horizontalLayout_46.addItem(self.horizontalSpacer_84)
+        self.horizontalLayout_46.addWidget(self.hook_name)
 
-        self.horizontalSpacer_85 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.hook_fun = QComboBox(self.misc_tab)
+        self.hook_fun.addItem("")
+        self.hook_fun.addItem("")
+        self.hook_fun.addItem("")
+        self.hook_fun.addItem("")
+        self.hook_fun.setObjectName(u"hook_fun")
 
-        self.horizontalLayout_46.addItem(self.horizontalSpacer_85)
+        self.horizontalLayout_46.addWidget(self.hook_fun)
+
+        self.hook_but = QPushButton(self.misc_tab)
+        self.hook_but.setObjectName(u"hook_but")
+        self.hook_but.setMinimumSize(QSize(80, 25))
+        self.hook_but.setMaximumSize(QSize(80, 25))
+
+        self.horizontalLayout_46.addWidget(self.hook_but)
 
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_46)
+
+        self.label_21 = QLabel(self.misc_tab)
+        self.label_21.setObjectName(u"label_21")
+
+        self.verticalLayout_4.addWidget(self.label_21)
+
+        self.horizontalLayout_24 = QHBoxLayout()
+        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
+        self.pyc_but = QPushButton(self.misc_tab)
+        self.pyc_but.setObjectName(u"pyc_but")
+        self.pyc_but.setMinimumSize(QSize(100, 25))
+        self.pyc_but.setMaximumSize(QSize(100, 25))
+        font4 = QFont()
+        font4.setFamilies([u"\u6977\u4f53"])
+        font4.setPointSize(10)
+        font4.setBold(False)
+        self.pyc_but.setFont(font4)
+
+        self.horizontalLayout_24.addWidget(self.pyc_but)
+
+        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_24.addItem(self.horizontalSpacer_9)
+
+        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_24.addItem(self.horizontalSpacer_11)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_24)
 
         self.label_8 = QLabel(self.misc_tab)
         self.label_8.setObjectName(u"label_8")
 
         self.verticalLayout_4.addWidget(self.label_8)
 
+        self.horizontalLayout_36 = QHBoxLayout()
+        self.horizontalLayout_36.setObjectName(u"horizontalLayout_36")
         self.facefusion_but = QPushButton(self.misc_tab)
         self.facefusion_but.setObjectName(u"facefusion_but")
+        self.facefusion_but.setMinimumSize(QSize(100, 25))
+        self.facefusion_but.setMaximumSize(QSize(100, 25))
 
-        self.verticalLayout_4.addWidget(self.facefusion_but)
+        self.horizontalLayout_36.addWidget(self.facefusion_but)
+
+        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_36.addItem(self.horizontalSpacer_13)
+
+        self.horizontalSpacer_24 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_36.addItem(self.horizontalSpacer_24)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_36)
 
         self.label_7 = QLabel(self.misc_tab)
         self.label_7.setObjectName(u"label_7")
@@ -1464,11 +1613,11 @@ class Ui_zhu_windows(object):
         self.mod_but.setObjectName(u"mod_but")
         self.mod_but.setMinimumSize(QSize(100, 25))
         self.mod_but.setMaximumSize(QSize(100, 25))
-        font3 = QFont()
-        font3.setFamilies([u"\u6977\u4f53"])
-        font3.setPointSize(10)
-        font3.setBold(True)
-        self.mod_but.setFont(font3)
+        font5 = QFont()
+        font5.setFamilies([u"\u6977\u4f53"])
+        font5.setPointSize(10)
+        font5.setBold(True)
+        self.mod_but.setFont(font5)
 
         self.horizontalLayout_29.addWidget(self.mod_but)
 
@@ -1476,21 +1625,21 @@ class Ui_zhu_windows(object):
         self.time_zhuan.setObjectName(u"time_zhuan")
         self.time_zhuan.setMinimumSize(QSize(100, 25))
         self.time_zhuan.setMaximumSize(QSize(100, 25))
-        self.time_zhuan.setFont(font3)
+        self.time_zhuan.setFont(font5)
 
         self.horizontalLayout_29.addWidget(self.time_zhuan)
 
-        self.pyc_but = QPushButton(self.misc_tab)
-        self.pyc_but.setObjectName(u"pyc_but")
-        self.pyc_but.setMinimumSize(QSize(100, 25))
-        self.pyc_but.setMaximumSize(QSize(100, 25))
-        self.pyc_but.setFont(font3)
+        self.rsa_public = QPushButton(self.misc_tab)
+        self.rsa_public.setObjectName(u"rsa_public")
+        self.rsa_public.setMinimumSize(QSize(100, 25))
+        self.rsa_public.setMaximumSize(QSize(100, 25))
+        self.rsa_public.setFont(font5)
 
-        self.horizontalLayout_29.addWidget(self.pyc_but)
+        self.horizontalLayout_29.addWidget(self.rsa_public)
 
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_25 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.horizontalLayout_29.addItem(self.horizontalSpacer_4)
+        self.horizontalLayout_29.addItem(self.horizontalSpacer_25)
 
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_29)
@@ -1501,17 +1650,13 @@ class Ui_zhu_windows(object):
         self.ceshi111_but.setObjectName(u"ceshi111_but")
         self.ceshi111_but.setMinimumSize(QSize(100, 25))
         self.ceshi111_but.setMaximumSize(QSize(100, 25))
-        self.ceshi111_but.setFont(font3)
+        self.ceshi111_but.setFont(font5)
 
         self.horizontalLayout_41.addWidget(self.ceshi111_but)
 
-        self.rsa_public = QPushButton(self.misc_tab)
-        self.rsa_public.setObjectName(u"rsa_public")
-        self.rsa_public.setMinimumSize(QSize(100, 25))
-        self.rsa_public.setMaximumSize(QSize(100, 25))
-        self.rsa_public.setFont(font3)
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.horizontalLayout_41.addWidget(self.rsa_public)
+        self.horizontalLayout_41.addItem(self.horizontalSpacer_4)
 
         self.horizontalSpacer_70 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -1520,12 +1665,9 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_41)
 
-        self.verticalSpacer_6 = QSpacerItem(17, 78, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_6 = QSpacerItem(17, 203, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_4.addItem(self.verticalSpacer_6)
-
-
-        self.verticalLayout_5.addLayout(self.verticalLayout_4)
 
         self.dir_list.addTab(self.misc_tab, "")
 
@@ -1537,9 +1679,9 @@ class Ui_zhu_windows(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label = QLabel(zhu_windows)
         self.label.setObjectName(u"label")
-        font4 = QFont()
-        font4.setPointSize(12)
-        self.label.setFont(font4)
+        font6 = QFont()
+        font6.setPointSize(12)
+        self.label.setFont(font6)
         self.label.setWordWrap(True)
 
         self.horizontalLayout.addWidget(self.label)
@@ -1550,16 +1692,16 @@ class Ui_zhu_windows(object):
 
         self.silu_but = QPushButton(zhu_windows)
         self.silu_but.setObjectName(u"silu_but")
-        font5 = QFont()
-        font5.setPointSize(12)
-        font5.setBold(True)
-        self.silu_but.setFont(font5)
+        font7 = QFont()
+        font7.setPointSize(12)
+        font7.setBold(True)
+        self.silu_but.setFont(font7)
 
         self.horizontalLayout.addWidget(self.silu_but)
 
         self.clear_but = QPushButton(zhu_windows)
         self.clear_but.setObjectName(u"clear_but")
-        self.clear_but.setFont(font4)
+        self.clear_but.setFont(font6)
 
         self.horizontalLayout.addWidget(self.clear_but)
 
@@ -1568,12 +1710,12 @@ class Ui_zhu_windows(object):
 
         self.print_echo = QTextEdit(zhu_windows)
         self.print_echo.setObjectName(u"print_echo")
-        font6 = QFont()
-        font6.setFamilies([u"Microsoft YaHei UI"])
-        font6.setPointSize(12)
-        font6.setBold(False)
-        font6.setItalic(False)
-        self.print_echo.setFont(font6)
+        font8 = QFont()
+        font8.setFamilies([u"Microsoft YaHei UI"])
+        font8.setPointSize(12)
+        font8.setBold(False)
+        font8.setItalic(False)
+        self.print_echo.setFont(font8)
         self.print_echo.setStyleSheet(u"font: 12pt \"Microsoft YaHei UI\";")
         self.print_echo.setReadOnly(True)
 
@@ -1589,7 +1731,7 @@ class Ui_zhu_windows(object):
 
         self.retranslateUi(zhu_windows)
 
-        self.dir_list.setCurrentIndex(2)
+        self.dir_list.setCurrentIndex(4)
         self.tabWidget.setCurrentIndex(0)
         self.show_guanxi.setDefault(False)
 
@@ -1632,36 +1774,39 @@ class Ui_zhu_windows(object):
 "</style></head><body style=\" font-family:'Microsoft YaHei UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><br /></p></body></html>", None))
         self.html_but.setText(QCoreApplication.translate("zhu_windows", u"HTML\u89e3\u7801", None))
-        self.url_but.setText(QCoreApplication.translate("zhu_windows", u"URL\u89e3\u7801", None))
+        self.base_but.setText(QCoreApplication.translate("zhu_windows", u"\u5168base\u8f6c\u7801", None))
         self.fuck_but.setText(QCoreApplication.translate("zhu_windows", u"brainfuck\u89e3\u7801", None))
+        self.url_but.setText(QCoreApplication.translate("zhu_windows", u"URL\u89e3\u7801", None))
+        self.kaisa_but.setText(QCoreApplication.translate("zhu_windows", u"\u51ef\u6492\u5bc6\u7801", None))
         self.ook_but.setText(QCoreApplication.translate("zhu_windows", u"OOK\u89e3\u7801", None))
         self.hex_str_but.setText(QCoreApplication.translate("zhu_windows", u"hex\u89e3\u7801", None))
-        self.base_but.setText(QCoreApplication.translate("zhu_windows", u"\u5168base\u8f6c\u7801", None))
         self.zhalan_but.setText(QCoreApplication.translate("zhu_windows", u"\u6805\u680f\u5bc6\u7801", None))
-        self.kaisa_but.setText(QCoreApplication.translate("zhu_windows", u"\u51ef\u6492\u5bc6\u7801", None))
+        self.hex_str.setText(QCoreApplication.translate("zhu_windows", u"hex\u89e3\u7801\u5e26\u504f\u79fb", None))
         self.hexin_but.setText(QCoreApplication.translate("zhu_windows", u"\u6838\u5fc3\u4ef7\u503c\u89c2\u89e3\u7801", None))
-        self.hex_str.setText(QCoreApplication.translate("zhu_windows", u"16\u8fdb\u5236\u8f6c\u5b57\u7b26", None))
         self.label_11.setText(QCoreApplication.translate("zhu_windows", u"\u56fe\u7247\u5904\u7406", None))
         self.exif_but.setText(QCoreApplication.translate("zhu_windows", u"\u56fe\u7247exif\u4fe1\u606f", None))
-        self.mangshuiyin_but_2.setText(QCoreApplication.translate("zhu_windows", u"\u76f2\u6c34\u5370", None))
-#if QT_CONFIG(tooltip)
-        self.bin_image_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u4e8c\u8fdb\u5236\u6587\u672c\u6587\u4ef6,\u590d\u539f\u4e3a\u56fe\u7247,\u81ea\u52a8\u8ba1\u7b97\u5bbd\u9ad8", None))
-#endif // QT_CONFIG(tooltip)
-        self.bin_image_but.setText(QCoreApplication.translate("zhu_windows", u"\u4e8c\u8fdb\u5236\u8f6c\u56fe\u7247", None))
-        self.rgb2img_but.setText(QCoreApplication.translate("zhu_windows", u"RGB\u8f6c\u56fe\u7247", None))
-        self.heibai_but.setText(QCoreApplication.translate("zhu_windows", u"\u9ed1\u767d\u56fe\u8f6c\u56fe\u7247", None))
         self.tu_re.setText(QCoreApplication.translate("zhu_windows", u"\u56fe\u7247\u9006\u5e8f", None))
 #if QT_CONFIG(tooltip)
         self.jpg_high_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u6587\u4ef6,\u81ea\u52a8\u8ba1\u7b97crc\u5e76\u663e\u793a\u56fe\u7247", None))
 #endif // QT_CONFIG(tooltip)
-        self.jpg_high_but.setText(QCoreApplication.translate("zhu_windows", u"jpg\u5bbd\u9ad8\u4fee\u6b63", None))
+        self.jpg_high_but.setText(QCoreApplication.translate("zhu_windows", u"JPG\u5bbd\u9ad8\u4fee\u6b63", None))
 #if QT_CONFIG(tooltip)
         self.png_high_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u6587\u4ef6,\u81ea\u52a8\u8ba1\u7b97crc\u5e76\u663e\u793a\u56fe\u7247", None))
 #endif // QT_CONFIG(tooltip)
-        self.png_high_but.setText(QCoreApplication.translate("zhu_windows", u"png\u9ad8\u5bbd\u7206\u7834", None))
+        self.png_high_but.setText(QCoreApplication.translate("zhu_windows", u"PNG\u9ad8\u5bbd\u7206\u7834", None))
         self.gif_fenli_but.setText(QCoreApplication.translate("zhu_windows", u"GIF\u5206\u79bb", None))
+#if QT_CONFIG(tooltip)
+        self.bin_image_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u4e8c\u8fdb\u5236\u6587\u672c\u6587\u4ef6,\u590d\u539f\u4e3a\u56fe\u7247,\u81ea\u52a8\u8ba1\u7b97\u5bbd\u9ad8", None))
+#endif // QT_CONFIG(tooltip)
+        self.bin_image_but.setText(QCoreApplication.translate("zhu_windows", u"\u4e8c\u8fdb\u5236\u8f6c\u56fe\u7247", None))
+        self.heibai_but.setText(QCoreApplication.translate("zhu_windows", u"\u9ed1\u767d\u56fe\u8f6c\u56fe\u7247", None))
+        self.jpg_block_but.setText(QCoreApplication.translate("zhu_windows", u"JPG\u5757\u9690\u85cf", None))
+        self.hide_str_but.setText(QCoreApplication.translate("zhu_windows", u"PNG\u89e3\u7801hide", None))
         self.gif_hebing.setText(QCoreApplication.translate("zhu_windows", u"GIF\u5408\u5e76", None))
-        self.hide_str_but.setText(QCoreApplication.translate("zhu_windows", u"hide\u89e3\u6790", None))
+        self.rgb2img_but.setText(QCoreApplication.translate("zhu_windows", u"RGB\u8f6c\u56fe\u7247", None))
+        self.mangshuiyin_but.setText(QCoreApplication.translate("zhu_windows", u"\u529f\u80fd\u672a\u5b9e\u73b0", None))
+        self.png_idat_but.setText(QCoreApplication.translate("zhu_windows", u"PNG\u5206\u6790IDAT", None))
+        self.coordinate_img.setText(QCoreApplication.translate("zhu_windows", u"\u5750\u6807\u8f6c\u56fe\u7247", None))
         self.label_12.setText(QCoreApplication.translate("zhu_windows", u"\u538b\u7f29\u5305\u5904\u7406", None))
 #if QT_CONFIG(tooltip)
         self.single_crc_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u6587\u4ef6\u5939,\u5bf9zip\u76844\u5b57\u8282\u6587\u4ef6\u8fdb\u884cCRC\u7206\u7834", None))
@@ -1715,161 +1860,134 @@ class Ui_zhu_windows(object):
         self.set_vol.setText(QCoreApplication.translate("zhu_windows", u"\u9009\u62e9vol\u76ee\u5f55", None))
         self.vol3_but.setText(QCoreApplication.translate("zhu_windows", u"vol3\u8bf4\u660e\u4e66", None))
         self.vol2_but.setText(QCoreApplication.translate("zhu_windows", u"vol2\u8bf4\u660e\u4e66", None))
-        self.label_16.setText(QCoreApplication.translate("zhu_windows", u"\u57fa\u672c\u4fe1\u606f\u67e5\u8be2", None))
+        self.vol3_start_but.setText(QCoreApplication.translate("zhu_windows", u"\u624b\u52a8\u6267\u884c", None))
+        self.label_16.setText(QCoreApplication.translate("zhu_windows", u"windows\u5e38\u7528\u67e5\u8be2", None))
+        self.help.setText(QCoreApplication.translate("zhu_windows", u"\u547d\u4ee4\u5e2e\u52a9", None))
 #if QT_CONFIG(tooltip)
-        self.v3info_but.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.info</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u663e\u793a\u5185\u5b58\u955c\u50cf\u7684\u57fa\u672c\u7cfb\u7edf\u4fe1\u606f\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple"
+        self.v3w_info.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.info</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u663e\u793a\u5185\u5b58\u955c\u50cf\u7684\u57fa\u672c\u7cfb\u7edf\u4fe1\u606f\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple"
                         "-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/>1.</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u63d0\u4f9b\u64cd\u4f5c\u7cfb\u7edf\u7248\u672c\u3001\u6784\u5efa\u53f7\u3001\u7cfb\u7edf\u65f6\u95f4\u7b49\u57fa\u672c\u4fe1\u606f<br/>2.\u663e\u793a\u5185\u5b58\u5e03\u5c40\u548c\u5173\u952e\u5730\u5740<br/>3.\u9a8c\u8bc1\u5185\u5b58\u955c\u50cf\u662f\u5426\u88ab\u6b63\u786e\u89e3\u6790</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.v3info_but.setText(QCoreApplication.translate("zhu_windows", u"\u57fa\u672c\u4fe1\u606f", None))
+        self.v3w_info.setText(QCoreApplication.translate("zhu_windows", u"\u57fa\u672c\u4fe1\u606f", None))
 #if QT_CONFIG(tooltip)
-        self.hashdump_2.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.hashdump</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u63d0\u53d6\u672c\u5730\u8d26\u6237\u7684\u5bc6\u7801\u54c8\u5e0c\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','"
+        self.v3w_hashdump.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.hashdump</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u63d0\u53d6\u672c\u5730\u8d26\u6237\u7684\u5bc6\u7801\u54c8\u5e0c\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','"
                         "system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a<br/>1.\u83b7\u53d6SAM\u6570\u636e\u5e93\u4e2d\u7684\u7528\u6237\u5bc6\u7801\u54c8\u5e0c(NTLM)<br/>2.\u53ef\u7528\u4e8e\u79bb\u7ebf\u5bc6\u7801\u7834\u89e3<br/>3.\u9700\u8981\u7cfb\u7edf\u6743\u9650\u624d\u80fd\u83b7\u53d6\u8fd9\u4e9b\u54c8\u5e0c</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.hashdump_2.setText(QCoreApplication.translate("zhu_windows", u"\u5bc6\u7801hash", None))
+        self.v3w_hashdump.setText(QCoreApplication.translate("zhu_windows", u"\u5bc6\u7801hash", None))
 #if QT_CONFIG(tooltip)
-        self.netscan_2.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.netscan</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u626b\u63cf\u5185\u5b58\u4e2d\u7684\u7f51\u7edc\u8fde\u63a5\u548c\u5957\u63a5\u5b57\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui"
+        self.v3w_netstat.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.netscan</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u626b\u63cf\u5185\u5b58\u4e2d\u7684\u7f51\u7edc\u8fde\u63a5\u548c\u5957\u63a5\u5b57\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui"
                         "','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/>1.</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u663e\u793aTCP/UDP\u8fde\u63a5\u5217\u8868<br/>2.\u5305\u62ec\u672c\u5730/\u8fdc\u7a0bIP\u548c\u7aef\u53e3<br/>3.\u8bc6\u522b\u5f02\u5e38\u7f51\u7edc\u8fde\u63a5(\u5982C2\u901a\u4fe1)</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.netscan_2.setText(QCoreApplication.translate("zhu_windows", u"\u7f51\u7edc\u4fe1\u606f", None))
+        self.v3w_netstat.setText(QCoreApplication.translate("zhu_windows", u"\u7f51\u7edc\u4fe1\u606f", None))
 #if QT_CONFIG(tooltip)
-        self.consoles.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><h4 style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:'Courier New'; font-size:medium; font-weight:700; color:#404040;\">windows.consoles.Consoles</span></h4><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a\u63d0\u53d6\u5185\u5b58\u4e2d\u7684\u547d\u4ee4\u884c\u63a7\u5236\u53f0\uff08cmd.exe\uff09\u5386\u53f2\u8bb0\u5f55<br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFo"
+        self.v3w_cmdscan.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><h4 style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:'Courier New'; font-size:medium; font-weight:700; color:#404040;\">windows.consoles.Consoles</span></h4><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a\u63d0\u53d6\u5185\u5b58\u4e2d\u7684\u547d\u4ee4\u884c\u63a7\u5236\u53f0\uff08cmd.exe\uff09\u5386\u53f2\u8bb0\u5f55<br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFo"
                         "nt','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u7528\u6cd5</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a</span><span style=\" font-family:'Courier New'; color:#404040;\">vol.py -f memory.dump windows.consoles</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\"><br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" fo"
                         "nt-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u6062\u590d\u653b\u51fb\u8005\u6267\u884c\u7684\u547d\u4ee4\u5386\u53f2\uff0c\u663e\u793a\u8f93\u5165/\u8f93\u51fa\u7f13\u51b2\u533a\u5185\u5bb9\uff0c\u5305\u542b\u8fdb\u7a0bID\u548c\u65f6\u95f4\u6233</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\"><br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFon"
                         "t','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u53d6\u8bc1\u4ef7\u503c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a\u91cd\u73b0\u653b\u51fb\u8005\u64cd\u4f5c\u6d41\u7a0b\uff0c\u83b7\u53d6\u5173\u952e\u547d\u4ee4\u8bc1\u636e</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.consoles.setText(QCoreApplication.translate("zhu_windows", u"cmd\u5386\u53f2\u547d\u4ee4", None))
+        self.v3w_cmdscan.setText(QCoreApplication.translate("zhu_windows", u"cmd\u5386\u53f2\u547d\u4ee4", None))
 #if QT_CONFIG(tooltip)
-        self.amcache_2.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.amcache</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u89e3\u6790Windows AmCache.hve\u4e2d\u7684\u7a0b\u5e8f\u6267\u884c\u5386\u53f2\u8bb0\u5f55\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','sy"
+        self.v3w_amcache.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.amcache</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u89e3\u6790Windows AmCache.hve\u4e2d\u7684\u7a0b\u5e8f\u6267\u884c\u5386\u53f2\u8bb0\u5f55\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','sy"
                         "stem-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/>1.</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u663e\u793a\u7cfb\u7edf\u4e0a\u66fe\u7ecf\u6267\u884c\u8fc7\u7684\u7a0b\u5e8f\u4fe1\u606f<br/>2.\u5305\u542b\u6587\u4ef6\u8def\u5f84\u3001\u521b\u5efa\u65f6\u95f4\u3001\u4fee\u6539\u65f6\u95f4\u7b49<br/>3.\u5bf9\u8c03\u67e5\u6076\u610f\u8f6f\u4ef6\u6267\u884c\u5386\u53f2\u7279\u522b\u6709\u7528</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.amcache_2.setText(QCoreApplication.translate("zhu_windows", u"\u7a0b\u5e8f\u6267\u884c\u8bb0\u5f55", None))
+        self.v3w_amcache.setText(QCoreApplication.translate("zhu_windows", u"\u7a0b\u5e8f\u6267\u884c\u8bb0\u5f55", None))
 #if QT_CONFIG(tooltip)
-        self.shimcache_2.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.shimcache</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u63d0\u53d6\u5e94\u7528\u7a0b\u5e8f\u517c\u5bb9\u6027\u7f13\u5b58(ShimCache)\u6570\u636e\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','sy"
+        self.v3w_shimcache.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.shimcache</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u63d0\u53d6\u5e94\u7528\u7a0b\u5e8f\u517c\u5bb9\u6027\u7f13\u5b58(ShimCache)\u6570\u636e\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','sy"
                         "stem-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/>1.</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u663e\u793a\u7cfb\u7edf\u4e0a\u66fe\u7ecf\u8fd0\u884c\u8fc7\u7684\u53ef\u6267\u884c\u6587\u4ef6\u5217\u8868<br/>2.\u5373\u4f7f\u6587\u4ef6\u5df2\u88ab\u5220\u9664\u4e5f\u80fd\u63d0\u4f9b\u5386\u53f2\u8bb0\u5f55<br/>3.\u53d6\u8bc1\u8c03\u67e5\u4e2d\u7528\u4e8e\u786e\u5b9a\u53ef\u7591\u6587\u4ef6\u6267\u884c</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.shimcache_2.setText(QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u6267\u884c\u8bb0\u5f55", None))
+        self.v3w_shimcache.setText(QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u6267\u884c\u8bb0\u5f55", None))
 #if QT_CONFIG(tooltip)
-        self.scheduled_tasks_2.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.scheduled_tasks</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u679a\u4e3e\u5185\u5b58\u4e2d\u7684\u8ba1\u5212\u4efb\u52a1\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system"
+        self.v3w_scheduled_tasks.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.scheduled_tasks</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u679a\u4e3e\u5185\u5b58\u4e2d\u7684\u8ba1\u5212\u4efb\u52a1\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system"
                         "','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">1.\u663e\u793a\u5df2\u6ce8\u518c\u7684\u8ba1\u5212\u4efb\u52a1<br/>2.\u8bc6\u522b\u6076\u610f\u6301\u4e45\u5316\u673a\u5236<br/>3.\u5305\u542b\u4efb\u52a1\u540d\u79f0\u3001\u89e6\u53d1\u5668\u3001\u64cd\u4f5c\u7a0b\u5e8f\u7b49\u4fe1\u606f</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.scheduled_tasks_2.setText(QCoreApplication.translate("zhu_windows", u"\u8ba1\u5212\u4efb\u52a1", None))
+        self.v3w_scheduled_tasks.setText(QCoreApplication.translate("zhu_windows", u"\u8ba1\u5212\u4efb\u52a1", None))
 #if QT_CONFIG(tooltip)
-        self.psxview.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.psxview</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u901a\u8fc7\u591a\u79cd\u65b9\u6cd5\u679a\u4e3e\u8fdb\u7a0b\uff0c\u6bd4\u8f83\u7ed3\u679c\u4ee5\u53d1\u73b0\u9690\u85cf\u8fdb\u7a0b\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" fon"
+        self.v3w_psxview.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.psxview</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u901a\u8fc7\u591a\u79cd\u65b9\u6cd5\u679a\u4e3e\u8fdb\u7a0b\uff0c\u6bd4\u8f83\u7ed3\u679c\u4ee5\u53d1\u73b0\u9690\u85cf\u8fdb\u7a0b\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" fon"
                         "t-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/>1.</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u4f7f\u75285\u79cd\u4e0d\u540c\u65b9\u6cd5\u4ea4\u53c9\u9a8c\u8bc1\u8fdb\u7a0b\u5217\u8868<br/>2.\u9ad8\u4eae\u663e\u793a\u4e0d\u4e00\u81f4\u7684\u6761\u76ee(\u53ef\u80fd\u88ab\u9690\u85cf)<br/>3.\u6700\u5168\u9762\u7684\u8fdb\u7a0b\u68c0\u6d4b\u65b9\u6cd5\u4e4b\u4e00</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.psxview.setText(QCoreApplication.translate("zhu_windows", u"\u5168\u8fdb\u7a0b\u626b\u63cf", None))
+        self.v3w_psxview.setText(QCoreApplication.translate("zhu_windows", u"\u5168\u8fdb\u7a0b\u626b\u63cf", None))
 #if QT_CONFIG(tooltip)
-        self.timeliner_2.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.timeliner</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u521b\u5efa\u7cfb\u7edf\u6d3b\u52a8\u7684\u65f6\u95f4\u7ebf\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','Bli"
+        self.v3w_timeliner.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.timeliner</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u521b\u5efa\u7cfb\u7edf\u6d3b\u52a8\u7684\u65f6\u95f4\u7ebf\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','Bli"
                         "nkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u6574\u5408\u591a\u4e2a\u6765\u6e90\u7684\u65f6\u95f4\u6233\u6570\u636e\uff0c\u751f\u6210\u7cfb\u7edf\u6d3b\u52a8\u7684\u7efc\u5408\u65f6\u95f4\u7ebf\uff0c\u5bf9\u4e8b\u4ef6\u91cd\u5efa\u548c\u8c03\u67e5\u975e\u5e38\u6709\u7528</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.timeliner_2.setText(QCoreApplication.translate("zhu_windows", u"\u68b3\u7406\u65f6\u95f4\u7ebf", None))
+        self.v3w_timeliner.setText(QCoreApplication.translate("zhu_windows", u"\u68b3\u7406\u65f6\u95f4\u7ebf", None))
 #if QT_CONFIG(tooltip)
-        self.filescan_2.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.filescan</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a<br/>\u626b\u63cf\u5185\u5b58\u4e2d\u7684\u6587\u4ef6\u5bf9\u8c61\uff0c\u5217\u51fa\u6240\u6709\u5728\u5185\u5b58\u4e2d\u7f13\u5b58\u6216\u6253\u5f00\u7684\u6587\u4ef6\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548"
-                        "\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">1.\u663e\u793a\u6587\u4ef6\u540d\u3001\u6587\u4ef6\u5bf9\u8c61\u5730\u5740\u3001\u5927\u5c0f\u3001\u8bbf\u95ee\u65f6\u95f4\u7b49\u4fe1\u606f<br/>2.\u53ef\u7528\u4e8e\u53d1\u73b0\u6076\u610f\u6587\u4ef6\u3001\u9690\u85cf\u6587\u4ef6\u6216\u5f02\u5e38\u6587\u4ef6\u8bbf\u95ee<br/>3.\u80fd\u6062\u590d\u5df2\u5220\u9664\u4f46\u4ecd\u5b58\u5728\u4e8e\u5185\u5b58\u4e2d\u7684\u6587\u4ef6\u5f15\u7528</span></p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
-        self.filescan_2.setText(QCoreApplication.translate("zhu_windows", u"\u5168\u90e8\u6587\u4ef6\u626b\u63cf", None))
-#if QT_CONFIG(tooltip)
-        self.certificates.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.registry.certificates</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u63d0\u53d6\u5185\u5b58\u4e2d\u7684\u8bc1\u4e66\u4fe1\u606f\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-"
+        self.v3w_certificates.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p>windows.registry.certificates</p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\uff1a\u63d0\u53d6\u5185\u5b58\u4e2d\u7684\u8bc1\u4e66\u4fe1\u606f\u3002</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u6548\u679c</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-"
                         "system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a<br/>1.</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">\u663e\u793a\u7cfb\u7edf\u5b58\u50a8\u7684\u8bc1\u4e66<br/>2.\u8bc6\u522b\u6076\u610f\u6216\u53ef\u7591\u8bc1\u4e66</span></p><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040; background-color:#ffffff;\">3.\u5305\u542b\u8bc1\u4e66\u6307\u7eb9\u3001\u9881\u53d1\u8005\u7b49\u4fe1\u606f</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.certificates.setText(QCoreApplication.translate("zhu_windows", u"cer\u8bc1\u4e66\u626b\u63cf", None))
+        self.v3w_certificates.setText(QCoreApplication.translate("zhu_windows", u"cer\u8bc1\u4e66\u626b\u63cf", None))
+        self.v3w_file_but.setText(QCoreApplication.translate("zhu_windows", u"\u5f00\u542f\u6587\u4ef6\u64cd\u4f5c", None))
+        self.v3w_pid.setText(QCoreApplication.translate("zhu_windows", u"PID", None))
+        self.v3w_physaddr.setText(QCoreApplication.translate("zhu_windows", u"\u7269\u7406\u5730\u5740", None))
+        self.v3w_filter.setText(QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u540d", None))
+        self.v3w_str.setText(QCoreApplication.translate("zhu_windows", u"\u683c\u5f0f: \\.docx", None))
 #if QT_CONFIG(tooltip)
-        self.strings.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><h4 style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" font-family:'Courier New'; font-size:medium; font-weight:700; color:#404040;\">windows.strings.Strings</span></h4><p><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u529f\u80fd</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a\u63d0\u53d6\u5185\u5b58\u4e2d\u7684ASCII/Unicode\u5b57\u7b26\u4e32<br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cant"
-                        "arell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u7528\u6cd5</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a</span><span style=\" font-family:'Courier New'; color:#404040;\">vol.py -f memory.dump windows.strings --pid &lt;PID&gt; --offset 0x100000</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\"><br/></span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; font-weight:700; color:#404040;\">\u7b56\u7565</span><span style=\" font-family:'Deep"
-                        "Seek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\uff1a\u7ed3\u5408</span><span style=\" font-family:'Courier New'; color:#404040;\">grep</span><span style=\" font-family:'DeepSeek-CJK-patch','Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Noto Sans','Ubuntu','Cantarell','Helvetica Neue','Oxygen','Open Sans','sans-serif'; color:#404040;\">\u641c\u7d22C2\u57df\u540d\u6216API\u5bc6\u94a5</span></p></body></html>", None))
+        self.v3w_filescan.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p><span style=\" font-size:12pt;\">windows.filescan</span></p><p><span style=\" font-size:12pt;\">\u529f\u80fd\uff1a\u626b\u63cf\u5185\u5b58\u4e2d\u7684\u6587\u4ef6\u5bf9\u8c61\uff0c\u5217\u51fa\u6240\u6709\u5728\u5185\u5b58\u4e2d\u7f13\u5b58\u6216\u6253\u5f00\u7684\u6587\u4ef6\u3002</span></p><p><br/></p><p><span style=\" font-size:12pt;\">\u53c2\u6570\u8bf4\u660e\uff1a</span></p><p><span style=\" font-size:12pt;\">--name-filter &lt;pattern&gt;	\u6309\u6587\u4ef6\u540d\u8fc7\u6ee4\uff08\u5982 *.docx\uff09</span></p><p><span style=\" font-size:12pt;\">--physaddr &lt;\u5730\u5740&gt;	\u76f4\u63a5\u8f6c\u50a8\u6307\u5b9a\u7269\u7406\u5730\u5740\u7684\u6587\u4ef6</span></p><p><span style=\" font-size:12pt;\">--output-dir &lt;dir&gt;	\u5c06\u6587\u4ef6\u5bfc\u51fa\u5230\u6307\u5b9a\u76ee\u5f55</span></p><p><br/></p><p><span style=\" font-size:12pt;\">\u6548\u679c\uff1a</span></p><p><span style=\" font-size:12pt;\">1.\u663e\u793a\u6587\u4ef6\u540d\u3001\u6587\u4ef6\u5bf9\u8c61\u5730\u5740\u3001\u5927"
+                        "\u5c0f\u3001\u8bbf\u95ee\u65f6\u95f4\u7b49\u4fe1\u606f</span></p><p><span style=\" font-size:12pt;\">2.\u53ef\u7528\u4e8e\u53d1\u73b0\u6076\u610f\u6587\u4ef6\u3001\u9690\u85cf\u6587\u4ef6\u6216\u5f02\u5e38\u6587\u4ef6\u8bbf\u95ee</span></p><p><span style=\" font-size:12pt;\">3.\u80fd\u6062\u590d\u5df2\u5220\u9664\u4f46\u4ecd\u5b58\u5728\u4e8e\u5185\u5b58\u4e2d\u7684\u6587\u4ef6\u5f15\u7528</span></p><p><br/></p><p><span style=\" font-size:12pt;\">\u4f7f\u7528\uff1a</span></p><p><span style=\" font-size:12pt;\">python vol.py -f memory.dmp windows.filescan --name-filter &quot;*.docx&quot;</span></p><p><span style=\" font-size:12pt;\">python vol.py -f memory.dmp windows.filescan | findstr .docx | .pdf | .zip</span></p><p><span style=\" font-size:12pt;\"># \u83b7\u53d6\u7269\u7406\u5730\u5740\u540e\uff0c\u4f7f\u7528 dumpfiles \u5bfc\u51fa</span></p><p><span style=\" font-size:12pt;\">python vol.py -f memory.dmp windows.dumpfiles --physaddr 0x3e1b000 --output-dir extracted_files</span></p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.strings.setText(QCoreApplication.translate("zhu_windows", u"\u5b57\u7b26\u4e32\u641c\u7d22", None))
-        self.label_17.setText(QCoreApplication.translate("zhu_windows", u"\u529f\u80fd\u6027\u67e5\u8be2", None))
+        self.v3w_filescan.setText(QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u626b\u63cf", None))
+#if QT_CONFIG(tooltip)
+        self.v3w_strings.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p><span style=\" font-size:12pt; background-color:#ffffff;\">windows.strings.Strings</span></p><p><span style=\" font-size:12pt; font-weight:700; background-color:#ffffff;\">\u529f\u80fd</span><span style=\" font-size:12pt; background-color:#ffffff;\">\uff1a\u63d0\u53d6\u5185\u5b58\u4e2d\u7684ASCII/Unicode\u5b57\u7b26\u4e32</span></p><p><span style=\" font-size:12pt; font-weight:700; background-color:#ffffff;\">\u53c2\u6570\u8bf4\u660e</span></p><p><span style=\" font-size:12pt; background-color:#ffffff;\">--pid &lt;PID&gt; \u4ec5\u63d0\u53d6\u6307\u5b9a\u8fdb\u7a0b\u7684\u5b57\u7b26\u4e32</span></p><p><span style=\" font-size:12pt; background-color:#ffffff;\">--min-length &lt;N&gt; \u8fc7\u6ee4\u6700\u5c0f\u957f\u5ea6\u7684\u5b57\u7b26\u4e32\uff08\u9ed8\u8ba4 3\uff09</span></p><p><span style=\" font-size:12pt; background-color:#ffffff;\">--encoding &lt;ascii/unicode&gt; \u6307\u5b9a\u5b57\u7b26\u4e32\u7f16\u7801\u7c7b\u578b</span></p><p><span style=\" font-size:12pt; background-color:#ffff"
+                        "ff;\">--output-file &lt;path&gt; \u5c06\u7ed3\u679c\u4fdd\u5b58\u5230\u6587\u4ef6</span></p><p><span style=\" font-size:12pt; font-weight:700; background-color:#ffffff;\">\u7528\u6cd5\uff1a</span></p><p><span style=\" font-size:12pt; background-color:#ffffff;\">vol.py -f memory.dump windows.strings --pid &lt;PID&gt; --offset 0x100000 | findstr &quot;http://|https://|.exe|.dll|password&quot;</span></p><p><span style=\" font-size:12pt; font-weight:700; background-color:#ffffff;\">\u7b56\u7565\uff1a</span><span style=\" font-size:12pt; background-color:#ffffff;\">\u7ed3\u5408grep \u6216 findstr \u641c\u7d22\u6307\u5b9a\u5b57\u7b26\u4e32</span></p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.v3w_strings.setText(QCoreApplication.translate("zhu_windows", u"\u5b57\u7b26\u4e32\u641c\u7d22", None))
+#if QT_CONFIG(tooltip)
+        self.v3w_dumpfiles.setToolTip(QCoreApplication.translate("zhu_windows", u"<html><head/><body><p><span style=\" font-size:12pt;\">windows.dumpfiles</span></p><p><span style=\" font-size:12pt; font-weight:700;\">\u529f\u80fd:</span><span style=\" font-size:12pt;\">\u4ece\u5185\u5b58\u4e2d\u63d0\u53d6\u6587\u4ef6\u5185\u5bb9\uff0c\u652f\u6301\u7269\u7406\u5730\u5740\u6216\u865a\u62df\u5730\u5740\u5b9a\u4f4d\u3002\u7528\u4e8e\u6062\u590d \u5df2\u5220\u9664\u6587\u4ef6\u3001\u5bfc\u51fa\u6076\u610f\u8f6f\u4ef6\u6837\u672c\u6216\u5206\u6790\u5185\u5b58\u7f13\u5b58\u7684\u6587\u4ef6\u3002</span></p><p><br/></p><p><span style=\" font-size:12pt; font-weight:700;\">\u53c2\u6570\u8bf4\u660e\uff1a</span><span style=\" font-size:12pt;\"/></p><p><span style=\" font-size:12pt;\">--pid &lt;PID&gt;</span></p><p><span style=\" font-size:12pt;\">--virtaddr   &lt;\u865a\u62df\u5730\u5740&gt;</span></p><p><span style=\" font-size:12pt;\">--physaddr &lt;\u7269\u7406\u5730\u5740&gt;</span></p><p><span style=\" font-size:12pt;\">--filter FILTER &lt;\u6587\u4ef6\u540d&gt;</span></p><p><span style=\" font-si"
+                        "ze:12pt;\">--ignore-case   \u5ffd\u7565\u5927\u5c0f\u5199</span></p><p><span style=\" font-size:12pt;\">--output-dir &lt;\u8f93\u51fa\u8def\u5f84&gt;</span></p><p><br/></p><p><span style=\" font-size:12pt; font-weight:700;\">\u4f7f\u7528\u65b9\u5f0f\uff1a</span><span style=\" font-size:12pt;\">\u9700\u5148\u901a\u8fc7 filescan \u83b7\u53d6\u5730\u5740</span></p><p><span style=\" font-size:12pt;\">python vol.py -f memory.dmp windows.dumpfiles --physaddr 0x3e1b000 --output-dir &lt;\u8f93\u51fa\u8def\u5f84&gt;</span></p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.v3w_dumpfiles.setText(QCoreApplication.translate("zhu_windows", u"\u8f6c\u50a8\u6587\u4ef6", None))
+        self.v3w_dump.setText(QCoreApplication.translate("zhu_windows", u"\u4fdd\u5b58\u6587\u4ef6", None))
+        self.v3w_registry_hive.setText(QCoreApplication.translate("zhu_windows", u"Hive", None))
+        self.v3w_registry_key.setText(QCoreApplication.translate("zhu_windows", u"key", None))
+        self.v3w_recurse.setText(QCoreApplication.translate("zhu_windows", u"key\u9012\u5f52", None))
+        self.v3w_printkey.setText(QCoreApplication.translate("zhu_windows", u"\u63d0\u53d6\u6ce8\u518c\u8868", None))
+        self.label_17.setText(QCoreApplication.translate("zhu_windows", u"windows\u67e5\u8be2", None))
+        self.v3w_fun_list.setItemText(0, QCoreApplication.translate("zhu_windows", u"\u5df2\u6267\u884c\u7684\u7a0b\u5e8f\u4fe1\u606f", None))
+        self.v3w_fun_list.setItemText(1, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u7cfb\u7edf\u7f13\u5b58\u7684\u5bc6\u7801\u54c8\u5e0c", None))
+        self.v3w_fun_list.setItemText(2, QCoreApplication.translate("zhu_windows", u"\u67e5\u770bcmd\u542f\u52a8\u547d\u4ee4", None))
+        self.v3w_fun_list.setItemText(3, QCoreApplication.translate("zhu_windows", u"\u626b\u63cfcmd\u5386\u53f2\u8bb0\u5f55", None))
+        self.v3w_fun_list.setItemText(4, QCoreApplication.translate("zhu_windows", u"\u63d0\u53d6cmd\u4f1a\u8bdd\u8bb0\u5f55", None))
+        self.v3w_fun_list.setItemText(5, QCoreApplication.translate("zhu_windows", u"\u5206\u6790Windows\u5d29\u6e83\u8f6c\u50a8", None))
+        self.v3w_fun_list.setItemText(6, QCoreApplication.translate("zhu_windows", u"\u5217\u51fa\u9a71\u52a8\u7a0b\u5e8f\u548c\u5173\u8054\u8bbe\u5907\u6811", None))
+        self.v3w_fun_list.setItemText(7, QCoreApplication.translate("zhu_windows", u"\u5217\u51fa\u8fdb\u7a0b\u52a0\u8f7d\u7684DLL\u6a21\u5757", None))
+        self.v3w_fun_list.setItemText(8, QCoreApplication.translate("zhu_windows", u"\u68c0\u6d4b\u9690\u85cf\u7684\u9a71\u52a8\u6a21\u5757", None))
+        self.v3w_fun_list.setItemText(9, QCoreApplication.translate("zhu_windows", u"\u9690\u85cf\u9a71\u52a8\u626b\u63cf", None))
+        self.v3w_fun_list.setItemText(10, QCoreApplication.translate("zhu_windows", u"\u73af\u5883\u53d8\u91cf\u4fe1\u606f", None))
+        self.v3w_fun_list.setItemText(11, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u670d\u52a1ids", None))
+        self.v3w_fun_list.setItemText(12, QCoreApplication.translate("zhu_windows", u"\u663e\u793a\u8fdb\u7a0b\u6240\u5c5e\u7684 SID", None))
+        self.v3w_fun_list.setItemText(13, QCoreApplication.translate("zhu_windows", u"\u5217\u51fa\u8fdb\u7a0b\u6253\u5f00\u7684\u53e5\u67c4", None))
+        self.v3w_fun_list.setItemText(14, QCoreApplication.translate("zhu_windows", u"\u4ece\u5185\u5b58\u4e2d\u8f6c\u50a8\u5404\u79cd\u51ed\u636e", None))
+        self.v3w_fun_list.setItemText(15, QCoreApplication.translate("zhu_windows", u"\u68c0\u6d4b\u8fdb\u7a0b\u4e2d\u6f5c\u5728\u7684\u5185\u5b58\u6ce8\u5165\u4ee3\u7801", None))
+        self.v3w_fun_list.setItemText(16, QCoreApplication.translate("zhu_windows", u"\u626b\u63cf\u4e3b\u5f15\u5bfc\u8bb0\u5f55MBR", None))
+        self.v3w_fun_list.setItemText(17, QCoreApplication.translate("zhu_windows", u"\u626b\u63cfMFT\u6587\u4ef6\u5bf9\u8c61", None))
+        self.v3w_fun_list.setItemText(18, QCoreApplication.translate("zhu_windows", u"\u626b\u63cf\u7f51\u7edc\u8fde\u63a5\u5bf9\u8c61", None))
+        self.v3w_fun_list.setItemText(19, QCoreApplication.translate("zhu_windows", u"\u5217\u51fa\u5185\u5b58\u4e2d\u7684\u8fdb\u7a0b", None))
+        self.v3w_fun_list.setItemText(20, QCoreApplication.translate("zhu_windows", u"\u626b\u63cf\u5185\u5b58\u4e2d\u7684\u8fdb\u7a0b", None))
+        self.v3w_fun_list.setItemText(21, QCoreApplication.translate("zhu_windows", u"\u4ee5\u6811\u72b6\u7ed3\u6784\u663e\u793a\u8fdb\u7a0b\u7236\u5b50\u5173\u7cfb", None))
+        self.v3w_fun_list.setItemText(22, QCoreApplication.translate("zhu_windows", u"\u68c0\u6d4b\u6ce8\u518c\u8868\u914d\u7f6e\u5355\u5143", None))
+        self.v3w_fun_list.setItemText(23, QCoreApplication.translate("zhu_windows", u"\u6ce8\u518c\u8868\u914d\u7f6e\u4fe1\u606f", None))
+        self.v3w_fun_list.setItemText(24, QCoreApplication.translate("zhu_windows", u"\u626b\u63cf\u5185\u5b58\u4e2d\u7684\u6ce8\u518c\u8868\u914d\u7f6e\u5355\u5143", None))
+        self.v3w_fun_list.setItemText(25, QCoreApplication.translate("zhu_windows", u"\u5217\u51fa\u6ce8\u518c\u8868\u952e\u503c", None))
+        self.v3w_fun_list.setItemText(26, QCoreApplication.translate("zhu_windows", u"\u63d0\u53d6\u8bb0\u5f55\u7528\u6237\u6267\u884c\u7a0b\u5e8f\u7684\u5386\u53f2", None))
+        self.v3w_fun_list.setItemText(27, QCoreApplication.translate("zhu_windows", u"\u8ba1\u5212\u4efb\u52a1\u4fe1\u606f", None))
+        self.v3w_fun_list.setItemText(28, QCoreApplication.translate("zhu_windows", u"sessions\u4f1a\u8bdd\u8bb0\u5f55", None))
+        self.v3w_fun_list.setItemText(29, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u5386\u53f2\u6267\u884c\u8bb0\u5f55", None))
+        self.v3w_fun_list.setItemText(30, QCoreApplication.translate("zhu_windows", u"\u6076\u610fSkeleton\u68c0\u6d4b", None))
+        self.v3w_fun_list.setItemText(31, QCoreApplication.translate("zhu_windows", u"\u9690\u85cf\u670d\u52a1\u68c0\u6d4b", None))
+        self.v3w_fun_list.setItemText(32, QCoreApplication.translate("zhu_windows", u"\u626b\u63cf\u5185\u5b58\u4e2d\u7684Windows\u670d\u52a1", None))
+        self.v3w_fun_list.setItemText(33, QCoreApplication.translate("zhu_windows", u"\u68c0\u6d4b\u7cfb\u7edf\u4e2d\u5b58\u5728\u7684\u7b26\u53f7\u94fe\u63a5", None))
+        self.v3w_fun_list.setItemText(34, QCoreApplication.translate("zhu_windows", u"\u67e5\u627eTrueCrypt\u7f13\u5b58\u7684\u5bc6\u7801", None))
+        self.v3w_fun_list.setItemText(35, QCoreApplication.translate("zhu_windows", u"\u5217\u51fa\u8fdb\u7a0b\u7684\u865a\u62df\u5730\u5740\u63cf\u8ff0\u7b26", None))
+        self.v3w_fun_list.setItemText(36, QCoreApplication.translate("zhu_windows", u"\u63d0\u53d6 PE \u6587\u4ef6\u7684\u7248\u672c\u4fe1\u606f", None))
+        self.v3w_fun_list.setItemText(37, QCoreApplication.translate("zhu_windows", u"\u4f7f\u7528 YARA \u89c4\u5219\u626b\u63cf\u5185\u6838\u5185\u5b58", None))
 
-        __sortingEnabled = self.fun_list.isSortingEnabled()
-        self.fun_list.setSortingEnabled(False)
-        ___qlistwidgetitem = self.fun_list.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("zhu_windows", u"cmd\u5386\u53f2\u8bb0\u5f55", None));
-        ___qlistwidgetitem1 = self.fun_list.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("zhu_windows", u"\u6d4b\u8bd5", None));
-        ___qlistwidgetitem2 = self.fun_list.item(2)
-        ___qlistwidgetitem2.setText(QCoreApplication.translate("zhu_windows", u"\u8fdb\u7a0b\u626b\u63cf", None));
-        ___qlistwidgetitem3 = self.fun_list.item(3)
-        ___qlistwidgetitem3.setText(QCoreApplication.translate("zhu_windows", u"\u73af\u5883\u53d8\u91cf\u4fe1\u606f", None));
-        ___qlistwidgetitem4 = self.fun_list.item(4)
-        ___qlistwidgetitem4.setText(QCoreApplication.translate("zhu_windows", u"ssdt\u7cfb\u7edf\u8c03\u7528\u8868", None));
-        ___qlistwidgetitem5 = self.fun_list.item(5)
-        ___qlistwidgetitem5.setText(QCoreApplication.translate("zhu_windows", u"\u670d\u52a1\u8fd0\u884c\u72b6\u6001", None));
-        ___qlistwidgetitem6 = self.fun_list.item(6)
-        ___qlistwidgetitem6.setText(QCoreApplication.translate("zhu_windows", u"sessions\u4f1a\u8bdd\u8bb0\u5f55", None));
-        ___qlistwidgetitem7 = self.fun_list.item(7)
-        ___qlistwidgetitem7.setText(QCoreApplication.translate("zhu_windows", u"\u9a71\u52a8\u6811\u67e5\u770b", None));
-        ___qlistwidgetitem8 = self.fun_list.item(8)
-        ___qlistwidgetitem8.setText(QCoreApplication.translate("zhu_windows", u"\u9690\u85cf\u9a71\u52a8\u626b\u63cf", None));
-        ___qlistwidgetitem9 = self.fun_list.item(9)
-        ___qlistwidgetitem9.setText(QCoreApplication.translate("zhu_windows", u"\u91cd\u5b9a\u5411\u68c0\u6d4b", None));
-        ___qlistwidgetitem10 = self.fun_list.item(10)
-        ___qlistwidgetitem10.setText(QCoreApplication.translate("zhu_windows", u"\u8f6c\u50a8\u7f13\u5b58\u6587\u4ef6", None));
-        ___qlistwidgetitem11 = self.fun_list.item(11)
-        ___qlistwidgetitem11.setText(QCoreApplication.translate("zhu_windows", u"dll\u52a8\u6001\u5e93\u5217\u8868", None));
-        ___qlistwidgetitem12 = self.fun_list.item(12)
-        ___qlistwidgetitem12.setText(QCoreApplication.translate("zhu_windows", u"\u8fdb\u7a0b\u5185\u5b58\u8303\u56f4", None));
-        ___qlistwidgetitem13 = self.fun_list.item(13)
-        ___qlistwidgetitem13.setText(QCoreApplication.translate("zhu_windows", u"\u8fdb\u7a0b\u6811", None));
-        ___qlistwidgetitem14 = self.fun_list.item(14)
-        ___qlistwidgetitem14.setText(QCoreApplication.translate("zhu_windows", u"\u8fdb\u7a0b\u6743\u9650\u4fe1\u606f", None));
-        ___qlistwidgetitem15 = self.fun_list.item(15)
-        ___qlistwidgetitem15.setText(QCoreApplication.translate("zhu_windows", u"\u9690\u85cf\u8fdb\u7a0b\u8bc6\u522b", None));
-        ___qlistwidgetitem16 = self.fun_list.item(16)
-        ___qlistwidgetitem16.setText(QCoreApplication.translate("zhu_windows", u"\u7ebf\u7a0b\u4fe1\u606f", None));
-        ___qlistwidgetitem17 = self.fun_list.item(17)
-        ___qlistwidgetitem17.setText(QCoreApplication.translate("zhu_windows", u"\u7ebf\u7a0b\u626b\u63cf", None));
-        ___qlistwidgetitem18 = self.fun_list.item(18)
-        ___qlistwidgetitem18.setText(QCoreApplication.translate("zhu_windows", u"\u7f13\u51b2\u6c60", None));
-        ___qlistwidgetitem19 = self.fun_list.item(19)
-        ___qlistwidgetitem19.setText(QCoreApplication.translate("zhu_windows", u"\u5185\u6838\u6a21\u5757", None));
-        ___qlistwidgetitem20 = self.fun_list.item(20)
-        ___qlistwidgetitem20.setText(QCoreApplication.translate("zhu_windows", u"\u5185\u5b58\u6620\u5c04", None));
-        ___qlistwidgetitem21 = self.fun_list.item(21)
-        ___qlistwidgetitem21.setText(QCoreApplication.translate("zhu_windows", u"\u56de\u8c03\u68c0\u6d4b", None));
-        ___qlistwidgetitem22 = self.fun_list.item(22)
-        ___qlistwidgetitem22.setText(QCoreApplication.translate("zhu_windows", u"MFT\u626b\u63cf", None));
-        ___qlistwidgetitem23 = self.fun_list.item(23)
-        ___qlistwidgetitem23.setText(QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u670d\u52a1ids", None));
-        ___qlistwidgetitem24 = self.fun_list.item(24)
-        ___qlistwidgetitem24.setText(QCoreApplication.translate("zhu_windows", u"PE\u6587\u4ef6\u4fe1\u606f", None));
-        ___qlistwidgetitem25 = self.fun_list.item(25)
-        ___qlistwidgetitem25.setText(QCoreApplication.translate("zhu_windows", u"\u53e5\u67c4\u4fe1\u606f", None));
-        ___qlistwidgetitem26 = self.fun_list.item(26)
-        ___qlistwidgetitem26.setText(QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6IDS", None));
-        ___qlistwidgetitem27 = self.fun_list.item(27)
-        ___qlistwidgetitem27.setText(QCoreApplication.translate("zhu_windows", u"TrueCrypt\u68c0\u6d4b", None));
-        ___qlistwidgetitem28 = self.fun_list.item(28)
-        ___qlistwidgetitem28.setText(QCoreApplication.translate("zhu_windows", u"\u6076\u610fSkeleton\u68c0\u6d4b", None));
-        ___qlistwidgetitem29 = self.fun_list.item(29)
-        ___qlistwidgetitem29.setText(QCoreApplication.translate("zhu_windows", u"\u6076\u610fmalfind\u68c0\u6d4b", None));
-        ___qlistwidgetitem30 = self.fun_list.item(30)
-        ___qlistwidgetitem30.setText(QCoreApplication.translate("zhu_windows", u"\u6076\u610fyara\u68c0\u6d4b", None));
-        ___qlistwidgetitem31 = self.fun_list.item(31)
-        ___qlistwidgetitem31.setText(QCoreApplication.translate("zhu_windows", u"\u6ce8\u518c\u8868\u914d\u7f6e\u4fe1\u606f", None));
-        ___qlistwidgetitem32 = self.fun_list.item(32)
-        ___qlistwidgetitem32.setText(QCoreApplication.translate("zhu_windows", u"cer\u8bc1\u4e66\u626b\u63cf", None));
-        ___qlistwidgetitem33 = self.fun_list.item(33)
-        ___qlistwidgetitem33.setText(QCoreApplication.translate("zhu_windows", u"\u6ce8\u518c\u8868\u9879\u548c\u4fe1\u606f", None));
-        ___qlistwidgetitem34 = self.fun_list.item(34)
-        ___qlistwidgetitem34.setText(QCoreApplication.translate("zhu_windows", u"\u626b\u63cf\u6ce8\u518c\u8868", None));
-        ___qlistwidgetitem35 = self.fun_list.item(35)
-        ___qlistwidgetitem35.setText(QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u6ce8\u518c\u8868key", None));
-        self.fun_list.setSortingEnabled(__sortingEnabled)
-
-        self.help.setText(QCoreApplication.translate("zhu_windows", u"\u547d\u4ee4\u5e2e\u52a9", None))
-        self.win_dump.setText(QCoreApplication.translate("zhu_windows", u"\u662f\u5426\u5bfc\u51fa\u6587\u4ef6", None))
-        self.label_18.setText(QCoreApplication.translate("zhu_windows", u"PID", None))
-        self.label_19.setText(QCoreApplication.translate("zhu_windows", u"\u7269\u7406\u5730\u5740offset", None))
-        self.win_physical.setText(QCoreApplication.translate("zhu_windows", u"\u4f7f\u7528\u7269\u7406\u504f\u79fb\u5730\u5740", None))
-        self.label_20.setText(QCoreApplication.translate("zhu_windows", u"\u641c\u7d22\u6587\u4ef6\u540d", None))
-        self.label_21.setText(QCoreApplication.translate("zhu_windows", u"key", None))
-        self.win_registry_key_recurse.setText(QCoreApplication.translate("zhu_windows", u"\u901a\u8fc7key\u9012\u5f52", None))
-        self.vol3_win_select_but.setText(QCoreApplication.translate("zhu_windows", u"\u70b9\u51fb\u67e5\u8be2", None))
+        self.v3w_fun_but.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2", None))
+        self.label_18.setText(QCoreApplication.translate("zhu_windows", u"linux\u67e5\u8be2", None))
+        self.v3l_fun_but.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2", None))
+        self.label_19.setText(QCoreApplication.translate("zhu_windows", u"macos\u67e5\u8be2", None))
+        self.v3m_fun_but.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("zhu_windows", u"VOL3", None))
         self.pushButton_4.setText(QCoreApplication.translate("zhu_windows", u"PushButton", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("zhu_windows", u"VOL2", None))
-        self.vol3_start_but.setText(QCoreApplication.translate("zhu_windows", u"\u624b\u52a8\u6267\u884c", None))
         self.dir_list.setTabText(self.dir_list.indexOf(self.vol_tab), QCoreApplication.translate("zhu_windows", u"\u5185\u5b58\u5206\u6790", None))
         self.label_2.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u8f93\u5165\u533a", None))
         self.start_db_but.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5165\u5e93", None))
@@ -1886,16 +2004,25 @@ class Ui_zhu_windows(object):
         self.label_5.setText(QCoreApplication.translate("zhu_windows", u"IOS\u5206\u6790", None))
         self.plist_but.setText(QCoreApplication.translate("zhu_windows", u"plist\u89e3\u6790", None))
         self.label_6.setText(QCoreApplication.translate("zhu_windows", u"android\u5206\u6790", None))
-        self.pushButton_2.setText(QCoreApplication.translate("zhu_windows", u"PushButton", None))
+        self.pushButton_2.setText(QCoreApplication.translate("zhu_windows", u"\u65e0\u529f\u80fd", None))
+        self.label_20.setText(QCoreApplication.translate("zhu_windows", u"HOOK\u5de5\u5177", None))
+        self.hook_name.setText(QCoreApplication.translate("zhu_windows", u"\u8f93\u5165\u5305\u540d", None))
+        self.hook_fun.setItemText(0, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u5168\u90e8\u5b57\u7b26\u4e32", None))
+        self.hook_fun.setItemText(1, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6AES\u52a0\u5bc6", None))
+        self.hook_fun.setItemText(2, QCoreApplication.translate("zhu_windows", u"\u53cd\u8c03\u8bd5", None))
+        self.hook_fun.setItemText(3, QCoreApplication.translate("zhu_windows", u"\u7ed5\u8fc7frida\u68c0\u6d4b", None))
+
+        self.hook_but.setText(QCoreApplication.translate("zhu_windows", u"HOOK\u6267\u884c", None))
+        self.label_21.setText(QCoreApplication.translate("zhu_windows", u"python\u53cd\u7f16\u8bd1", None))
+        self.pyc_but.setText(QCoreApplication.translate("zhu_windows", u"pyc\u53cd\u7f16\u8bd1", None))
         self.label_8.setText(QCoreApplication.translate("zhu_windows", u"\u4eba\u5de5\u667a\u80fd\u8f6f\u4ef6", None))
         self.facefusion_but.setText(QCoreApplication.translate("zhu_windows", u"facefusion", None))
         self.label_7.setText(QCoreApplication.translate("zhu_windows", u"\u5176\u4ed6\u5de5\u5177", None))
         self.mod_but.setText(QCoreApplication.translate("zhu_windows", u"\u5404\u79cd\u5c0f\u811a\u672c", None))
         self.time_zhuan.setText(QCoreApplication.translate("zhu_windows", u"\u65f6\u95f4\u6233\u8f6c\u6362", None))
-        self.pyc_but.setText(QCoreApplication.translate("zhu_windows", u"pyc\u53cd\u7f16\u8bd1", None))
-        self.ceshi111_but.setText(QCoreApplication.translate("zhu_windows", u"\u6d4b\u8bd5\u6309\u94ae", None))
         self.rsa_public.setText(QCoreApplication.translate("zhu_windows", u"RSA\u516c\u94a5\u5206\u89e3", None))
-        self.dir_list.setTabText(self.dir_list.indexOf(self.misc_tab), QCoreApplication.translate("zhu_windows", u"\u6742\u9879\u5206\u6790", None))
+        self.ceshi111_but.setText(QCoreApplication.translate("zhu_windows", u"\u6d4b\u8bd5\u6309\u94ae", None))
+        self.dir_list.setTabText(self.dir_list.indexOf(self.misc_tab), QCoreApplication.translate("zhu_windows", u"\u9006\u5411\u5206\u6790", None))
         self.label.setText(QCoreApplication.translate("zhu_windows", u"\u56de\u663e\u8f93\u51fa", None))
         self.silu_but.setText(QCoreApplication.translate("zhu_windows", u"\u8bf4\u660e\u6587\u6863", None))
         self.clear_but.setText(QCoreApplication.translate("zhu_windows", u"\u6e05\u7406\u56de\u663e", None))

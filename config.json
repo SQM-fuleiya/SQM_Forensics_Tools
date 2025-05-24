@@ -1,4 +1,4 @@
 {
-    "vol3_path": "C:\\移动云盘同步盘\\python\\git\\SQM内存分析工具\\volatility3\\vol.py",
-    "vol2_path": "C:\\移动云盘同步盘\\python\\git\\SQM内存分析工具\\volatility3\\vol.py"
+    "vol3_path": "./tools/vol3/vol.py",
+    "vol2_path": "./tools/vol3/vol.py"
 }

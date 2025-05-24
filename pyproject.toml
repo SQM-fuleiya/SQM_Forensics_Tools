@@ -1,0 +1,25 @@
+[tool.uv]
+python-install-mirror = "https://mirror.nju.edu.cn/github-release/indygreg/python-build-standalone"
+[project]
+name = "sqm-forensics-tools"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "base128>=0.1.1",
+    "base36>=0.1.1",
+    "base58>=2.1.1",
+    "base91>=1.0.1",
+    "chardet>=5.2.0",
+    "flowanalyzer>=0.4.0",
+    "frida==16.0.8",
+    "libnum>=1.7.1",
+    "pandas>=2.2.3",
+    "pillow>=11.2.1",
+    "pybase100>=0.3.1",
+    "pycryptodome>=3.23.0",
+    "pyexiv2>=2.15.4",
+    "pyshark>=0.6",
+    "pyside6>=6.9.0",
+]

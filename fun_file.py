@@ -13,10 +13,10 @@ from urllib import parse
 
 import base36
 import base58
-import base62
+# import base62
 import base91
 import base128
-import py3base92
+# import py3base92
 import pybase100
 import pyexiv2
 from PIL import Image, ImageSequence
@@ -351,11 +351,11 @@ def base解码(self):
         ["base32", lambda: base64.b32decode(file_data).decode()],
         ["base36", lambda: base36.dumps(int(file_data))],
         ["base58", lambda: base58.b58decode(file_data).decode()],
-        ["base62", lambda: base62.decodebytes(file_data).decode()],
+        # ["base62", lambda: base62.decodebytes(file_data).decode()],
         ["base64", lambda: base64.b64decode(file_data).decode()],
         ["base85", lambda: base64.a85decode(file_data).decode()],
         ["base91", lambda: base91.decode(file_data).decode()],
-        ["base92", lambda: py3base92.b92decode(file_data).decode()],
+        # ["base92", lambda: py3base92.b92decode(file_data).decode()],
         ["base100", lambda: pybase100.decode(file_data).decode()],
         [
             "base128",
@@ -640,6 +640,114 @@ def html解码(self):
 
 
 """----------------------------------图片分析-------------------------------"""
+
+
+def PNG_IDAT分析(self):
+    """分析PNG文件中的IDAT数据块"""
+    self.ui.print_echo.clear()
+    if not self.file_name:
+        self.输出("请先选择文件")
+        return
+        
+    try:
+        with open(self.file_name, 'rb') as f:
+            data = f.read()
+        
+        # 检查PNG文件头
+        if data[:8] != b'\x89PNG\r\n\x1a\n':
+            self.输出("不是有效的PNG文件")
+            return
+
+        # 解析数据块
+        offset = 8
+        idat_count = 0
+        idat_sizes = []
+        while offset < len(data):
+            # 读取块长度和类型
+            chunk_len = struct.unpack('>I', data[offset:offset+4])[0]
+            chunk_type = data[offset+4:offset+8]
+            offset += 8
+            
+            # 处理IDAT块
+            if chunk_type == b'IDAT':
+                idat_count += 1
+                idat_sizes.append(chunk_len)
+                self.输出(f"发现IDAT块 #{idat_count}, 长度: {chunk_len}字节")
+            
+            # 移动到下一个块
+            offset += chunk_len + 4  # 跳过数据和CRC
+            
+        self.输出(f"\nIDAT块分析完成: 共发现{idat_count}个IDAT块")
+        if idat_count > 1:
+            self.输出("警告: 检测到多个IDAT块，可能存在异常")
+        elif idat_count == 0:
+            self.输出("错误: 未发现IDAT块")
+        
+    except Exception as e:
+        self.输出(f"PNG分析出错: {str(e)}")
+
+def JPG块分析(self):
+    """分析JPG文件中的隐藏数据块"""
+    self.ui.print_echo.clear()
+    if not self.file_name:
+        self.输出("请先选择文件")
+        return
+        
+    try:
+        with open(self.file_name, 'rb') as f:
+            data = f.read()
+        
+        # 检查JPG文件头
+        if data[:2] != b'\xFF\xD8':
+            self.输出("不是有效的JPG文件")
+            return
+
+        # JPG标记解析
+        markers = {
+            b'\xFF\xE0': 'APP0',
+            b'\xFF\xE1': 'APP1',
+            b'\xFF\xE2': 'APP2',
+            b'\xFF\xED': 'APP13',
+            b'\xFF\xDB': 'DQT',
+            b'\xFF\xC0': 'SOF0',
+            b'\xFF\xC4': 'DHT',
+            b'\xFF\xDA': 'SOS',
+            b'\xFF\xD9': 'EOI'
+        }
+        
+        offset = 2  # 跳过SOI标记
+        hidden_data = []
+        
+        while offset < len(data):
+            marker = data[offset:offset+2]
+            
+            if marker == b'\xFF\xD9':  # EOI
+                break
+                
+            if marker in markers:
+                marker_name = markers[marker]
+                length = struct.unpack('>H', data[offset+2:offset+4])[0]
+                self.输出(f"发现{marker_name}标记, 长度: {length}字节")
+                
+                # 检查APPn标记中的异常数据
+                if marker_name.startswith('APP') and length > 20:
+                    content = data[offset+4:offset+4+length-2]
+                    if b'\x00'*10 in content:  # 检测连续空字节
+                        hidden_data.append((marker_name, offset, length))
+                
+                offset += 2 + length
+            else:
+                offset += 1
+                
+        if hidden_data:
+            self.输出("\n警告: 检测到可能隐藏的数据:")
+            for marker, pos, length in hidden_data:
+                self.输出(f"- {marker}标记在偏移 {pos} 处, 长度 {length} 字节")
+        else:
+            self.输出("\n未检测到隐藏数据")
+            
+    except Exception as e:
+        self.输出(f"JPG分析出错: {str(e)}")
 
 
 def 图片元数据(self):

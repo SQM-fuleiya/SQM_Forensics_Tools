@@ -5,14 +5,14 @@
 import csv
 import os
 
-from PySide6.QtCore import Qt, QThread, Signal
+from PySide6.QtCore import Qt, QThread, Signal ,QProcess
 from PySide6.QtGui import QAction, QDragEnterEvent, QDropEvent, QIcon, QStandardItem, QStandardItemModel
 from PySide6.QtWidgets import QApplication, QHeaderView, QMenu, QWidget
 
 import fun_file
 import fun_net
 import fun_vol
-import others
+import fun_others
 from tabprint_ui import Ui_tabprint  # 导入tabprint的UI类
 from zhuye_ui import Ui_zhu_windows
 
@@ -31,22 +31,28 @@ class 多线程(QThread):  # 多线程类
     def run(self):
         try:
             result = self.func(*self.args, **self.kwargs)  # 执行传入的函数
-            self.result_signal.emit(result)  # 发送结果信号
+            self.执行结果信号.emit(result)  # 发送结果信号
         except Exception as e:
-            self.error_signal.emit(f"{self.func.__name__} 出错: {str(e)}")
+            self.执行结果信号.emit(f"{self.func.__name__} 出错: {str(e)}")
 
 
 class MainWindow(QWidget):
+    # 错误信号 = Signal(str)  # 定义信号，用于传递错误信息
+
     def __init__(self):
         super().__init__()  # 初始化父类
         self.ui = Ui_zhu_windows()  # 实例化UI类
         self.ui.setupUi(self)  # 设置UI
         self.setAcceptDrops(True)  # 设置 input_text 窗口可以接受拖拽放入文件
-        self.ui.dir_list.currentChanged.connect(self.tab标签事件)  # 设置tab标签切换事件
+        # self.ui.dir_list.currentChanged.connect(self.tab标签事件)  # 设置tab标签切换事件
         """-----全局变量------"""
         self.file_name = ""  # 保存文件名称
         self.file_path = ""  # 保存文件路径
         self.指令 = ""  # 保存指令
+        self.threads = []  # 用于存储所有线程对象的列表
+
+        """-----设置信号------"""
+        # self.错误信号.connect(self.输出)  # 连接错误信号到输出函数
         """-----按钮设置------"""
         self.file_but()  # 设置文件页面按钮功能
         self.net_but()  # 设置流量分析按钮功能
@@ -66,13 +72,37 @@ class MainWindow(QWidget):
     def start_thread(self, func, *args, **kwargs):  # 启动线程函数，func为要执行的函数，*args和**kwargs为函数的参数
         thread = 多线程(func, *args, **kwargs)  # 创建线程对象
         thread.执行结果信号.connect(self.输出)  # 连接线程的执行结果信号到输出函数
+        thread.finished.connect(lambda: self.threads.remove(thread))  # 线程结束后从列表中移除
         thread.start()  # 启动线程
+        self.threads.append(thread)  # 将线程对象添加到列表中
 
+    def closeEvent(self, event):  # 关闭线程
+        # 检查 QProcess 进程是否在运行，如果是则终止
+        if hasattr(self, 'process'):
+            try:
+                if self.process.state() == QProcess.Running:
+                    self.process.terminate()
+                    if not self.process.waitForFinished(3000):  # 等待 3 秒
+                        self.process.kill()
+                        self.process.waitForFinished()  # 确保进程已结束
+                # 销毁进程对象
+                self.process.deleteLater()
+                delattr(self, 'process')
+            except Exception as e:
+                print(f"关闭窗口时清理进程出错: {str(e)}")
+
+        for thread in self.threads:
+            if thread.isRunning():
+                thread.quit()
+                thread.wait()
+        event.accept()
+    '''
     def tab标签事件(self, index):
         # tab_text = self.ui.dir_list.tabText(index)
         # self.输出(f"你点击了标签页: {tab_text}，索引为: {index}")
         if index == 2:  # 内存分析
             fun_vol.加载配置(self)
+    '''
 
     def 输出(self, 字符串):
         if 字符串:
@@ -145,34 +175,20 @@ class MainWindow(QWidget):
         # self.ui.f5_steg_but.clicked.connect(file_fun.F5隐写)
         # self.ui.Stegpy_but.clicked.connect(file_fun.Stegpy)
         self.ui.hide_str_but.clicked.connect(lambda: fun_file.hide_str(self))  # hide解码出字符串
-        # self.ui.jpg_block_but.clicked.connect(file_fun.jpg块隐藏)
-        # self.ui.png_idat_btu.clicked.connect(file_fun.PNG图片检测IDAT)
+        self.ui.jpg_block_but.clicked.connect(lambda: fun_file.JPG块分析(self))
+        self.ui.png_idat_but.clicked.connect(lambda: fun_file.PNG_IDAT分析(self))
 
         # 压缩包
         self.ui.single_crc_but.clicked.connect(lambda: fun_file.单压缩包内CRC爆破(self))
         self.ui.more_crc_but.clicked.connect(lambda: fun_file.多文件压缩包CRC爆破(self))
         self.ui.zip_wei_but.clicked.connect(lambda: fun_file.伪加密(self))
 
-        # 杂乱
-        self.ui.mod_but.clicked.connect(lambda: os.startfile(os.path.relpath("./mod")))
-        # self.ui.BT_en_but.clicked.connect(lambda:  others.bt_密码生成,self))
-        self.ui.pyc_but.clicked.connect(lambda: others.pyc_反编译(self))
-        self.ui.time_zhuan.clicked.connect(lambda: others.时间戳转换(self))
-        # self.ui.rsa_public.clicked.connect(lambda:  others.RSA公钥分解,self))
-        # ios分析
-        self.ui.plist_but.clicked.connect(lambda: others.plist解析(self))
-
-        # android分析
-
-        # 人工智能软件
-        self.ui.facefusion_but.clicked.connect(lambda: others.facefusion解析(self))
-
         # TODO 日志文件分析
 
     def net_but(self):  # 流量分析按钮功能设置
         self.ui.flag_search_but_2.clicked.connect(lambda: fun_net.字符串搜索(self))
         self.ui.tiqu_but.clicked.connect(lambda: fun_net.提取日志(self))
-        self.ui.ttl_but.clicked.connect(lambda: fun_net.ttl分析(self))
+        self.ui.ttl_but.clicked.connect(lambda: fun_net.TTL分析(self))
         self.ui.len_but.clicked.connect(lambda: fun_net.len长度分析(self))
         self.ui.telnet_but.clicked.connect(lambda: fun_net.telnet分析(self))
 
@@ -193,12 +209,50 @@ class MainWindow(QWidget):
         self.ui.vol3_but.clicked.connect(lambda: os.startfile(f"{os.getcwd()}/tools/vol3使用说明.txt"))
         self.ui.vol2_but.clicked.connect(lambda: os.startfile(f"{os.getcwd()}/tools/vol2使用说明.txt"))
         self.ui.vol3_start_but.clicked.connect(lambda: fun_vol.vol手动执行(self))
-        self.ui.v3info_but.clicked.connect(lambda: self.start_thread(fun_vol.命令执行(self, "windows.info")))
+
+        self.ui.v3w_info.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.info"))
+        self.ui.v3w_hashdump.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.hashdump"))
+        self.ui.v3w_netstat.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.netstat"))
+        self.ui.v3w_cmdscan.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.cmdscan"))
+
+        self.ui.v3w_amcache.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.amcache"))
+        self.ui.v3w_shimcache.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.shimcachemem"))
+        self.ui.v3w_scheduled_tasks.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.scheduled_tasks"))
+        self.ui.v3w_psxview.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.psxview"))
+
+        self.ui.v3w_timeliner.clicked.connect(lambda: fun_vol.vol3命令生成(self, "timeliner"))
+        self.ui.v3w_certificates.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.registry.certificates"))
+
+        self.ui.v3w_file_but.clicked.connect(lambda: fun_vol.开启文件操作(self))
+        self.ui.v3w_filescan.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.filescan"))
+        self.ui.v3w_dumpfiles.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.strings"))
+        self.ui.v3w_strings.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.strings"))
+
+        self.ui.v3w_printkey.clicked.connect(lambda: fun_vol.vol3命令生成(self, "windows.printkey"))
 
     def msic_but(self):  # 流量分析按钮功能设置
+        # IOS分析
+        self.ui.plist_but.clicked.connect(lambda: fun_others.plist解析(self))
+
+        # android分析
+        self.ui.hook_but.clicked.connect(lambda: fun_others.hook执行(self))
+
+        # python逆向
+        self.ui.pyc_but.clicked.connect(lambda: fun_others.pyc_反编译(self))
+
+        # 人工智能软件
+        self.ui.facefusion_but.clicked.connect(lambda: fun_others.facefusion解析(self))
+
+        # 其他工具
+        self.ui.mod_but.clicked.connect(lambda: os.startfile(os.path.relpath("./mod")))
+
+        self.ui.time_zhuan.clicked.connect(lambda: fun_others.时间戳转换(self))
         self.ui.ceshi111_but.clicked.connect(lambda: self.ui.print_echo.append("测试按钮"))
+
         # self.ui.ceshi111_but.clicked.connect(lambda: others.测试输出1(self))
         # self.ui.ceshi111_but.clicked.connect(lambda: others.测试输出2(self))
+        # self.ui.BT_en_but.clicked.connect(lambda:  others.bt_密码生成,self))
+        # self.ui.rsa_public.clicked.connect(lambda:  others.RSA公钥分解,self))
 
 
 class tabecho(QWidget):  # 表格输出窗口
@@ -225,10 +279,9 @@ class tabecho(QWidget):  # 表格输出窗口
     def 表格输出(self, 数据):  # 表格输出
         if not 数据 or len(数据) < 1:
             return
-
         model = QStandardItemModel()  # 创建模型并填充数据
-
-        for row_idx, row_data in enumerate(数据[0:]):  # 填充数据
+        model.setHorizontalHeaderLabels(数据[0])  # 设置表头
+        for row_idx, row_data in enumerate(数据[1:]):  # 填充数据
             for col_idx, cell_data in enumerate(row_data):
                 model.setItem(row_idx, col_idx, QStandardItem(str(cell_data)))
 
