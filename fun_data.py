@@ -1,414 +1,385 @@
 import os
 import re
 import sqlite3
+import csv
 
-import chardet
+#import chardet
 import pandas as pd
-from PySide6.QtGui import QStandardItem
-from PySide6.QtWidgets import QMessageBox
 
-file_name = []
-file_path = ""
+from PySide6.QtWidgets import QMessageBox ,QApplication
+
+
+''''-----------右键菜单-----------------'''
+def 复制选中(self):  # 复制选中的内容
+    selection = self.ui.table_echo.selectionModel()
+    if not selection.hasSelection():
+        return
+
+    # 获取选中行的数据
+    rows = selection.selectedIndexes()[0].data()
+    # 写入剪贴板
+    QApplication.clipboard().setText(rows.strip())
+
+def 表格保存(self):  # 将表格保存
+    model = self.ui.table_echo.model()
+    if not model:
+        return
+    文件名 = f"{self.file_path}/{self.vol指令}.csv"
+    with open(文件名, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        # 写入数据
+        for row in range(model.rowCount()):
+            row_data = [model.index(row, col).data() for col in range(model.columnCount())]
+            writer.writerow(row_data)
+
+
+    """
+    def 导出(self):  # 指定数据导出
+        新命令 = self.指令
+
+    def 表格选中(行头):
+        try:
+            selection = self.ui.print_echo.selectionModel()  # 获取当前表格的选中内容
+            if not selection.hasSelection():  # 如果没有选中内容，直接返回
+                return
+            model = self.ui.print_echo.model()  # 获取当前表格控件
+            selected_row = selection.selectedIndexes()[0].row()
+            for i in range(model.columnCount()):  # 获取指定行头的坐标
+                index = model.index(0, i)
+                if index.data().lower() == 行头:
+                    first_column_data = model.index(selected_row, i).data()
+                    return first_column_data
+        except Exception:
+            pass
+
+    if not self.指令:  # 获取当前命令
+        error_data = [["错误类型", "无数据，请检查命令是否正确"]]
+        数据输出(self, error_data)
+        return
+    if any(command in self.指令 for command in 可导出列表):
+        行头列表 = ["pid", "name", "base", "offset"]
+        try:
+            for i in 行头列表:
+                数据 = 表格选中(i)
+                if 数据:
+                    if 数据 != "-":
+                        if i == "offset":
+                            新命令 += f' --filter "{数据}"'
+                        else:
+                            新命令 += f' --{i} "{数据}"'
+        except Exception:
+            pass
+
+    新命令 = f"{新命令} --dump "
+    命令执行(self, 新命令)
+
+    """
+
+
+''''-----------数据分析-----------------'''
+
 单人层级 = []
 列数据 = []
 
-
-def append_to_table(self, row_data):  # 将数据添加到表格中
-    items = [QStandardItem(str(item)) for item in row_data]
-    self.model.appendRow(items)
-    # self.list_echo.resizeColumnsToContents()  # 自动调整列宽
-    self.list_echo.setWordWrap(True)  # 启用文本换行
-
-
-def clear_table(self):  # 清空表格
-    self.model.clear()
-    self.model.setHorizontalHeaderLabels([])
-
-
-def 数据入库(self):  # 文件数据入库
-    clear_table(self)  # 清空表格
-    # 启用按键
-    self.ui.db_select_but.setEnabled(True)
-    self.ui.db_clear.setEnabled(True)
-    self.ui.select_one.setEnabled(True)
-    self.ui.show_guanxi.setEnabled(True)
-
-    if not file_name:  # 检查文件是否存在
-        QMessageBox.warning(self, "警告", "请先选择文件！")
-        return
-    self.is_running = True  # 初始化标志位
-    append_to_table(self, ["开始导入数据..."])
-
-    for file_idx, file_path in enumerate(file_name, 1):  # 确认存在文件
-        if not self.is_running:
-            break
-
-        # 判断文件编码
-        with open(file_path, "rb") as f:
-            raw_data = f.read()
-            result = chardet.detect(raw_data)
-            encoding = result["encoding"]
-
-        try:  # 判断文件类型
-            if file_path.endswith(".txt"):
-                batch_size = 1000  # 建立缓存池
-                batch_data = []
-                with open(file_path, "r", encoding=encoding) as f:
-                    f.seek(0)
-
-                    for line_idx, line in enumerate(f, 1):
-                        if not self.is_running:
-                            break
-
-                        data = line.strip().split("----")  # 分割数据，分隔符为 ----
-                        batch_data.append(data)
-
-                        if len(batch_data) >= batch_size:
-                            批量入库(self, batch_data)
-                            batch_data = []
-
-                # 处理剩余的数据
-                if batch_data and self.is_running:
-                    批量入库(self, batch_data)
-
-            elif file_path.endswith((".xlsx", ".xls")):
-                try:
-                    excel_file = pd.ExcelFile(file_path)
-                    sheet_names = excel_file.sheet_names
-                    for sheet_name in sheet_names:
-                        df = excel_file.parse(sheet_name)
-                        批量入库(self, df.values.tolist())
-                except Exception as e:
-                    raise Exception(f"读取Excel文件失败：{str(e)}")
-
-            elif file_path.endswith(".csv"):
-                try:
-                    df = pd.read_csv(file_path, encoding=encoding, quotechar='"', quoting=0)
-
-                    if len(df.values.tolist()[0]) != 1:  # 判断是否只有一行数据
-                        批量入库(self, df.values.tolist())
-                    else:  # 如果只有一行,则将数据分割成多行
-                        data = []
-                        with open(file_path, "r", encoding=encoding) as f:
-                            for line in f:
-                                row = line.replace('"', "").replace("\n", "").split(",")
-                                data.append(row)
-                        批量入库(self, data)
-
-                except Exception as e:
-                    raise Exception(f"读取CSV文件失败：{str(e)}")
-        except Exception as e:  # 处理异常
-            append_to_table(self, [f"处理文件{file_path}时出错：{str(e)}"])
-            continue
-
-    append_to_table(self, ["导入完成！" if self.is_running else "导入已取消"])
-
-
-def cancel_process(self):
-    self.is_running = False
-    append_to_table(self, ["正在停止处理..."])
-
-
 def 数据库连接(self):
-    with sqlite3.connect(f"{file_path}/数据分析.db") as conn:  # 打开或创建数据库连接
+    with sqlite3.connect(f"{self.file_path}/数据分析.db") as conn:  # 打开或创建数据库连接
         conn.execute("PRAGMA synchronous = OFF")  # 关闭同步模式,提高写入速度
         conn.execute("PRAGMA journal_mode = WAL")  # 使用WAL模式，提高并发性能 # 创建游标
         cursor = conn.cursor()
         return conn, cursor
-
-
-def 数据库清理(self):
+def 数据库创建(self,sample_data):
     conn, cursor = 数据库连接(self)
-    try:
-        cursor.execute("DROP TABLE IF EXISTS fenxi")
-        conn.commit()
-        append_to_table(self, ["数据库已清理"])
-    except Exception as e:
-        append_to_table(self, f"Error deleting table: {e}")
-    conn.close()  # 关闭数据库连接
-
-
-def 批量入库(self, data):
-    conn, cursor = 数据库连接(self)
-    if not data:  # 检查数据是否为空
-        return
-    # 检查数据类型，防止出现浮点数和非整数的情况
-    data = [[str(int(item)) if isinstance(item, float) and item.is_integer() else str(item) for item in row] for row in data]
-    # 获取数据的列数
-    columns = [chr(65 + i) for i in range(len(data[0]))]  # 生成列名，列名以A, B, C...的顺序命名
-    placeholders = ",".join(["?"] * len(columns))  # 生成占位符，数量与列数相同
-    sql = f"INSERT INTO fenxi ({','.join(columns)}) VALUES ({placeholders})"  # 生成插入语句
     try:
         # 检查表是否存在
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='fenxi'")
-        # 确保 cursor 是 Cursor 对象
         if not cursor.fetchone():
-            create_sql = f"CREATE TABLE fenxi ({','.join([f'{col} TEXT' for col in columns])})"
+            # 表不存在，创建表
+            num_columns = len(sample_data[0])
+            columns = [f"col_{i+1}" for i in range(num_columns)]
+            create_sql = f"CREATE TABLE fenxi ({', '.join([f'{col} TEXT' for col in columns])})"
             cursor.execute(create_sql)
-
-        cursor.executemany(sql, data)  # 执行插入语句
-        conn.commit()  # 提交事务
-
-        # 将数据输出到表格
-        append_to_table(self, columns)  # 添加表头
-        for row in data:
-            append_to_table(self, row)  # 添加数据
+            conn.commit()
     except Exception as e:
-        raise Exception(f"数据库写入失败：{str(e)}")
-    conn.close()
-
-
-def db_select(self):
-    """执行 SQL 查询并将结果显示在表格中"""
-    clear_table(self)
-    query = self.ui.db_str.text().strip()
-    if not query:
-        self.QMessageBox.warning(self, "警告", "请输入查询语句！")
+        self.text_输出(f"数据库操作失败: {str(e)}")
         return
-    # 防注入
-    query = re.sub(r"['\"“”‘’]", "'", query)
-    results = database_query(self, query)
-    try:
-        # 清空表格并显示查询结果
-        self.model.clear()
-        if results != []:
-            for row in results:
-                append_to_table(self, row)  # 添加数据
-        else:
-            append_to_table(self, ["没有查询到任何数据"])
-    except Exception as e:
-        append_to_table(self, [f"查询失败：{str(e)}"])
-    self.list_echo.resizeColumnsToContents()  # 自动调整列宽
-
-
-def delete_database(self):
-    """删除数据库文件"""
-    db_path = f"{file_path}/数据分析.db"
-    if os.path.exists(db_path):
-        try:
-            os.remove(db_path)
-            append_to_table(self, ["数据库已删除"])
-        except Exception as e:
-            append_to_table(self, [f"删除数据库失败：{str(e)}"])
-    else:
-        append_to_table(self, ["数据库文件不存在"])
-
-
-def select_yufa(self):
-    """将语法说明按行输出到表格中"""
-    clear_table(self)  # 清空表格
-
-    # 定义语法说明
-    syntax_lines = [
-        "基本查询   : select * from fenxi",
-        "单列查询   : select 列名 from fenxi",
-        "条件查询   : 基本查询语句 where 列名 = value     # where 后面跟查询条件",
-        "多条件查询 : 基本查询语句 where 列名 = value and 列名 = value  # and 代表与 or 代表或",
-        "排序查询   : select * from fenxi order by 列名 desc  # desc 代表降序 asc 代表升序",
-        "联合查询   : 基本查询语句 union 基本查询语句      # union 代表联合查询",
-        "限制查询   : 基本查询语句 limit 10               # 限制查询结果的数量",
-        "统计查询   : select count(*) from fenxi         # count(*) 代表统计所有行数",
-        "去重查询   : select distinct 列名 from fenxi    # distinct 代表去重",
-        "合计查询   : select sum(列名) from fenxi        # sum(列名) 代表求和",
-        "绝对值统计 : select sum(ABS(列名)) from fenxi   # ABS 用于数字绝对值",
-        "嵌套查询   : 基本查询语句 where 列名 in (select 列名 from fenxi)",
-        "模糊查询   : 基本查询语句 where 列名 like '%value%'",
-        "% 代表任意字符 * 代表任意长度 %value% 代表包含 value 的字符串 %value 代表以 value 结尾的字符串 value% 代表以 value 开头的字符串 like 分大小写 LIKE 不分大小写",
-        "聚合查询 : select 列名 from fenxi group by 列名 # group by 用于对数据进行分组",
-    ]
-
-    # 设置表头
-    self.model.setHorizontalHeaderLabels(["SQL 语法说明"])
-    self.list_echo.resizeColumnsToContents()  # 自动调整列宽
-
-    # 逐行添加到表格中
-    for line in syntax_lines:
-        append_to_table(self, [line])  # 将每一行作为单独的一行数据添加到表格中
-
-
-def 查询上线(self):
-    clear_table(self)
-    单人层级 = []
-    唯一ID = self.ui.data_input.text().strip()
-    查询信息 = ""
-    层级 = 1
-    try:
-        x = 0
-        while x != 1:
-            查询语句 = f"SELECT * FROM fenxi WHERE B = '{唯一ID}'"
-            result = database_query(self, 查询语句)
-            if not result:
-                单人层级.append([查询信息[0][2], 层级])
-                层级 += 1
-                x += 1
-
-            else:
-                查询信息 = result
-                唯一ID = result[0][3]
-                单人层级.append([result[0][0], 层级])
-                层级 += 1
-
-        # 显示结果
-        clear_table(self)
-        append_to_table(self, ["姓名", "层级"])  # 添加表头
-
-        for i in range(len(单人层级)):
-            单人层级[i][1] = len(单人层级) - i
-
-        for 数据 in 单人层级:
-            append_to_table(self, 数据)
-
-    except Exception as e:
-        append_to_table(self, [f"查询失败：{str(e)}"])
-    self.list_echo.resizeColumnsToContents()  # 自动调整列宽
-
-
-def database_query(self, query):
-    conn, cursor = 数据库连接(self)
-    try:
-        cursor.execute(query)
-        return cursor.fetchall()
-    except Exception as e:
-        print(f"数据库查询出错: {e}")
-        return []
     finally:
         conn.close()
 
 
-def 生成树状图(self):
-    clear_table(self)  # 清空表格
-    """生成可折叠的层级树状图"""
-    try:
-        # 获取所有人员关系数据
-        relations = database_query(self, "SELECT * FROM fenxi")
-        if not relations:
-            append_to_table(self, ["数据库中没有人员数据"])
+def 处理文件(self, file_lsit):
+    for file in file_lsit:
+        # 先读取文件获取列数
+        sample_data = []
+        chunk_size = 10000
+        try:
+            if file.lower().endswith('.txt'):
+                try:
+                    with open(file, 'r', encoding='utf-8') as f:
+                        chunk = []
+                        for line in f:
+                            if line.strip():
+                                sample_data.append([line.strip()])
+                                # 检查数据库是否存在
+                                if not os.path.exists(f"{self.file_path}/数据分析.db"):
+                                    数据库创建(self, sample_data)
+                                chunk.append([line.strip()])
+                                if len(chunk) >= chunk_size:  #  10000行写入一次数据库
+                                    批量入库(self, chunk)
+                                    chunk = []
+                                    self.text输出(f"正在处理文件: {os.path.basename(file)}")
+                        if chunk:
+                            批量入库(self, chunk)
+                except Exception as e:
+                    self.text_输出(f"txt失败: {str(e)}")
+
+            elif file.lower().endswith('.csv'):
+                try:
+                    sample_data = pd.read_csv(file, nrows=1).values.tolist()
+                    if not os.path.exists(f"{self.file_path}/数据分析.db"):
+                        数据库创建(self, sample_data)
+                    n = 1
+                    for chunk in pd.read_csv(file, chunksize=chunk_size):
+                        data = chunk.values.tolist()
+                        # data = list(set(tuple(row) for row in data))
+                        self.start_thread(批量入库,self, data)
+                        self.text_输出(f"正在处理文件第{n}0000行")
+                        n += 1
+                except Exception as e:
+                    self.text_输出(f"csv失败: {str(e)}")
+
+            elif file.lower().endswith(('.xlsx', '.xls')):
+                try:
+                    sample_data = pd.read_excel(file, nrows=1).values.tolist()
+                    if not os.path.exists(f"{self.file_path}/数据分析.db"):
+                        数据库创建(self, sample_data)
+                    df = pd.read_excel(file)
+                    for i in range(0, len(df), chunk_size):
+                        chunk = df.iloc[i:i+chunk_size]
+                        data = chunk.values.tolist()
+                        # data = list(set(tuple(row) for row in data))
+                        批量入库(self, data)
+                        self.text_输出(f"正在处理文件第{chunk_size}行")
+                except Exception as e:
+                    self.text_输出(f"excel失败: {str(e)}")
+
+        except Exception as e:
+            self.text_输出(f"文件读取失败: {str(e)}")
             return
 
-        # 统计相关数据
-        总人数 = len(relations)
-        直推人数 = {}
-        全部下线数 = {}
 
-        for row in relations:  # 统计直推人数
-            上线id = row[3]  # 假设D列是上线ID
-            if 上线id not in 直推人数:
-                直推人数[上线id] = 0
-            直推人数[上线id] += 1
+def 数据入库(self):  # 文件数据入库
+    # UI初始化
+    self.ui.select_one.setEnabled(True)
+    self.ui.show_guanxi.setEnabled(True)
+    self.ui.list_clear.setEnabled(True)
 
-        # 递归统计全部下线数
-        def 统计下线(node_id):  # 统计某个节点下的所有下线人数（包括子下线）
-            if node_id not in 全部下线数:
-                全部下线数[node_id] = 0
-                for row in relations:
-                    if str(row[3]) == str(node_id):  # D列是上线ID
-                        current_id = row[1]  # B列是当前人员ID
-                        全部下线数[node_id] += 1 + 统计下线(current_id)
-            return 全部下线数[node_id]
+    if not self.file_name:
+        QMessageBox.warning(self, "警告", "请先选择文件或文件夹！")
+        return
+    self.is_running = True
+    # 获取需要处理的文件列表
+    if os.path.isdir(self.file_name):
+        file_list = [os.path.join(self.file_path, f) for f in os.listdir(self.file_path) 
+                    if os.path.isfile(os.path.join(self.file_path, f)) and 
+                    f.lower().endswith(('.txt', '.csv', '.xlsx','.xls'))]
+    else:
+        if self.file_name.lower().endswith(('.txt', '.csv', '.xlsx','.xls')):
+            file_list = [self.file_name]
+        else:
+            QMessageBox.warning(self, "警告", "只支持txt/csv/xlsx/xls文件 格式！")
+            return
+            
+    self.text_输出("开始导入数据...")
+    
+    # 多线程处理文件
+    处理文件(self, file_list)
+    # 等待任务完成再显示数据
+    数据显示(self)  # 显示数据
 
-        tree = {}  # 存储树结构
-        id_node_map = {}  # 存储ID到节点映射表
+def 批量入库(self, data):
+    if not data:
+        return
+    with self.db_lock:  # 需要在类初始化时定义self.db_lock = threading.Lock()
+        conn, cursor = 数据库连接(self)
+        try:
+            # 获取表结构信息
+            cursor.execute("PRAGMA table_info(fenxi)")
+            columns = [col[1] for col in cursor.fetchall()]  # 获取所有列名
+            num_columns = len(columns)
+            
+            # 数据去重
+            seen = set()
+            unique_data = []
+            for row in data:
+                row_tuple = tuple(row)
+                if row_tuple not in seen:
+                    seen.add(row_tuple)
+                    unique_data.append(row)
 
-        # 强制创建根节点（即使ID=1不在B列）
-        根节点_id = "1"
-        根节点_label = f"总部-{根节点_id}(0-总人数:{统计下线(根节点_id)})"
-        tree[根节点_label] = []
-        root_nodes = [根节点_label]
+            # 动态生成插入语句
+            if unique_data:
+                placeholders = ",".join(["?"] * num_columns)
+                sql = f"INSERT INTO fenxi VALUES ({placeholders})"
+                cursor.executemany(sql, unique_data)
+                conn.commit()
 
-        # 构建节点映射表
-        for row in relations:
-            姓名, 电话, _, 上线id = row[0], row[1], row[2], row[3]
-            node_label = f"{姓名}-{电话}(直推人数：{直推人数.get(电话, 0)}-总下线{统计下线(电话)})"
-            id_node_map[电话] = node_label
+        except Exception as e:
+            self.text_输出(f"数据库写入失败: {str(e)}")
+        finally:
+            conn.close()
 
-        # 建立父子关系
-        for row in relations:
-            姓名, 电话, _, 上线id = row[0], row[1], row[2], row[3]
-            node_label = id_node_map[电话]
 
-            # 处理父节点
-            parent_id = str(上线id)
-            if parent_id == "1":  # 直接属于根节点
-                tree[根节点_label].append(node_label)
-            else:
-                parent_label = id_node_map.get(parent_id, 根节点_label)
-                tree.setdefault(parent_label, []).append(node_label)
+def 数据显示(self):
+    """显示数据"""
+    conn, cursor = 数据库连接(self)
+    try:
+        # 获取数据库表的列名（表头）
+        cursor.execute("PRAGMA table_info(fenxi)")
+        columns = [col[1] for col in cursor.fetchall()]  # 例如：['col_1', 'col_2', 'col_3']
 
-        # 生成HTML树结构
-        def generate_tree_html(nodes, tree_data):
-            """递归生成HTML树结构"""
-            html = "<ul>"
-            for node in nodes:
-                has_children = node in tree_data and len(tree_data[node]) > 0
-                caret_class = "expanded" if has_children else "no-child"
-                html += f'<li><span class="node {caret_class}">{node}</span>'
-                if has_children:
-                    html += generate_tree_html(tree_data[node], tree_data)
-                html += "</li>"
-            html += "</ul>"
-            return html
+        cursor.execute("SELECT * FROM fenxi LIMIT 100")
+        data = cursor.fetchall()
+        
+        display_data = [columns] + data  # 关键修改：添加表头行
+        # 如果有数据，设置表头
+        if data and hasattr(self, 'ui') and hasattr(self.ui, 'table_echo'):
+            from PySide6.QtGui import QStandardItemModel
+            model = QStandardItemModel()
+            model.setHorizontalHeaderLabels(columns)  # 使用真实列名作为表头
+            self.ui.table_echo.setModel(model)
+            
+        self.table_输出(display_data)  # 传递包含表头和数据的完整列表
+        
+    except Exception as e:
+        self.text_输出(f"数据库查询失败: {str(e)}")
+    finally:
+        conn.close()
 
-        # 统计层级人数
-        level_count = {}
+def 数据库查询(self):
+    """执行 SQL 查询并将结果显示在表格中"""
+    query = self.ui.db_str.text().strip()
+    if not query:
+        return
+    # 防注入
+    query = re.sub(r"['\"“”‘’]", "'", query)
+    results = 执行查询(self, query)
+    try:
+        self.table_输出(results)
+    except Exception as e:
+        self.text_输出(f"查询执行失败: {str(e)}")
 
-        def calculate_levels(parent_node, current_level):
-            nonlocal level_count
-            level_count[current_level] = level_count.get(current_level, 0) + 1
-            for child in tree.get(parent_node, []):
-                calculate_levels(child, current_level + 1)
+def 执行查询(self, query):
+    conn, cursor = 数据库连接(self)
+    try:
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.execute("PRAGMA table_info(fenxi)")
+        columns = [col[1] for col in cursor.fetchall()]
+        display_data = [columns] + data
+        return display_data
+    except Exception as e:
+        self.text_输出(f"查询执行失败: {str(e)}")
+    finally:
+        conn.close()
 
-        # 初始化层级统计
-        level_count = {}
-        # 从根节点开始统计
-        calculate_levels(根节点_label, 1)  # 根节点为第1层
 
-        # 生成HTML内容
-        html_content = f"""
-<!DOCTYPE html>
+def 删除数据库(self):
+    """删除数据库文件"""
+    db_path = f"{self.file_path}/数据分析.db"
+    if os.path.exists(db_path):
+        os.remove(db_path)
+        self.text_输出("数据库文件已删除")
+    else:
+        self.text_输出("数据库文件不存在")
+
+
+### @todo ! fnMap (待办) 查询语法再增加一点
+
+def 查询语法(self):
+    """将语法说明按行text_输出到表格中"""
+    # 定义语法说明
+    syntax_lines = [
+        ["SQL语法说明", ""],
+        ["SELECT * FROM table", "查询表中所有数据"],
+        ["SELECT col1,col2 FROM table", "查询指定列"],
+        ["WHERE condition", "条件查询"],
+        ["ORDER BY col", "按列排序"],
+        ["LIMIT n", "限制返回行数"]
+    ]
+    self.table_输出(syntax_lines)  # 将每一行作为单独的一行数据添加到表格中
+
+
+def 查询上线(self):
+
+    单人层级 = []
+    唯一ID = self.ui.data_input.text().strip()
+    查询信息 = ""
+    #层级 = 1
+    try:
+        conn, cursor = 数据库连接(self)
+        cursor.execute("SELECT * FROM fenxi WHERE A=?", (唯一ID,))
+        data = cursor.fetchone()
+        if data:
+            查询信息 = f"ID: {data[0]}, 名称: {data[1]}"
+            单人层级.append(查询信息)
+        conn.close()
+    except Exception as e:
+        self.text_输出(f"查询失败: {str(e)}")
+
+
+def 生成树状图(self):
+  # 清空表格
+    """生成可折叠的层级树状图"""
+    try:
+        conn, cursor = 数据库连接(self)
+        cursor.execute("SELECT * FROM fenxi")
+        data = cursor.fetchall()
+        conn.close()
+
+        # 生成HTML树状图代码
+        html = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>层级关系图</title>
     <style>
-        .node {{ cursor: pointer; padding-left: 15px; }}
-        .expanded::before {{ content: "▼ "; color: #666; }}
-        .collapsed::before {{ content: "▶ "; color: #666; }}
-        .no-child::before {{ content: "● "; color: #999; }}
-        ul {{ padding-left: 20px; list-style: none; }}
-        ul ul {{ display: none; }}  /* 默认隐藏子节点 */
-        ul .expanded + ul {{ display: block; }} /* 展开时显示 */
+        .tree ul {{
+            padding-left: 20px;
+            list-style-type: none;
+        }}
+        .tree li {{
+            margin: 5px 0;
+        }}
+        .tree li:before {{
+            content: "+ ";
+            color: blue;
+            cursor: pointer;
+        }}
+        .tree li.collapsed:before {{
+            content: "- ";
+        }}
+        .tree li.collapsed > ul {{
+            display: none;
+        }}
     </style>
 </head>
 <body>
-    <h2>人员层级统计（总人数：{总人数}，最大层级：{max(level_count.keys(), default=0)}）</h2>
+    <h2>人员层级统计（总人数：{len(data)}，最大层级：{max([int(row[2]) for row in data] if data else 0)}）</h2>
     <div id="tree">
-        {generate_tree_html(root_nodes, tree)}
+        <ul>
+            {''.join([f'<li>{row[1]} (ID: {row[0]}, 层级: {row[2]})</li>' for row in data])}
+        </ul>
     </div>
     <script>
-        document.querySelectorAll('.node').forEach(node => {{
-            if(node.classList.contains('expanded')) {{
-                node.nextElementSibling.style.display = 'block';
-            }}
-            node.addEventListener('click', function(e) {{
+        document.querySelectorAll('.tree li').forEach(li => {{
+            li.addEventListener('click', function(e) {{
                 e.stopPropagation();
-                const ul = this.nextElementSibling;
-                if (ul) {{
-                    const isHidden = ul.style.display === 'none';
-                    ul.style.display = isHidden ? 'block' : 'none';
-                    this.classList.toggle('collapsed', !isHidden);
-                    this.classList.toggle('expanded', isHidden);
-                }}
+                this.classList.toggle('collapsed');
             }});
         }});
     </script>
 </body>
-</html>
-  """
-        # 保存文件
-        with open(f"{file_path}/层级关系图.html", "w", encoding="utf-8") as f:
-            f.write(html_content)
-
-        append_to_table(self, [f"树状图已生成：{file_path}/层级关系图.html"])
-
+</html>"""
+        self.text_输出(html)
     except Exception as e:
-        append_to_table(self, [f"生成树状图失败：{str(e)}"])
+        self.text_输出(f"生成树状图失败: {str(e)}")

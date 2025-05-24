@@ -16,10 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-    QGroupBox, QHBoxLayout, QLabel, QLayout,
-    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
-    QTabWidget, QTextBrowser, QTextEdit, QVBoxLayout,
-    QWidget)
+    QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+    QLayout, QLineEdit, QPushButton, QSizePolicy,
+    QSpacerItem, QTabWidget, QTableView, QTextBrowser,
+    QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_zhu_windows(object):
     def setupUi(self, zhu_windows):
@@ -52,13 +52,13 @@ class Ui_zhu_windows(object):
 
         self.horizontalLayout_11 = QHBoxLayout()
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.dir_list = QTabWidget(zhu_windows)
-        self.dir_list.setObjectName(u"dir_list")
-        self.dir_list.setMinimumSize(QSize(430, 0))
-        self.dir_list.setMaximumSize(QSize(430, 16777215))
+        self.function_list = QTabWidget(zhu_windows)
+        self.function_list.setObjectName(u"function_list")
+        self.function_list.setMinimumSize(QSize(430, 0))
+        self.function_list.setMaximumSize(QSize(430, 16777215))
         font = QFont()
         font.setPointSize(10)
-        self.dir_list.setFont(font)
+        self.function_list.setFont(font)
         self.file_tab = QWidget()
         self.file_tab.setObjectName(u"file_tab")
         self.gridLayout_2 = QGridLayout(self.file_tab)
@@ -556,7 +556,7 @@ class Ui_zhu_windows(object):
 
         self.gridLayout_2.addItem(self.verticalSpacer, 11, 1, 1, 1)
 
-        self.dir_list.addTab(self.file_tab, "")
+        self.function_list.addTab(self.file_tab, "")
         self.pcap_tab = QWidget()
         self.pcap_tab.setObjectName(u"pcap_tab")
         self.verticalLayout = QVBoxLayout(self.pcap_tab)
@@ -867,7 +867,7 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout.addItem(self.verticalSpacer_4)
 
-        self.dir_list.addTab(self.pcap_tab, "")
+        self.function_list.addTab(self.pcap_tab, "")
         self.vol_tab = QWidget()
         self.vol_tab.setObjectName(u"vol_tab")
         self.verticalLayout_23 = QVBoxLayout(self.vol_tab)
@@ -1292,7 +1292,7 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_23.addWidget(self.tabWidget)
 
-        self.dir_list.addTab(self.vol_tab, "")
+        self.function_list.addTab(self.vol_tab, "")
         self.data_tab = QWidget()
         self.data_tab.setObjectName(u"data_tab")
         self.verticalLayout_11 = QVBoxLayout(self.data_tab)
@@ -1322,6 +1322,7 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.db_clear = QPushButton(self.data_tab)
         self.db_clear.setObjectName(u"db_clear")
+        self.db_clear.setEnabled(True)
         self.db_clear.setMinimumSize(QSize(100, 25))
         self.db_clear.setMaximumSize(QSize(100, 25))
 
@@ -1329,6 +1330,7 @@ class Ui_zhu_windows(object):
 
         self.list_clear = QPushButton(self.data_tab)
         self.list_clear.setObjectName(u"list_clear")
+        self.list_clear.setEnabled(False)
         self.list_clear.setMinimumSize(QSize(100, 25))
         self.list_clear.setMaximumSize(QSize(100, 25))
 
@@ -1378,6 +1380,7 @@ class Ui_zhu_windows(object):
 
         self.db_select_but = QPushButton(self.data_tab)
         self.db_select_but.setObjectName(u"db_select_but")
+        self.db_select_but.setEnabled(True)
 
         self.horizontalLayout_23.addWidget(self.db_select_but)
 
@@ -1423,11 +1426,13 @@ class Ui_zhu_windows(object):
 
         self.select_one = QPushButton(self.data_tab)
         self.select_one.setObjectName(u"select_one")
+        self.select_one.setEnabled(False)
 
         self.verticalLayout_10.addWidget(self.select_one)
 
         self.show_guanxi = QPushButton(self.data_tab)
         self.show_guanxi.setObjectName(u"show_guanxi")
+        self.show_guanxi.setEnabled(False)
         self.show_guanxi.setAutoDefault(False)
         self.show_guanxi.setFlat(False)
 
@@ -1440,7 +1445,7 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_11.addLayout(self.verticalLayout_10)
 
-        self.dir_list.addTab(self.data_tab, "")
+        self.function_list.addTab(self.data_tab, "")
         self.misc_tab = QWidget()
         self.misc_tab.setObjectName(u"misc_tab")
         self.verticalLayout_4 = QVBoxLayout(self.misc_tab)
@@ -1529,6 +1534,7 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_46.addWidget(self.hook_name)
 
         self.hook_fun = QComboBox(self.misc_tab)
+        self.hook_fun.addItem("")
         self.hook_fun.addItem("")
         self.hook_fun.addItem("")
         self.hook_fun.addItem("")
@@ -1669,9 +1675,9 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_4.addItem(self.verticalSpacer_6)
 
-        self.dir_list.addTab(self.misc_tab, "")
+        self.function_list.addTab(self.misc_tab, "")
 
-        self.horizontalLayout_11.addWidget(self.dir_list)
+        self.horizontalLayout_11.addWidget(self.function_list)
 
         self.verticalLayout_6 = QVBoxLayout()
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
@@ -1708,30 +1714,44 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_6.addLayout(self.horizontalLayout)
 
-        self.print_echo = QTextEdit(zhu_windows)
-        self.print_echo.setObjectName(u"print_echo")
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.text_echo = QTextEdit(zhu_windows)
+        self.text_echo.setObjectName(u"text_echo")
+        self.text_echo.setMinimumSize(QSize(0, 0))
+        self.text_echo.setMaximumSize(QSize(16777215, 16777215))
         font8 = QFont()
         font8.setFamilies([u"Microsoft YaHei UI"])
         font8.setPointSize(12)
         font8.setBold(False)
         font8.setItalic(False)
-        self.print_echo.setFont(font8)
-        self.print_echo.setStyleSheet(u"font: 12pt \"Microsoft YaHei UI\";")
-        self.print_echo.setReadOnly(True)
+        self.text_echo.setFont(font8)
+        self.text_echo.setStyleSheet(u"font: 12pt \"Microsoft YaHei UI\";")
+        self.text_echo.setReadOnly(True)
 
-        self.verticalLayout_6.addWidget(self.print_echo)
+        self.verticalLayout_5.addWidget(self.text_echo)
+
+        self.table_echo = QTableView(zhu_windows)
+        self.table_echo.setObjectName(u"table_echo")
+        self.table_echo.setMaximumSize(QSize(16777215, 0))
+
+        self.verticalLayout_5.addWidget(self.table_echo)
+
+        self.verticalLayout_5.setStretch(0, 9)
+        self.verticalLayout_5.setStretch(1, 1)
+
+        self.verticalLayout_6.addLayout(self.verticalLayout_5)
 
 
         self.horizontalLayout_11.addLayout(self.verticalLayout_6)
 
-        self.horizontalLayout_11.setStretch(1, 6)
 
         self.verticalLayout_13.addLayout(self.horizontalLayout_11)
 
 
         self.retranslateUi(zhu_windows)
 
-        self.dir_list.setCurrentIndex(4)
+        self.function_list.setCurrentIndex(3)
         self.tabWidget.setCurrentIndex(0)
         self.show_guanxi.setDefault(False)
 
@@ -1814,7 +1834,7 @@ class Ui_zhu_windows(object):
         self.single_crc_but.setText(QCoreApplication.translate("zhu_windows", u"\u5355\u6587\u4ef6CRC\u7206\u7834", None))
         self.zip_wei_but.setText(QCoreApplication.translate("zhu_windows", u"\u4f2a\u52a0\u5bc6\u7834\u89e3", None))
         self.more_crc_but.setText(QCoreApplication.translate("zhu_windows", u"\u591a\u6587\u4ef6CRC\u7206\u7834", None))
-        self.dir_list.setTabText(self.dir_list.indexOf(self.file_tab), QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u5904\u7406", None))
+        self.function_list.setTabText(self.function_list.indexOf(self.file_tab), QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u5904\u7406", None))
 #if QT_CONFIG(tooltip)
         self.flag_search_but_2.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u6570\u636e\u4e2d\u641c\u7d22\u6307\u5b9a\u7684ascii\u5b57\u7b26\u4e32,\u9700\u6307\u5b9a\u6587\u4ef6\u548c\u5b57\u7b26\u4e32", None))
 #endif // QT_CONFIG(tooltip)
@@ -1856,7 +1876,7 @@ class Ui_zhu_windows(object):
         self.find_key.setText(QCoreApplication.translate("zhu_windows", u"\u641c\u7d22KEY", None))
         self.sd_but.setText(QCoreApplication.translate("zhu_windows", u"\u624b\u52a8\u6570\u636e\u5206\u6790", None))
         self.auto_but.setText(QCoreApplication.translate("zhu_windows", u"\u81ea\u52a8\u5206\u6790", None))
-        self.dir_list.setTabText(self.dir_list.indexOf(self.pcap_tab), QCoreApplication.translate("zhu_windows", u"\u6d41\u91cf\u5206\u6790", None))
+        self.function_list.setTabText(self.function_list.indexOf(self.pcap_tab), QCoreApplication.translate("zhu_windows", u"\u6d41\u91cf\u5206\u6790", None))
         self.set_vol.setText(QCoreApplication.translate("zhu_windows", u"\u9009\u62e9vol\u76ee\u5f55", None))
         self.vol3_but.setText(QCoreApplication.translate("zhu_windows", u"vol3\u8bf4\u660e\u4e66", None))
         self.vol2_but.setText(QCoreApplication.translate("zhu_windows", u"vol2\u8bf4\u660e\u4e66", None))
@@ -1988,10 +2008,10 @@ class Ui_zhu_windows(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("zhu_windows", u"VOL3", None))
         self.pushButton_4.setText(QCoreApplication.translate("zhu_windows", u"PushButton", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("zhu_windows", u"VOL2", None))
-        self.dir_list.setTabText(self.dir_list.indexOf(self.vol_tab), QCoreApplication.translate("zhu_windows", u"\u5185\u5b58\u5206\u6790", None))
+        self.function_list.setTabText(self.function_list.indexOf(self.vol_tab), QCoreApplication.translate("zhu_windows", u"\u5185\u5b58\u5206\u6790", None))
         self.label_2.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u8f93\u5165\u533a", None))
         self.start_db_but.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5165\u5e93", None))
-        self.db_clear.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5e93\u6e05\u9664", None))
+        self.db_clear.setText(QCoreApplication.translate("zhu_windows", u"\u5220\u9664\u6570\u636e\u5e93", None))
         self.list_clear.setText(QCoreApplication.translate("zhu_windows", u"\u8868\u683c\u6e05\u7406", None))
         self.label_14.setText(QCoreApplication.translate("zhu_windows", u"SQL\u6570\u636e\u67e5\u8be2", None))
         self.select_yufa.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u8bed\u6cd5", None))
@@ -2000,7 +2020,7 @@ class Ui_zhu_windows(object):
         self.data_input.setText(QCoreApplication.translate("zhu_windows", u"\u8bf7\u8f93\u5165\u8981\u67e5\u8be2\u7684\u552f\u4e00ID", None))
         self.select_one.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u4e2a\u4eba\u4e0a\u7ebf", None))
         self.show_guanxi.setText(QCoreApplication.translate("zhu_windows", u"\u5c42\u7ea7\u6811\u72b6\u56fe", None))
-        self.dir_list.setTabText(self.dir_list.indexOf(self.data_tab), QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5206\u6790", None))
+        self.function_list.setTabText(self.function_list.indexOf(self.data_tab), QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5206\u6790", None))
         self.label_5.setText(QCoreApplication.translate("zhu_windows", u"IOS\u5206\u6790", None))
         self.plist_but.setText(QCoreApplication.translate("zhu_windows", u"plist\u89e3\u6790", None))
         self.label_6.setText(QCoreApplication.translate("zhu_windows", u"android\u5206\u6790", None))
@@ -2008,9 +2028,10 @@ class Ui_zhu_windows(object):
         self.label_20.setText(QCoreApplication.translate("zhu_windows", u"HOOK\u5de5\u5177", None))
         self.hook_name.setText(QCoreApplication.translate("zhu_windows", u"\u8f93\u5165\u5305\u540d", None))
         self.hook_fun.setItemText(0, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u5168\u90e8\u5b57\u7b26\u4e32", None))
-        self.hook_fun.setItemText(1, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6AES\u52a0\u5bc6", None))
-        self.hook_fun.setItemText(2, QCoreApplication.translate("zhu_windows", u"\u53cd\u8c03\u8bd5", None))
-        self.hook_fun.setItemText(3, QCoreApplication.translate("zhu_windows", u"\u7ed5\u8fc7frida\u68c0\u6d4b", None))
+        self.hook_fun.setItemText(1, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6\u5b57\u7b26\u4e32", None))
+        self.hook_fun.setItemText(2, QCoreApplication.translate("zhu_windows", u"\u83b7\u53d6AES\u52a0\u5bc6", None))
+        self.hook_fun.setItemText(3, QCoreApplication.translate("zhu_windows", u"\u53cd\u8c03\u8bd5", None))
+        self.hook_fun.setItemText(4, QCoreApplication.translate("zhu_windows", u"\u7ed5\u8fc7frida\u68c0\u6d4b", None))
 
         self.hook_but.setText(QCoreApplication.translate("zhu_windows", u"HOOK\u6267\u884c", None))
         self.label_21.setText(QCoreApplication.translate("zhu_windows", u"python\u53cd\u7f16\u8bd1", None))
@@ -2022,11 +2043,11 @@ class Ui_zhu_windows(object):
         self.time_zhuan.setText(QCoreApplication.translate("zhu_windows", u"\u65f6\u95f4\u6233\u8f6c\u6362", None))
         self.rsa_public.setText(QCoreApplication.translate("zhu_windows", u"RSA\u516c\u94a5\u5206\u89e3", None))
         self.ceshi111_but.setText(QCoreApplication.translate("zhu_windows", u"\u6d4b\u8bd5\u6309\u94ae", None))
-        self.dir_list.setTabText(self.dir_list.indexOf(self.misc_tab), QCoreApplication.translate("zhu_windows", u"\u9006\u5411\u5206\u6790", None))
+        self.function_list.setTabText(self.function_list.indexOf(self.misc_tab), QCoreApplication.translate("zhu_windows", u"\u9006\u5411\u5206\u6790", None))
         self.label.setText(QCoreApplication.translate("zhu_windows", u"\u56de\u663e\u8f93\u51fa", None))
         self.silu_but.setText(QCoreApplication.translate("zhu_windows", u"\u8bf4\u660e\u6587\u6863", None))
         self.clear_but.setText(QCoreApplication.translate("zhu_windows", u"\u6e05\u7406\u56de\u663e", None))
-        self.print_echo.setHtml(QCoreApplication.translate("zhu_windows", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.text_echo.setHtml(QCoreApplication.translate("zhu_windows", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"

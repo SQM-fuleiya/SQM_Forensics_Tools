@@ -21,6 +21,7 @@ import pybase100
 import pyexiv2
 from PIL import Image, ImageSequence
 
+
 文件头 = {
     "FFD8FFE0": "JPG",
     "89504E47": "PNG",
@@ -73,73 +74,73 @@ def 文件读取(self):
             file_data = self.ui.input_text.toPlainText()
             return file_data.encode("utf-8")
         else:
-            self.输出("文件和输入都为空,你打算解个p吃?")
+            self.text_输出("文件和输入都为空,你打算解个p吃?")
     elif self.file_name != "":  # 读取文件内容
         try:
             with open(self.file_name, "rb") as f:
                 file_data = f.read()  # 读取文件数据 布尔类型
             return file_data
         except Exception as e:
-            self.输出(f"未能读取文件,请检查输入目录{e}")
+            self.text_输出(f"未能读取文件,请检查输入目录{e}")
     else:
-        self.输出("请输入内容，或拖拽文件到窗口")
+        self.text_输出("请输入内容，或拖拽文件到窗口")
 
 
 def 识别文件(self):
     file_data = 文件读取(self)
     data_hard = binascii.hexlify(file_data)[0:8].decode()  # 转换为十六进制数据 并剪切前8位
-    self.输出("文件头为：" + data_hard)
+    self.text_输出("文件头为：" + data_hard)
 
     if data_hard.upper() in 文件头.keys():
         file_type = 文件头[data_hard.upper()]
-        self.输出("自动识别的文件类型为：" + str(file_type))
+        self.text_输出("自动识别的文件类型为：" + str(file_type))
         return file_data, file_type
     else:
-        self.输出("未识别的文件类型")
+        self.text_输出("未识别的文件类型")
     try:
         decoded_data = file_data.decode("utf-8", errors="ignore")  # 更安全的解码方式
         if re.search(r"=$", decoded_data, re.I):
-            self.输出("文件中包含 '=' 字符,可能是base64编码")
+            self.text_输出("文件中包含 '=' 字符,可能是base64编码")
 
         zero_width_chars = re.findall(r"[\u200b\u200C\u200d\u200e\u202a\u202c\u202d\u2022\u2023\ufeff]", decoded_data)
 
         if zero_width_chars:
             unique_chars = list(dict.fromkeys(zero_width_chars))  # 去重
-            self.输出(f"文件中包含 '{unique_chars}' 等字符,可能是零宽隐写")
-            self.输出("请注意,解码时可能需要不勾选200b")
+            self.text_输出(f"文件中包含 '{unique_chars}' 等字符,可能是零宽隐写")
+            self.text_输出("请注意,解码时可能需要不勾选200b")
     except UnicodeDecodeError:
-        self.输出("文件内容无法解码为文本")
+        self.text_输出("文件内容无法解码为文本")
     except Exception as e:
-        self.输出(f"分析文件时发生错误: {str(e)}")
+        self.text_输出(f"分析文件时发生错误: {str(e)}")
 
 
 """----------------------------------右键功能-------------------------------"""
 
 
 def 右键base64解码(self):
-    字符串 = self.ui.print_echo.textCursor().selectedText()
+    字符串 = self.ui.text_echo.textCursor().selectedText()
     if 字符串:
         try:
-            self.输出(base64.b64decode(字符串).decode())
+            self.text_输出(base64.b64decode(字符串).decode())
         except Exception:
-            self.输出("base64解码错误,请检查编码格式")
+            self.text_输出("base64解码错误,请检查编码格式")
     else:
-        self.输出("没有选中任何内容。")
+        self.text_输出("没有选中任何内容。")
 
 
 def 右键url解码(self):
-    字符串 = self.ui.print_echo.textCursor().selectedText()
+    字符串 = self.ui.text_echo.textCursor().selectedText()
     if 字符串:
         try:
-            self.输出(parse.unquote(字符串))
+            self.text_输出(parse.unquote(字符串))
         except Exception:
-            self.输出("url解码错误,请检查编码格式")
+            self.text_输出("url解码错误,请检查编码格式")
     else:
-        self.输出("没有选中任何内容。")
+        self.text_输出("没有选中任何内容。")
 
 
 def hex解码(self):
-    file_data = self.ui.print_echo.textCursor().selectedText()
+    file_data = self.ui.text_echo.textCursor().selectedText()
     if file_data.split(":"):
         file_data = "".join(file_data.split(":"))
     if file_data:
@@ -148,18 +149,23 @@ def hex解码(self):
                 解码后字符串 = binascii.unhexlify(file_data).decode()
             else:
                 解码后字符串 = binascii.unhexlify(file_data[:-1]).decode()
-            self.输出(解码后字符串)
+            self.text_输出(解码后字符串)
         except Exception:
-            self.输出("hex解码错误,请检查编码格式")
+            self.text_输出("hex解码错误,请检查编码格式")
     else:
-        self.输出("没有选中任何内容。")
+        self.text_输出("没有选中任何内容。")
+
+
+
+
+
 
 
 """----------------------------------文件分析-------------------------------"""
 
 
 def 字符串搜索(self):
-    self.ui.print_echo.clear()
+    self.ui.text_echo.clear()
     输入正则 = self.ui.re_ipnut.text().split(",")
     if 输入正则 != ["可输入正则，默认为flag"]:
         正则参数.clear()
@@ -170,71 +176,71 @@ def 字符串搜索(self):
             正则参数.append(f"{base64.b64encode(escaped_i.encode())[:4].decode()}[a-zA-Z0-9=]+")
             正则参数.append(f"[0-9a-fA-F]+{binascii.hexlify(escaped_i.encode()).decode()}[0-9a-fA-F]+")
         for i in range(len(正则参数)):
-            self.输出("已更换正则表达式为：" + 正则参数[i])
+            self.text_输出("已更换正则表达式为：" + 正则参数[i])
 
     try:
         file_data = 文件读取(self)
         for i in 正则参数:  # 列表中内容循环存进 i
             s = re.findall(i, file_data.decode(), re.I)
             for match in s:
-                self.输出(f"匹配到: {match}")
-        self.输出("正则匹配结束")
+                self.text_输出(f"匹配到: {match}")
+        self.text_输出("正则匹配结束")
     except Exception as e:
-        self.输出(f"正则搜索错误{str(e)}")
+        self.text_输出(f"正则搜索错误{str(e)}")
 
         return
 
 
 def 二进制打开(self):
-    self.ui.print_echo.clear()
+    self.ui.text_echo.clear()
     file_data = 文件读取(self)
     if file_data:
-        self.输出(f"{file_data}")
+        self.text_输出(f"{file_data}")
     else:
-        self.输出("请输入内容，或拖拽文件到窗口")
+        self.text_输出("请输入内容，或拖拽文件到窗口")
 
 
 def binwalk分离(self):
-    self.ui.print_echo.clear()
-    self.输出("正在运行binwalk分离")
+    self.ui.text_echo.clear()
+    self.text_输出("正在运行binwalk分离")
     try:
         try:
-            输出 = subprocess.check_output(f"python -m binwalk -e {self.file_name} -C {self.file_path}")
-            for i in 输出.decode().splitlines():
-                self.输出(i)
-            self.输出(f"binwalk分离运行完毕，请到{self.file_path}目录下查看分离结果")
+            text_输出 = subprocess.check_output(f"python -m binwalk -e {self.file_name} -C {self.file_path}")
+            for i in text_输出.decode().splitlines():
+                self.text_输出(i)
+            self.text_输出(f"binwalk分离运行完毕，请到{self.file_path}目录下查看分离结果")
         except ModuleNotFoundError as e:
-            self.输出(f"binwalk错误: {e}")
+            self.text_输出(f"binwalk错误: {e}")
     except Exception:
-        self.输出("没装binwalk吧,或者没配置环境?")
+        self.text_输出("没装binwalk吧,或者没配置环境?")
 
 
 def format文件分离(self):
-    self.ui.print_echo.clear()
-    self.输出("正在运行foremost分离")
+    self.ui.text_echo.clear()
+    self.text_输出("正在运行foremost分离")
     try:
         output_dir = os.path.join(self.file_path, "foremost分离结果")
         subprocess.check_output(f"./tools/foremost.exe -v -o {output_dir} -i {self.file_name} ")
     except Exception as e:
-        self.输出(f"foremost错误: {e}")
+        self.text_输出(f"foremost错误: {e}")
     with open(self.file_path + "foremost分离结果/audit.txt", "r") as f:
         for i in f.readlines():
             i = i.strip()
             if i != "":
-                self.输出(i.split("\n")[0])
+                self.text_输出(i.split("\n")[0])
 
-    self.输出(f"分离成功，请到{self.file_path + 'foremost分离结果'}目录下查看分离结果")
+    self.text_输出(f"分离成功，请到{self.file_path + 'foremost分离结果'}目录下查看分离结果")
 
 
 def 字符串翻转(self):
-    self.ui.print_echo.clear()
+    self.ui.text_echo.clear()
     file_data = 文件读取(self).decode()
-    self.输出(file_data[::-1])
+    self.text_输出(file_data[::-1])
 
 
 def 字频分析(self):
-    self.ui.print_echo.clear()
-    self.输出("正在运行字频分析")
+    self.ui.text_echo.clear()
+    self.text_输出("正在运行字频分析")
     try:
         file_data = 文件读取(self)
         字频 = {}
@@ -248,13 +254,13 @@ def 字频分析(self):
             x += 1
         字频排序 = sorted(字频.items(), key=lambda d: d[1], reverse=True)
     except Exception:
-        self.输出("字频分析错误")
+        self.text_输出("字频分析错误")
     for i in 字频排序:
-        self.输出("字频排序为:" + str(i))
+        self.text_输出("字频排序为:" + str(i))
 
 
 def 词频分析(self):
-    self.输出("正在运行词频分析")
+    self.text_输出("正在运行词频分析")
     try:
         file_data = 文件读取(self).decode("utf-8", errors="ignore")
         # 使用正则表达式提取英文单词（过滤纯数字）
@@ -268,10 +274,10 @@ def 词频分析(self):
 
         # 只显示前50个高频词
         for i, (word, count) in enumerate(词频排序[:50]):
-            self.输出(f"TOP{i + 1}: {word.ljust(15)} 出现次数: {count}")
+            self.text_输出(f"TOP{i + 1}: {word.ljust(15)} 出现次数: {count}")
 
     except Exception as e:
-        self.输出(f"词频分析错误: {str(e)}")
+        self.text_输出(f"词频分析错误: {str(e)}")
 
 
 def 可打印字符(self):
@@ -286,15 +292,15 @@ def 可打印字符(self):
         for i in data:
             字符.append(i)
         if not 字符:
-            self.输出("无可打印字符")
+            self.text_输出("无可打印字符")
         else:
-            self.输出("".join(字符))
+            self.text_输出("".join(字符))
     except Exception:
-        self.输出("出现错误")
+        self.text_输出("出现错误")
 
 
 def 零宽字符隐写(self):
-    self.输出("正在调用网页进行零宽字符隐写解密")
+    self.text_输出("正在调用网页进行零宽字符隐写解密")
     os.startfile(os.path.relpath("./tools/unicode.html"))
 
 
@@ -307,7 +313,7 @@ def hex_str_带偏移(self):
         if file_data == "":
             file_data = 文件读取(self).decode("utf-8")
     except Exception:
-        self.输出("文件读取失败")
+        self.text_输出("文件读取失败")
     偏移值 = 10
     for x in range(偏移值):
         temp_result = ""
@@ -318,9 +324,9 @@ def hex_str_带偏移(self):
                 temp_result += a
                 i += 2
             except ValueError:
-                self.输出(f"偏移值{x}在发生错误。")
+                self.text_输出(f"偏移值{x}在发生错误。")
         if temp_result:
-            self.输出(f"偏移值为正{x}的结果为：" + temp_result)
+            self.text_输出(f"偏移值为正{x}的结果为：" + temp_result)
     for x in range(偏移值):
         temp_result = ""
         i = 0
@@ -330,9 +336,9 @@ def hex_str_带偏移(self):
                 temp_result += a
                 i += 2
             except ValueError:
-                self.输出(f"偏移值{x}在发生错误。")
+                self.text_输出(f"偏移值{x}在发生错误。")
         if temp_result:
-            self.输出(f"偏移值为负{x}的结果为：" + temp_result)
+            self.text_输出(f"偏移值为负{x}的结果为：" + temp_result)
 
 
 def base解码(self):
@@ -343,7 +349,7 @@ def base解码(self):
         if any(char in file_data for char in ["%20", "%23", "%27", "%3D"]):
             file_data = url解码(self, file_data)
     except Exception as e:
-        self.输出(f"文件读取失败: {str(e)}")
+        self.text_输出(f"文件读取失败: {str(e)}")
         return
 
     命令 = [
@@ -369,7 +375,7 @@ def base解码(self):
             try:
                 if y() != "":
                     data = y()
-                    self.输出(f"第{i}次为{x}解码:{data}")
+                    self.text_输出(f"第{i}次为{x}解码:{data}")
             except Exception:
                 pass
         max_attempts = 10  # 最大尝试次数防止无限循环
@@ -381,7 +387,7 @@ def base解码(self):
                 try:
                     result = decoder()
                     if result and result != data:  # 有新解码结果
-                        self.输出(f"第{i}次为{name}解码:{result}")
+                        self.text_输出(f"第{i}次为{name}解码:{result}")
                         data = result
                         decoded = True
                         break  # 找到一个可解码的就跳出循环
@@ -389,7 +395,7 @@ def base解码(self):
                     continue
 
             if not decoded or data == file_data:
-                self.输出("解码完成")
+                self.text_输出("解码完成")
                 break
 
             file_data = data
@@ -401,13 +407,13 @@ def 栅栏密码(self):
         if file_data == "":
             file_data = 文件读取(self).decode("utf-8")
     except Exception:
-        self.输出("文件读取失败")
+        self.text_输出("文件读取失败")
     try:
         # 通过因数法解码栅栏密码
         factors = [fac for fac in range(2, len(file_data) + 1) if len(file_data) % fac == 0]  # 找到所有因数
         for fac in factors:
-            flag = "".join(file_data[i::fac] for i in range(fac))  # 输出栅栏密码
-            self.输出(f"{fac}栏：{flag}")
+            flag = "".join(file_data[i::fac] for i in range(fac))  # text_输出栅栏密码
+            self.text_输出(f"{fac}栏：{flag}")
 
         # 通过w字形法解码栅栏密码
         for n in range(2, len(file_data)):  # 遍历所有可能的栏数
@@ -435,11 +441,11 @@ def 栅栏密码(self):
                 for row in range(n):
                     if array[row][col] != ".":
                         msg.append(array[row][col])
-            self.输出(f"Z字形{n}栏：{''.join(msg)}")
+            self.text_输出(f"Z字形{n}栏：{''.join(msg)}")
     except ValueError as e:
-        self.输出(str(e))
+        self.text_输出(str(e))
     except Exception:
-        self.输出("解码错误,请确认字符串是否正确")
+        self.text_输出("解码错误,请确认字符串是否正确")
 
 
 def 爆破凯撒密码(self):
@@ -448,14 +454,14 @@ def 爆破凯撒密码(self):
         if file_data == "":
             file_data = 文件读取(self).decode("utf-8")
     except Exception:
-        self.输出("文件读取失败")
+        self.text_输出("文件读取失败")
     try:
         # 凯撒密码 同key解密
         message = file_data.upper()  # 去掉二进制标注并为转大写
         LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         for key in range(len(LETTERS)):  # 最多就25个key，一个一个来
             translated = ""
-            for symble in message:  # 对于每一个key 都要输出一组明文
+            for symble in message:  # 对于每一个key 都要text_输出一组明文
                 if symble in LETTERS:
                     num = LETTERS.find(symble)
                     num = num - key
@@ -464,11 +470,11 @@ def 爆破凯撒密码(self):
                     translated = translated + LETTERS[num]
                 else:
                     translated = translated + symble
-            self.输出(f"第{key}的结果为: {translated}")  # 输出结果  共计26个结果
+            self.text_输出(f"第{key}的结果为: {translated}")  # text_输出结果  共计26个结果
         # 凯撒密码 异key解密
 
     except Exception:
-        self.输出("解码错误,请确认字符串是否正确")
+        self.text_输出("解码错误,请确认字符串是否正确")
 
 
 def 核心价值观解码(self):
@@ -477,7 +483,7 @@ def 核心价值观解码(self):
         if file_data == "":
             file_data = 文件读取(self).decode("utf-8")
     except Exception:
-        self.输出("文件读取失败")
+        self.text_输出("文件读取失败")
     try:
         VALUE = "富强民主文明和谐自由平等公正法治爱国敬业诚信友善"
         assert len(file_data) % 2 == 0  # 确认字符串长度
@@ -497,16 +503,16 @@ def 核心价值观解码(self):
                 bns += hex(ans[i + 1] + 6)[2:]
                 i += 2
             else:
-                self.输出("数据错误:" + ans)
+                self.text_输出("数据错误:" + ans)
         tmp = ""
         for i in range(len(bns)):
             if not i % 2:
                 tmp += "%"
             tmp += bns[i]
         result = parse.unquote(tmp)  # 还原
-        self.输出("解密结果为：" + result)
+        self.text_输出("解密结果为：" + result)
     except Exception:
-        self.输出("输入错误")
+        self.text_输出("输入错误")
 
 
 def fuck解码(self, file_data):
@@ -514,7 +520,7 @@ def fuck解码(self, file_data):
         if not file_data:
             file_data = 文件读取(self).decode("utf-8")
     except Exception:
-        self.输出("fuck解码文件读取错误,请检查文件是否为空")
+        self.text_输出("fuck解码文件读取错误,请检查文件是否为空")
     try:
         li = [0]
         index = 0
@@ -553,22 +559,22 @@ def fuck解码(self, file_data):
             i += 1
         for i in output:
             结果.append(chr(i))
-        self.输出("fuck解码成功 , 得到结果为:")
-        self.输出("".join(结果))
+        self.text_输出("fuck解码成功 , 得到结果为:")
+        self.text_输出("".join(结果))
     except Exception:
-        self.输出("fuck解码错误,请确认字符串是否正确")
+        self.text_输出("fuck解码错误,请确认字符串是否正确")
 
 
 def ook解码(self):
     try:
         file_data = 文件读取(self).decode("utf-8")
     except Exception:
-        self.输出("ook解码文件读取错误,请检查文件是否为空")
+        self.text_输出("ook解码文件读取错误,请检查文件是否为空")
     try:
         ook_data = []
         words = re.findall("[.?!]", file_data)
         if not words:
-            self.输出("ook解码失败,输入的字符串为空")
+            self.text_输出("ook解码失败,输入的字符串为空")
         else:
             for i in range(0, len(words), 2):
                 pair = "".join(words[i : i + 2])
@@ -590,13 +596,13 @@ def ook解码(self):
                     ook_data.append("]")
                 else:
                     raise Exception("发生异常")
-            self.输出("ook转码为fuck成功,开始使用fuck解码")
+            self.text_输出("ook转码为fuck成功,开始使用fuck解码")
             try:
                 fuck解码(self, ook_data)
             except Exception:
-                self.输出("ook转码为fuck错误,请确认字符串是否正确")
+                self.text_输出("ook转码为fuck错误,请确认字符串是否正确")
     except Exception:
-        self.输出("ook转码为fuck错误,请确认字符串是否正确")
+        self.text_输出("ook转码为fuck错误,请确认字符串是否正确")
 
 
 def url解码(self, 数据):
@@ -606,37 +612,38 @@ def url解码(self, 数据):
             if 数据 == "":
                 数据 = 文件读取(self).decode("utf-8")
         except Exception:
-            self.输出("文件读取失败")
+            self.text_输出("文件读取失败")
     try:
         if "%20" or "%23" or "%27" or "%3D" in 数据:  # 判断是否需要url解码
             prev = None
             while prev != 数据:
                 prev = 数据
                 数据 = parse.unquote(数据)
-        self.输出(数据)
+        self.text_输出(数据)
         return 数据
     except Exception:
-        self.输出("url解码错误")
+        self.text_输出("url解码错误")
 
 
 def html解码(self):
-    try:
+    file_data = self.ui.text_echo.textCursor().selectedText()
+    if not file_data:
         file_data = self.ui.input_text.toPlainText()
-        if file_data == "":
+        if not file_data:
             file_data = 文件读取(self).decode("utf-8")
-    except Exception:
-        self.输出("文件读取失败")
+            if not file_data:
+                self.text_输出("没有要解码的字符串")    
     if file_data:
         try:
             解码后字符串 = []
             字符 = re.findall("[0-9]+", file_data)
             for i in 字符:
                 解码后字符串.append(chr(int(i)))
-            self.输出("".join(解码后字符串))
+            self.text_输出("".join(解码后字符串))
         except Exception:
-            self.ui.str_echo.append("hex解码错误,请检查编码格式")
+            self.ui.text_echo.append("hex解码错误,请检查编码格式")
     else:
-        self.ui.str_echo.append("没有选中任何内容。")
+        self.ui.text_echo.append("没有选中任何内容。")
 
 
 """----------------------------------图片分析-------------------------------"""
@@ -644,9 +651,9 @@ def html解码(self):
 
 def PNG_IDAT分析(self):
     """分析PNG文件中的IDAT数据块"""
-    self.ui.print_echo.clear()
+    self.ui.text_echo.clear()
     if not self.file_name:
-        self.输出("请先选择文件")
+        self.text_输出("请先选择文件")
         return
         
     try:
@@ -655,7 +662,7 @@ def PNG_IDAT分析(self):
         
         # 检查PNG文件头
         if data[:8] != b'\x89PNG\r\n\x1a\n':
-            self.输出("不是有效的PNG文件")
+            self.text_输出("不是有效的PNG文件")
             return
 
         # 解析数据块
@@ -672,25 +679,25 @@ def PNG_IDAT分析(self):
             if chunk_type == b'IDAT':
                 idat_count += 1
                 idat_sizes.append(chunk_len)
-                self.输出(f"发现IDAT块 #{idat_count}, 长度: {chunk_len}字节")
+                self.text_输出(f"发现IDAT块 #{idat_count}, 长度: {chunk_len}字节")
             
             # 移动到下一个块
             offset += chunk_len + 4  # 跳过数据和CRC
             
-        self.输出(f"\nIDAT块分析完成: 共发现{idat_count}个IDAT块")
+        self.text_输出(f"\nIDAT块分析完成: 共发现{idat_count}个IDAT块")
         if idat_count > 1:
-            self.输出("警告: 检测到多个IDAT块，可能存在异常")
+            self.text_输出("警告: 检测到多个IDAT块，可能存在异常")
         elif idat_count == 0:
-            self.输出("错误: 未发现IDAT块")
+            self.text_输出("错误: 未发现IDAT块")
         
     except Exception as e:
-        self.输出(f"PNG分析出错: {str(e)}")
+        self.text_输出(f"PNG分析出错: {str(e)}")
 
 def JPG块分析(self):
     """分析JPG文件中的隐藏数据块"""
-    self.ui.print_echo.clear()
+    self.ui.text_echo.clear()
     if not self.file_name:
-        self.输出("请先选择文件")
+        self.text_输出("请先选择文件")
         return
         
     try:
@@ -699,7 +706,7 @@ def JPG块分析(self):
         
         # 检查JPG文件头
         if data[:2] != b'\xFF\xD8':
-            self.输出("不是有效的JPG文件")
+            self.text_输出("不是有效的JPG文件")
             return
 
         # JPG标记解析
@@ -727,7 +734,7 @@ def JPG块分析(self):
             if marker in markers:
                 marker_name = markers[marker]
                 length = struct.unpack('>H', data[offset+2:offset+4])[0]
-                self.输出(f"发现{marker_name}标记, 长度: {length}字节")
+                self.text_输出(f"发现{marker_name}标记, 长度: {length}字节")
                 
                 # 检查APPn标记中的异常数据
                 if marker_name.startswith('APP') and length > 20:
@@ -740,21 +747,21 @@ def JPG块分析(self):
                 offset += 1
                 
         if hidden_data:
-            self.输出("\n警告: 检测到可能隐藏的数据:")
+            self.text_输出("\n警告: 检测到可能隐藏的数据:")
             for marker, pos, length in hidden_data:
-                self.输出(f"- {marker}标记在偏移 {pos} 处, 长度 {length} 字节")
+                self.text_输出(f"- {marker}标记在偏移 {pos} 处, 长度 {length} 字节")
         else:
-            self.输出("\n未检测到隐藏数据")
+            self.text_输出("\n未检测到隐藏数据")
             
     except Exception as e:
-        self.输出(f"JPG分析出错: {str(e)}")
+        self.text_输出(f"JPG分析出错: {str(e)}")
 
 
 def 图片元数据(self):
     try:
         img = pyexiv2.Image(self.file_name, encoding="GBK")
         exif = img.read_exif()
-        self.输出("[*] 图片元数据 - EXIF信息：")
+        self.text_输出("[*] 图片元数据 - EXIF信息：")
         命令 = [
             ("高度", exif["Exif.Image.ImageWidth"]),
             ("宽度", exif["Exif.Image.ImageLength"]),
@@ -779,18 +786,18 @@ def 图片元数据(self):
             ("海拔", exif["Exif.GPSInfo.GPSAltitude"]),
         ]
         for key, value in 命令:
-            self.输出("{}:{}".format(key, value))
+            self.text_输出("{}:{}".format(key, value))
         iptc = img.read_iptc()
-        self.输出("[*] 图片元数据 - IPTC信息：")
+        self.text_输出("[*] 图片元数据 - IPTC信息：")
         for key, value in iptc.items():
-            self.输出("{}:{}".format(key, value))
+            self.text_输出("{}:{}".format(key, value))
         xmp = img.read_xmp()
-        self.输出("[*] 图片元数据 - XMP信息：")
+        self.text_输出("[*] 图片元数据 - XMP信息：")
         for key, value in xmp.items():
-            self.输出("{}:{}".format(key, value))
+            self.text_输出("{}:{}".format(key, value))
         img.close()
     except Exception:
-        self.输出("[*] 图片元数据 - 读取失败或文件没有元数据")
+        self.text_输出("[*] 图片元数据 - 读取失败或文件没有元数据")
 
 
 def bin_image(self):  # 二进制转图片
@@ -798,7 +805,7 @@ def bin_image(self):  # 二进制转图片
         data = 文件读取(self).decode()
         x = y = int(len(data) ** 0.5)  # 定义二维码的长短
         # print('\n')
-        self.输出("图片大小为:{}*{}".format(x, y))
+        self.text_输出("图片大小为:{}*{}".format(x, y))
         rgb = []
         for i in range(0, len(data)):  # 为了保证有rgb颜色,所以只能拓展了
             if data[i] == "0":
@@ -810,7 +817,7 @@ def bin_image(self):  # 二进制转图片
                 rgb.append(0)
                 rgb.append(0)
     except Exception:
-        self.输出("文件读取失败")
+        self.text_输出("文件读取失败")
     制图(self, x, y, rgb)
 
 
@@ -830,7 +837,7 @@ def RGB转图片(self):
                 rgb.append(i)
                 col = 1
     except Exception:
-        self.输出("文件读取失败")
+        self.text_输出("文件读取失败")
     try:
         if col == 1:
             num = int(len(rgb_list) / 3)
@@ -841,11 +848,11 @@ def RGB转图片(self):
                     if num % k == 0:
                         factor.append(k)
                         num = int(num / k)
-            self.输出("图片大小为:{}*{}".format(factor[2], factor[1] * factor[0]))
+            self.text_输出("图片大小为:{}*{}".format(factor[2], factor[1] * factor[0]))
             制图(self, factor[2], factor[1] * factor[0], rgb)
         else:
             x = y = int(len(rgb_list) ** 0.5)
-            self.输出("图片大小为:{}*{}".format(x, y))
+            self.text_输出("图片大小为:{}*{}".format(x, y))
             rgb2 = []
             for i in rgb:
                 rgb2.append(i)
@@ -853,11 +860,11 @@ def RGB转图片(self):
                 rgb2.append(i)
             制图(self, x, y, rgb2)
     except Exception:
-        self.输出("图片分析失败")
+        self.text_输出("图片分析失败")
 
 
 def 制图(self, x, y, rgb):
-    self.输出("正在生成图片,请稍后...")
+    self.text_输出("正在生成图片,请稍后...")
     try:
         im = Image.new("RGB", (x, y))  # 创建图片
         z = 0
@@ -866,37 +873,37 @@ def 制图(self, x, y, rgb):
                 im.putpixel((i, j), (int(rgb[z]), int(rgb[z + 1]), int(rgb[z + 2])))  # rgb转化为像素
                 z += 3
         im.save(self.file_path + "转换后图片.png")
-        self.输出(f"图片生成成功,请查看{self.file_path}/转换后图片.png")
+        self.text_输出(f"图片生成成功,请查看{self.file_path}/转换后图片.png")
     except Exception:
-        self.输出("图片生成失败")
+        self.text_输出("图片生成失败")
 
 
 def jpg高宽爆破(self):
     if file_type == "jpg" or "jpeg" or "JPG" or "JPEG":
-        self.输出("正在探测图片宽高,请稍后...")
+        self.text_输出("正在探测图片宽高,请稍后...")
         文件读取(self)
         try:
             img = Image.open(self.file_name)
             宽度 = img.size[0]
             高度 = img.size[1]
-            self.输出("已探测图片宽:{} 高:{}".format(宽度, 高度))
+            self.text_输出("已探测图片宽:{} 高:{}".format(宽度, 高度))
             with open(self.file_name, "rb") as f:
                 content = f.read()
                 data = binascii.hexlify(content).decode()
         except Exception:
-            self.输出("图片打开失败")
+            self.text_输出("图片打开失败")
         try:
             高度_data = data.replace(hex2str(宽度, 高度), hex2str(宽度, 高度 * 2))
             宽度_data = data.replace(hex2str(宽度, 高度), hex2str(宽度 * 2, 高度))
-            self.输出("正在修改图片高度,请稍后...")
+            self.text_输出("正在修改图片高度,请稍后...")
             制作图片(高度_data, self.file_path, "高度")
-            self.输出("正在修改图片宽度,请稍后...")
+            self.text_输出("正在修改图片宽度,请稍后...")
             制作图片(宽度_data, self.file_path, "宽度")
-            self.输出(f"修改完毕,请在{self.file_path}目录中查看")
+            self.text_输出(f"修改完毕,请在{self.file_path}目录中查看")
         except Exception:
-            self.输出("图片宽高修正失败")
+            self.text_输出("图片宽高修正失败")
     else:
-        self.输出("你打开的不是jpg图片,请检查")
+        self.text_输出("你打开的不是jpg图片,请检查")
 
 
 def hex2str(width, height):
@@ -911,7 +918,7 @@ def 制作图片(self, 图片, file_path, 类型):
             pic = binascii.a2b_hex(图片.encode())
             f.write(pic)
     except Exception:
-        self.输出("图片生成失败")
+        self.text_输出("图片生成失败")
 
 
 def png高宽爆破(self):
@@ -920,30 +927,30 @@ def png高宽爆破(self):
         crc32key = zlib.crc32(file_data[12:29])  # 计算crc
         original_crc32 = int(file_data[29:33].hex(), 16)  # 原始crc
         if crc32key == original_crc32:  # 计算crc对比原始crc
-            self.输出("宽高没有问题!")
+            self.text_输出("宽高没有问题!")
         else:
-            self.输出("图片宽高被修改,正在解析")
+            self.text_输出("图片宽高被修改,正在解析")
             for i, j in itertools.product(range(1920), range(1080)):  # 理论上0x FF FF FF FF，但考虑到屏幕实际/cpu，0x 0F FF就差不多了，也就是4095宽度和高度
                 data = file_data[12:16] + struct.pack(">i", i) + struct.pack(">i", j) + file_data[24:29]
                 crc32 = zlib.crc32(data)
                 self.进度信号.emit(i)
                 if crc32 == original_crc32:  # 计算当图片大小为i:j时的CRC校验值，与图片中的CRC比较，当相同，则图片大小已经确定
-                    self.输出(f"\nCRC32: {hex(original_crc32)}")
-                    self.输出(f"正确宽度为: {i}, hex: {hex(i)}")
-                    self.输出(f"正确高度为: {j}, hex: {hex(j)}")
+                    self.text_输出(f"\nCRC32: {hex(original_crc32)}")
+                    self.text_输出(f"正确宽度为: {i}, hex: {hex(i)}")
+                    self.text_输出(f"正确高度为: {j}, hex: {hex(j)}")
                     # 修改宽高,并生成新的图片保存
-                    self.输出(f"正在生成修改后的图片,保存在:{self.file_path}png修正生成图.png")
+                    self.text_输出(f"正在生成修改后的图片,保存在:{self.file_path}png修正生成图.png")
                     image_byte = file_data[:16] + i.to_bytes(4, "big") + j.to_bytes(4, "big") + file_data[24:]
                     try:
                         with open(self.file_path + "png修正生成图.png", "wb") as f:
                             f.write(image_byte)
-                        self.输出("图片生成成功,请查看")
-                        # self.输出(f"<p><img src={self.file_path}png修正生成图.png" + "/></p>")
+                        self.text_输出("图片生成成功,请查看")
+                        # self.text_输出(f"<p><img src={self.file_path}png修正生成图.png" + "/></p>")
                     except Exception:
-                        self.输出("图片生成失败,请检查路径")
+                        self.text_输出("图片生成失败,请检查路径")
 
     except Exception:
-        self.输出("图片宽高爆破失败,请检查图片格式")
+        self.text_输出("图片宽高爆破失败,请检查图片格式")
 
 
 def GIF帧分离(self):
@@ -961,9 +968,9 @@ def GIF帧分离(self):
         for frame in iter:
             frame.save(f"{self.file_path}gif分离/frame{index}.png")
             index += 1
-        self.输出("gif图片分离完毕,请打开原图位置查看GIF文件夹")
+        self.text_输出("gif图片分离完毕,请打开原图位置查看GIF文件夹")
     except Exception:
-        self.输出("gif图片分离失败")
+        self.text_输出("gif图片分离失败")
 
 
 def GIF合并(self):
@@ -983,17 +990,17 @@ def GIF合并(self):
             im.paste(单图, (width, 0, 单图宽 + width, 单图高))
             width = width + 单图宽
         im.save(self.file_path + "gif合并.png")
-        self.输出(f"gif图片合并成功,请打开原图位置查看 {self.file_path + 'gif合并.png'} 文件")
+        self.text_输出(f"gif图片合并成功,请打开原图位置查看 {self.file_path + 'gif合并.png'} 文件")
         im.show()
     except Exception:
-        self.输出("gif图片合并失败")
+        self.text_输出("gif图片合并失败")
 
 
 def 图片逆序(self):
     f1 = open(self.file_name, "rb+")
     f2 = open(self.file_path + "flag.jpg", "wb+")
     f2.write(f1.read()[::-1])
-    self.输出("图片逆序成功,请打开原图位置查看flag.jpg")
+    self.text_输出("图片逆序成功,请打开原图位置查看flag.jpg")
     f1.close()
     f2.close()
 
@@ -1016,7 +1023,7 @@ def 黑白图(self):
         print(hex(eval(二进制a)[2:-1]).decode("hex"))
         print(hex(eval(二进制b)[2:-1]).decode("hex"))
     except Exception:
-        self.输出("不能转换为字符串,尝试转换图片")
+        self.text_输出("不能转换为字符串,尝试转换图片")
     try:
         x = y = int(len(二进制a) ** 0.5)
         rgb = []
@@ -1031,7 +1038,7 @@ def 黑白图(self):
                 rgb.append(0)
         制图(self, x, y, rgb)
     except Exception:
-        self.输出("不能生成图片")
+        self.text_输出("不能生成图片")
 
 
 #! todo: 16进制转图片
@@ -1053,7 +1060,7 @@ def 进制转图片(self, ttl):
 
 
 def hide_str(self):
-    self.ui.print_echo.clear()
+    self.ui.text_echo.clear()
     im = Image.open(self.file_name)
     width, height = im.size
     binary_data = ""
@@ -1077,7 +1084,7 @@ def hide_str(self):
     flag = bytes(flag_bytes).decode("utf-8", errors="ignore")
     flag = flag.split("\x00")[0]  # 去除可能的空字符
 
-    self.输出(f"提取的flag内容为:\n{flag}")
+    self.text_输出(f"提取的flag内容为:\n{flag}")
 
 
 """----------------------------------压缩包处理-------------------------------"""
@@ -1087,21 +1094,21 @@ def 单压缩包内CRC爆破(self):
     CRC_str = ""
     try:
         f = zipfile.ZipFile(self.file_name, "r")  # 读取单个文件
-        self.输出("开始执行CRC爆破")
+        self.text_输出("开始执行CRC爆破")
         for i in range(0, len(f.filelist)):
             crc = f.filelist[i].CRC
             CRC_ASK_str = CRC_ASK(hex(crc))  # 获取CRC值
-            self.输出(f"第{i + 1}个CRC的值为:{CRC_ASK_str}")
+            self.text_输出(f"第{i + 1}个CRC的值为:{CRC_ASK_str}")
             CRC_str += CRC_ASK_str
-        self.输出(f"最终结果为:{CRC_str}")
+        self.text_输出(f"最终结果为:{CRC_str}")
     except Exception as e:
-        self.输出(f"CRC读取失败,原因:{e}")
+        self.text_输出(f"CRC读取失败,原因:{e}")
 
 
 def 多文件压缩包CRC爆破(self):
     CRC_str = ""
     try:
-        self.输出("开始执行CRC爆破")
+        self.text_输出("开始执行CRC爆破")
         files = os.listdir(self.file_path)  # 读取文件夹内所有文件                   # 计算文件个数
         self.设置进度.emit(len(files))
         files.sort(key=lambda x: int(re.findall("([0-9]+)", x)[0]))
@@ -1109,12 +1116,12 @@ def 多文件压缩包CRC爆破(self):
             f = zipfile.ZipFile(self.file_path + files[i], "r")  # 读取单个文件
             zipinfo = f.getinfo(" ".join(list(f.NameToInfo.keys())))  # 获取文件信息
             CRC_ASK_str = CRC_ASK(hex(zipinfo.CRC))  # 获取CRC值
-            self.输出(f"第{i + 1}个CRC的值为:{CRC_ASK_str}")
+            self.text_输出(f"第{i + 1}个CRC的值为:{CRC_ASK_str}")
             CRC_str += CRC_ASK_str
             self.进度信号.emit(i + 1)
-        self.输出(f"最终结果为:{CRC_str}")
+        self.text_输出(f"最终结果为:{CRC_str}")
     except Exception as e:
-        self.输出("CRC爆破失败,原因:{}".format(e))
+        self.text_输出("CRC爆破失败,原因:{}".format(e))
 
 
 def CRC_ASK(self, crc):
@@ -1129,11 +1136,11 @@ def CRC_ASK(self, crc):
                         if crc == hex(binascii.crc32(s)):
                             return s.decode("utf-8")
     except Exception as e:
-        self.输出("CRC爆破失败,原因:{}".format(e))
+        self.text_输出("CRC爆破失败,原因:{}".format(e))
 
 
 def 伪加密(self):
-    self.输出("尝试破解伪加密")
+    self.text_输出("尝试破解伪加密")
     try:
         data = 文件读取(self)
         data = bytearray(data)
@@ -1148,20 +1155,20 @@ def 伪加密(self):
         # 将修改后的十六进制文件 写入zip文件
         with open(f"{self.file_path}伪加密破解.zip", "wb") as f1:
             f1.write(data)
-        self.输出(f"文件写入成功，请查看:{self.file_path}伪加密破解.zip")
+        self.text_输出(f"文件写入成功，请查看:{self.file_path}伪加密破解.zip")
     except Exception:
-        self.输出("伪加密破解失败")
+        self.text_输出("伪加密破解失败")
 
 
 """
-def 盲水印(self,实时输出=None):
+def 盲水印(self,实时text_输出=None):
     原图 = config.str1
     加密图 = config.str2
     try:  # 检测是否输入了路径
         if not 原图:
-            self.输出("请在变量1中输入原图路径,路径不能有中文")
+            self.text_输出("请在变量1中输入原图路径,路径不能有中文")
         if not 加密图:
-            self.输出("请在变量2中输入加密图路径,路径不能有中文")
+            self.text_输出("请在变量2中输入加密图路径,路径不能有中文")
     except Exception:
         pass
     try:
@@ -1171,9 +1178,9 @@ def 盲水印(self,实时输出=None):
                 原图, 加密图, 保存路径 + "/decode.png"
             )
         )
-        self.输出("<p><img src=" + 保存路径 + "/decode.png" + "/></p>")
+        self.text_输出("<p><img src=" + 保存路径 + "/decode.png" + "/></p>")
     except Exception:
-        self.输出("图片路径错误,路径不能有中文")
+        self.text_输出("图片路径错误,路径不能有中文")
     
 """
 

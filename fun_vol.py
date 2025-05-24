@@ -4,7 +4,6 @@ import os
 from PySide6.QtCore import QProcess
 from PySide6.QtWidgets import QInputDialog
 
-from main import tabecho
 
 "--------------------------全局设置------------------------------"
 config_file = "config.json"
@@ -104,48 +103,44 @@ def 设置vol(self):  # 设置vol路径
     vol3_file, ok = QInputDialog.getText(self, "设置Vol3路径,需要指定vol.py", "默认路径为:", text=vol3_path)
     if ok and vol3_file:  # 如果用户输入了内容:
         vol3_path = vol3_file
-        config["vol3_path"] = vol3_file
     vol2_file, ok = QInputDialog.getText(self, "设置Vol2路径,需要指定vol.py", "默认路径为:", text=vol2_path)
     if ok and vol2_file:
         vol2_path = vol2_file
-        config["vol2_path"] = vol2_file
 
     # 检查路径是否存在
     if not os.path.isfile(vol3_path) or not os.path.isfile(vol2_path):
-        self.输出("Vol3或Vol2路径下的vol.py文件不存在，请重新输入,指定路径为到vol.py \n 如果只使用一种vol，可以将vol2和vol3设置到同一目录")
+        self.text_输出("Vol3或Vol2路径下的vol.py文件不存在，请重新输入,指定路径为到vol.py \n 如果只使用一种vol，可以将vol2和vol3设置到同一目录")
         return
 
     # 保存配置
     try:
         with open(config_file, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=4, ensure_ascii=False)
-        self.输出("配置已保存")
+        self.text_输出("配置已保存")
     except Exception as e:
-        self.输出(f"保存配置出错: {str(e)}")
+        self.text_输出(f"保存配置出错: {str(e)}")
 
 
 def vol手动执行(self):
-    self.ui.print_echo.clear()  # 清空输出框
+    self.ui.print_echo.clear()  # 清空table_输出框
     命令 = self.ui.vol_input.text()
     
     if not self.file_name:
         self.错误信号.emit("未选择内存文件")
         return
     if 命令:
-        self.输出(f"正在执行命令:{命令}")
+        self.text_输出(f"正在执行命令:{命令}")
         output = os.popen("ipconfig").read()
         分段 = output.splitlines()
         if not 分段:
-            self.输出("无数据，请检查命令")
+            self.text_输出("无数据，请检查命令")
             return
         数据行 = [line.split("\t") for line in 分段[1:] if line.strip()]
-        self.输出("命令执行成功,正在输出表格，请稍后")
-        table_echo = tabecho(self.file_path, self.指令)
-        table_echo.表格输出(数据行)
-        table_echo.show()  # 显示表格窗口
+        self.text_输出("命令执行成功,正在table_输出表格，请稍后")
+        self.table_输出(self,数据行)
         
     else:
-        self.输出("请输入要执行的命令")
+        self.text_输出("请输入要执行的命令")
 
 
 "--------------------------vol3---------------------------------"
@@ -184,40 +179,39 @@ def vol3命令生成(self, 命令):  # 生成需要执行的命令
         vol3命令执行(self, 命令)
 
     else:
-        self.输出("未选择需要解析的内存文件")
+        self.text_输出("未选择需要解析的内存文件")
 
 
 def vol3命令执行(self, 命令):  # 开始执行命令
-    self.ui.print_echo.clear()  # 清空输出框
+    self.ui.print_echo.clear()  # 清空table_输出框
     if not self.file_name:
         self.错误信号.emit("未选择内存文件")
         return
 
     command_args = [vol3_path, "-o", self.file_path, "-f", self.file_name] + 命令.split()
-    self.输出(f"正在执行命令: {' '.join(command_args)}")
+    self.text_输出(f"正在执行命令: {' '.join(command_args)}")
 
     def _handle_finish(exit_code, exit_status):  # 进程结束处理
         if exit_code == 0:
             full_output = self.process.readAllStandardOutput().data().decode("utf-8", errors="ignore")
             分段 = full_output.splitlines()
             if not 分段:
-                self.输出("无数据，请检查命令")
+                self.text_输出("无数据，请检查命令")
                 return
             数据行 = [line.split("\t") for line in 分段[1:] if line.strip()]
-            self.输出("命令执行成功,正在输出表格，请稍后")
-            table_echo = tabecho(self.file_path, self.指令)
-            table_echo.表格输出(数据行)
-            table_echo.show()  # 显示表格窗口
+            self.text_输出("命令执行成功,正在table_输出表格，请稍后")
+            self.table_输出(self,数据行)
+
         else:
             error_output = self.process.readAllStandardError().data().decode("utf-8", errors="ignore")
-            self.输出(f"命令执行失败 (Code {exit_code}): {error_output}")
+            self.text_输出(f"命令执行失败 (Code {exit_code}): {error_output}")
 
     try:
         self.process = QProcess()  # 保存为实例变量
         self.process.setProgram("python")
         self.process.setArguments(command_args)
-        # self.process.readyReadStandardOutput.connect(_handle_output)
-        self.process.readyReadStandardError.connect(lambda: self.输出(self.process.readAllStandardError().data().decode("utf-8")))
+
+        self.process.readyReadStandardError.connect(lambda: self.text_输出(self.process.readAllStandardError().data().decode("utf-8")))
         self.process.finished.connect(_handle_finish)
         self.process.start()
     except Exception as e:
@@ -237,7 +231,7 @@ def 开启文件操作(self):
 def vol3_参数选项列表(self):  # 列表选择事件处理函数
     # 检查是否有指令
     if not self.指令:
-        self.输出("请先选择功能")
+        self.text_输出("请先选择功能")
         return
     # 控件启用规则
     控件规则 = {
@@ -267,7 +261,7 @@ def vol3功能列表(self,按钮号):  # 功能列表
     elif 按钮号 == 3:
         self.指令 = v3_mac_fun_list[self.ui.v3m_fun_list.currentItem().text()]
     else:
-        self.输出("请选择功能列表")
+        self.text_输出("请选择功能列表")
         return
     命令 = self.指令
     vol3_参数选项列表(self)
