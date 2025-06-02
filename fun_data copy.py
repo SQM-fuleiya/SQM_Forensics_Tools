@@ -487,57 +487,110 @@ def 查询上下线(self):
         self.text_输出(f"查询执行失败: {str(e)}")
 
 def 树状图(self):
-    # 获取所有人员关系数据（移除limit限制）
-    relations = 执行查询(self, "SELECT * FROM fenxi")
-    if not relations:
-        self.text_输出("数据库中没有人员数据")
-        return
-    
-    列名列表 = 层级分析获取列名(self)
-    if not 列名列表 or len(列名列表) < 2:
-        return
-    id_col = 列名列表[0]  # 唯一ID列
-    parent_col = 列名列表[1]  # 上线ID列
-
-    # 查询顶层节点（处理两种情况：1. 没有上线的节点 2. 在parent_col但不在id_col中的节点）
+    """重构后的层级分析函数，支持新的数据结构"""
     try:
+        # 获取所有人员数据
         conn, cursor = 数据库连接(self)
+        cursor.execute("SELECT * FROM fenxi")
+        all_data = cursor.fetchall()
         
-        # 情况1：查找没有上线的节点（parent_col为NULL或空）
-        cursor.execute(f"SELECT {id_col} FROM fenxi WHERE {parent_col} IS NULL OR {parent_col} = '' LIMIT 1")
-        顶层节点 = cursor.fetchone()
-        
-        if not 顶层节点:
-            # 情况2：查找在parent_col但不在id_col中的节点（即没有上线的顶级节点）
-            cursor.execute(f"""
-                SELECT DISTINCT {parent_col} FROM fenxi 
-                WHERE {parent_col} NOT IN (SELECT {id_col} FROM fenxi) 
-                AND {parent_col} IS NOT NULL 
-                LIMIT 1""")
-            顶层节点 = cursor.fetchone()
-        
-        if not 顶层节点:
-            # 如果仍然找不到，选择第一个节点作为顶层
-            cursor.execute(f"SELECT {id_col} FROM fenxi LIMIT 1")
-            顶层节点 = cursor.fetchone()
+        if not all_data:
+            self.text_输出("数据库中没有人员数据")
+            return
             
-        if 顶层节点:
-            顶层ID = 顶层节点[0]
-            conn.close()
-            层级数据 = 递归查询下线(self, 顶层ID, id_col, parent_col)
-        else:
+        # 构建两个映射字典：ID->数据和上线ID->下线ID列表
+        id_to_data = {}
+        parent_to_children = {}
+        
+        for row in all_data:
+            user_id, user_name, parent_id, _ = row[:4]
+            id_to_data[user_id] = {'name': user_name, 'parent_id': parent_id}
+            
+            if parent_id not in parent_to_children:
+                parent_to_children[parent_id] = []
+            parent_to_children[parent_id].append(user_id)
+        
+        # 找出所有顶层节点（没有上线或上线不在系统中的节点）
+        top_nodes = []
+        for user_id, data in id_to_data.items():
+            parent_id = data['parent_id']
+            if not parent_id or parent_id not in id_to_data:
+                top_nodes.append(user_id)
+        
+        # 如果没有顶层节点，选择第一个节点作为顶层
+        if not top_nodes and all_data:
+            top_nodes = [all_data[0][0]]
+            
+        if not top_nodes:
             self.text_输出("错误：无法确定顶层节点")
             return
-
-
-        # 将结果保存为JSON文件
+            
+        # 递归构建层级结构
+        def build_hierarchy(node_id, processed_ids=None):
+            if processed_ids is None:
+                processed_ids = set()
+                
+            if node_id in processed_ids:
+                self.text_输出(f"发现循环引用: {node_id}，跳过处理")
+                return None
+                
+            processed_ids.add(node_id)
+            
+            # 获取节点信息
+            node_data = id_to_data.get(node_id, {})
+            if not node_data:
+                return None
+                
+            # 获取所有下线
+            children_ids = parent_to_children.get(node_id, [])
+            
+            # 构建节点结构
+            node = {
+                'ID': node_id,
+                '姓名': node_data['name'],
+                '直属下线数': len(children_ids),
+                '下线总人数': 0,
+                '下级': []
+            }
+            
+            # 递归处理每个下线
+            for child_id in children_ids:
+                child_node = build_hierarchy(child_id, processed_ids.copy())
+                if child_node:
+                    node['下级'].append(child_node)
+                    node['下线总人数'] += child_node['下线总人数'] + 1
+            
+            self.text_输出(f"处理完成: {node['姓名']}(ID:{node_id}), 直属下线: {node['直属下线数']}, 总下线: {node['下线总人数']}")
+            return node
+            
+        # 从所有顶层节点开始构建层级
+        hierarchy = []
+        for top_id in top_nodes:
+            top_node = build_hierarchy(top_id)
+            if top_node:
+                hierarchy.append(top_node)
+        
+        # 合并多个顶层节点的结构（如果有多个顶层）
+        if len(hierarchy) > 1:
+            merged_hierarchy = {
+                'ID': 'TOP',
+                '姓名': '顶层节点汇总',
+                '直属下线数': len(hierarchy),
+                '下线总人数': sum(node['下线总人数'] for node in hierarchy),
+                '下级': hierarchy
+            }
+            hierarchy = merged_hierarchy
+        elif hierarchy:
+            hierarchy = hierarchy[0]
+            
+        # 保存结果
         import json
         output_path = os.path.join(self.file_path, '层级关系.json')
         with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(层级数据, f, ensure_ascii=False, indent=4)
+            json.dump(hierarchy, f, ensure_ascii=False, indent=4)
             
         self.text_输出(f"层级关系数据已保存到: {output_path}")
-        os.startfile(output_path)  # 自动打开文件
+        os.startfile(output_path)
         显示树状图(output_path)
         
     except Exception as e:
@@ -545,77 +598,42 @@ def 树状图(self):
     finally:
         conn.close()
 
-def 递归查询下线(self,当前ID, id_col, parent_col, 上级列表=None, 已处理IDs=None):
-    """递归查询下线关系（添加上级列表保护）"""
-    if 已处理IDs is None:
-        已处理IDs = set()
-    if 上级列表 is None:
-        上级列表 = []
-    
-    # 防止循环引用和重复处理
-    if 当前ID in 已处理IDs or 当前ID in 上级列表:
-        self.text_输出(f"发现循环/重复ID: {当前ID}，跳过处理")
+def 递归查询下线(self, node_id, id_to_data, parent_to_children, processed_ids=None):
+    """辅助递归函数，用于构建层级结构"""
+    if processed_ids is None:
+        processed_ids = set()
+        
+    if node_id in processed_ids:
+        self.text_输出(f"发现循环引用: {node_id}，跳过处理")
         return None
+        
+    processed_ids.add(node_id)
     
-    上级列表.append(当前ID)
-    已处理IDs.add(当前ID)
-
-    try:
-        conn, cursor = 数据库连接(self)
-        # 查询当前节点信息
-        cursor.execute(f"SELECT * FROM fenxi WHERE {id_col} = ?", (当前ID,))
-        current_data = cursor.fetchone()
-        if not current_data:
-            conn.close()
-            return None
-
-        # 查询所有下线（不再限制上级列表）
-        cursor.execute(f"SELECT {id_col} FROM fenxi WHERE {parent_col} = ?", (当前ID,))
-        下线列表 = [row[0] for row in cursor.fetchall()]
-        conn.close()
-
-        self.text_输出(f"开始处理节点 {当前ID}，找到 {len(下线列表)} 个直接下线")
-
-        节点 = {
-            'ID': str(当前ID),
-            '姓名': str(current_data[2]),
-            '直属下线数': len(下线列表),
-            '下线总人数': 0,  # 初始化为0，后续累加
-            '下级': []
-        }
-
-        # 处理每个下线
-        processed_count = 0
-        for index, 下线ID in enumerate(下线列表, 1):
-            self.text_输出(f"正在处理第 {index}/{len(下线列表)} 个下线: {下线ID}")
-            下级节点 = 递归查询下线(self,下线ID, id_col, parent_col, 上级列表.copy(), 已处理IDs)
-            
-            if 下级节点 is None:
-                self.text_输出(f"下线 {下线ID} 处理返回空，跳过")
-                continue
-                
-            if not isinstance(下级节点, dict) or '下线总人数' not in 下级节点:
-                self.text_输出(f"下线 {下线ID} 返回无效数据格式，跳过")
-                continue
-                
-            节点['下级'].append(下级节点)
-            节点['下线总人数'] += 下级节点['下线总人数']
-            processed_count += 1
-            self.text_输出(f"完成处理下线 {下线ID}，累计总下线: {节点['下线总人数']}")
-
-        # 添加直接下线人数
-        节点['下线总人数'] += processed_count
-        self.text_输出(f"节点 {当前ID} 处理完成: 有效下线 {processed_count}/{len(下线列表)}，总下线 {节点['下线总人数']}")
-
-        return 节点
-
-    except Exception as e:
-        self.text_输出(f"查询失败: {str(e)}")
+    # 获取节点信息
+    node_data = id_to_data.get(node_id, {})
+    if not node_data:
         return None
-    finally:
-        conn.close()
-        # 回溯时移除当前ID，保持上级列表状态
-        上级列表.pop()
+        
+    # 获取所有下线
+    children_ids = parent_to_children.get(node_id, [])
+    
+    # 构建节点结构
+    node = {
+        'ID': node_id,
+        '姓名': node_data['name'],
+        '直属下线数': len(children_ids),
+        '下线总人数': 0,
+        '下级': []
+    }
+    
+    # 递归处理每个下线
+    for child_id in children_ids:
+        child_node = self.递归查询下线(child_id, id_to_data, parent_to_children, processed_ids.copy())
+        if child_node:
+            node['下级'].append(child_node)
+            node['下线总人数'] += child_node['下线总人数'] + 1
+    
+    return node
 
 
 def 显示树状图(json文件路径, 输出html路径=None):

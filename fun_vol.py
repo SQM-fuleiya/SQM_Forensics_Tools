@@ -22,7 +22,7 @@ v3_win_fun_list = {
     '分析Windows崩溃转储':'windows.crashinfo',
     "列出驱动程序和关联设备树": "windows.devicetree",
     "列出进程加载的DLL模块": "windows.dlllist",
-    '检测隐藏的驱动模块':'windows.drivermodule','':'',
+    '检测隐藏的驱动模块':'windows.drivermodule',
     "隐藏驱动扫描": "windows.driverscan",
     "环境变量信息": "windows.envars",
     "获取服务ids": "windows.getservicesids",
@@ -91,6 +91,7 @@ offset开放列表 = [
     "windows.registry.userassist",
     "windows.registry.printkey",
 ]
+字符串搜索列表 = ['windows.strings']
 physical列表 = ["windows.pstree", "windows.psscan", "windows.psxview"]
 文件名搜索列表 = ["windows.registry.hivelist", "windows.dumpfiles"]
 
@@ -122,7 +123,7 @@ def 设置vol(self):  # 设置vol路径
 
 
 def vol手动执行(self):
-    self.ui.print_echo.clear()  # 清空table_输出框
+    self.ui.text_echo.clear()  # 清空table_输出框
     命令 = self.ui.vol_input.text()
     
     if not self.file_name:
@@ -130,7 +131,7 @@ def vol手动执行(self):
         return
     if 命令:
         self.text_输出(f"正在执行命令:{命令}")
-        output = os.popen("ipconfig").read()
+        output = os.popen(命令).read()
         分段 = output.splitlines()
         if not 分段:
             self.text_输出("无数据，请检查命令")
@@ -146,35 +147,48 @@ def vol手动执行(self):
 "--------------------------vol3---------------------------------"
 
 def vol3命令生成(self, 命令):  # 生成需要执行的命令
+    
     if self.file_name:
         self.指令 = 命令
         if self.ui.help.isChecked():
             命令 += " -h"
             vol3命令执行(self, 命令)
             return
-        if self.ui.v3w_pid.text():
+            
+        # 只有在命令支持时才添加pid参数
+        if self.ui.v3w_pid.text() and self.指令 in pid开放列表:
             命令 += f" --pid {self.ui.v3w_pid.text()}"
             self.ui.v3w_pid.clear()
-        if self.ui.v3w_physaddr.text():
+            
+        # 只有在命令支持时才添加physaddr参数
+        if self.ui.v3w_physaddr.text() and self.指令 in offset开放列表:
             命令 += f" --physaddr {self.ui.v3w_physaddr.text()}"
             self.ui.v3w_physaddr.clear()
-        if self.ui.v3w_filter.text():
+            
+        # 只有在命令支持时才添加name-filter参数
+        if self.ui.v3w_filter.text() and self.指令 in 文件名搜索列表:
             命令 += f" --name-filter {self.ui.v3w_filter.text()}"
             self.ui.v3w_filter.clear()
-        if self.ui.v3w_str.text():
+            
+        # 总是可以添加字符串过滤
+        if self.ui.v3w_str.text() and self.指令 in 文件名搜索列表:
             命令 += f" | findstr /i '{self.ui.v3w_str.text()}'"   # "\.docx \.pdf \.zip"
             self.ui.v3w_str.clear()
-        if self.ui.v3w_dump.isChecked():
+            
+        # 只有在命令支持时才添加dump参数
+        if self.ui.v3w_dump.isChecked() and self.指令 in 可导出列表:
             命令 += f" --output-dir {self.file_path}"
         
-        if self.ui.v3w_registry_hive.text():
-            命令 += f" --registry {self.ui.v3w_registry_hive.text()}"
-            self.ui.v3w_registry_hive.clear()
-        if self.ui.v3w_registry_key.text():
-            命令 += f" --key {self.ui.v3w_registry_key.text()}"
-            self.ui.v3w_registry_key.clear()
-        if self.ui.v3w_registry_key_recurse.isChecked():
-            命令 += " --recurse"
+        # 注册表相关参数
+        if self.指令 in ["windows.registry.hivelist", "windows.registry.hivescan"]:
+            if self.ui.v3w_registry_hive.text():
+                命令 += f" --registry {self.ui.v3w_registry_hive.text()}"
+                self.ui.v3w_registry_hive.clear()
+            if self.ui.v3w_registry_key.text():
+                命令 += f" --key {self.ui.v3w_registry_key.text()}"
+                self.ui.v3w_registry_key.clear()
+            if self.ui.v3w_recurse.isChecked():
+                命令 += " --recurse"
 
         vol3命令执行(self, 命令)
 
@@ -183,7 +197,7 @@ def vol3命令生成(self, 命令):  # 生成需要执行的命令
 
 
 def vol3命令执行(self, 命令):  # 开始执行命令
-    self.ui.print_echo.clear()  # 清空table_输出框
+    self.ui.text_echo.clear()  # 清空table_输出框
     if not self.file_name:
         self.错误信号.emit("未选择内存文件")
         return
@@ -200,7 +214,7 @@ def vol3命令执行(self, 命令):  # 开始执行命令
                 return
             数据行 = [line.split("\t") for line in 分段[1:] if line.strip()]
             self.text_输出("命令执行成功,正在table_输出表格，请稍后")
-            self.table_输出(self,数据行)
+            self.table_输出(数据行)
 
         else:
             error_output = self.process.readAllStandardError().data().decode("utf-8", errors="ignore")
@@ -221,7 +235,7 @@ def 开启文件操作(self):
     # 根据复选框状态切换控件启用状态
     state = self.ui.v3w_file_but.isChecked()
     self.ui.v3w_pid.setEnabled(state)
-    self.ui.v3w_offset.setEnabled(state)
+    self.ui.v3w_physaddr.setEnabled(state)
     # self.ui.v3w_physical.setEnabled(state)
     self.ui.v3w_filter.setEnabled(state)
     self.ui.v3w_str.setEnabled(state)

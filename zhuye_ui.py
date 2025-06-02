@@ -881,6 +881,10 @@ class Ui_zhu_windows(object):
 
         self.horizontalLayout_47.addWidget(self.set_vol)
 
+        self.horizontalSpacer_32 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_47.addItem(self.horizontalSpacer_32)
+
         self.vol3_but = QPushButton(self.vol_tab)
         self.vol3_but.setObjectName(u"vol3_but")
         self.vol3_but.setMinimumSize(QSize(100, 25))
@@ -1295,10 +1299,8 @@ class Ui_zhu_windows(object):
         self.function_list.addTab(self.vol_tab, "")
         self.data_tab = QWidget()
         self.data_tab.setObjectName(u"data_tab")
-        self.verticalLayout_11 = QVBoxLayout(self.data_tab)
-        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_10 = QVBoxLayout(self.data_tab)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.horizontalLayout_13 = QHBoxLayout()
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.label_2 = QLabel(self.data_tab)
@@ -1311,22 +1313,17 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_13.addItem(self.horizontalSpacer_14)
 
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout_13)
+        self.verticalLayout_10.addLayout(self.horizontalLayout_13)
 
-        self.start_db_but = QPushButton(self.data_tab)
-        self.start_db_but.setObjectName(u"start_db_but")
-
-        self.verticalLayout_2.addWidget(self.start_db_but)
-
-        self.horizontalLayout_15 = QHBoxLayout()
-        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.horizontalLayout_37 = QHBoxLayout()
+        self.horizontalLayout_37.setObjectName(u"horizontalLayout_37")
         self.db_clear = QPushButton(self.data_tab)
         self.db_clear.setObjectName(u"db_clear")
         self.db_clear.setEnabled(True)
         self.db_clear.setMinimumSize(QSize(100, 25))
         self.db_clear.setMaximumSize(QSize(100, 25))
 
-        self.horizontalLayout_15.addWidget(self.db_clear)
+        self.horizontalLayout_37.addWidget(self.db_clear)
 
         self.list_clear = QPushButton(self.data_tab)
         self.list_clear.setObjectName(u"list_clear")
@@ -1334,30 +1331,71 @@ class Ui_zhu_windows(object):
         self.list_clear.setMinimumSize(QSize(100, 25))
         self.list_clear.setMaximumSize(QSize(100, 25))
 
-        self.horizontalLayout_15.addWidget(self.list_clear)
+        self.horizontalLayout_37.addWidget(self.list_clear)
 
+        self.horizontalSpacer_28 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_37.addItem(self.horizontalSpacer_28)
+
+        self.start_db_but = QPushButton(self.data_tab)
+        self.start_db_but.setObjectName(u"start_db_but")
+        self.start_db_but.setMinimumSize(QSize(100, 25))
+        self.start_db_but.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_37.addWidget(self.start_db_but)
+
+
+        self.verticalLayout_10.addLayout(self.horizontalLayout_37)
+
+        self.horizontalLayout_15 = QHBoxLayout()
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_15.addItem(self.horizontalSpacer_20)
 
+        self.read_db = QPushButton(self.data_tab)
+        self.read_db.setObjectName(u"read_db")
+        self.read_db.setMinimumSize(QSize(100, 25))
+        self.read_db.setMaximumSize(QSize(100, 25))
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout_15)
+        self.horizontalLayout_15.addWidget(self.read_db)
+
+
+        self.verticalLayout_10.addLayout(self.horizontalLayout_15)
+
+        self.label_22 = QLabel(self.data_tab)
+        self.label_22.setObjectName(u"label_22")
+
+        self.verticalLayout_10.addWidget(self.label_22)
 
         self.horizontalLayout_16 = QHBoxLayout()
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
-        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.txt_csv = QPushButton(self.data_tab)
+        self.txt_csv.setObjectName(u"txt_csv")
+        self.txt_csv.setMinimumSize(QSize(100, 25))
+        self.txt_csv.setMaximumSize(QSize(100, 25))
 
-        self.horizontalLayout_16.addItem(self.horizontalSpacer_18)
+        self.horizontalLayout_16.addWidget(self.txt_csv)
 
         self.horizontalSpacer_19 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_16.addItem(self.horizontalSpacer_19)
 
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout_16)
+        self.verticalLayout_10.addLayout(self.horizontalLayout_16)
+
+        self.horizontalLayout_40 = QHBoxLayout()
+        self.horizontalLayout_40.setObjectName(u"horizontalLayout_40")
+        self.horizontalSpacer_33 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_40.addItem(self.horizontalSpacer_33)
+
+        self.horizontalSpacer_34 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_40.addItem(self.horizontalSpacer_34)
 
 
-        self.verticalLayout_11.addLayout(self.verticalLayout_2)
+        self.verticalLayout_10.addLayout(self.horizontalLayout_40)
 
         self.verticalLayout_9 = QVBoxLayout()
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
@@ -1375,12 +1413,29 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
         self.select_yufa = QPushButton(self.data_tab)
         self.select_yufa.setObjectName(u"select_yufa")
+        self.select_yufa.setEnabled(True)
+        self.select_yufa.setMinimumSize(QSize(100, 25))
+        self.select_yufa.setMaximumSize(QSize(100, 25))
 
         self.horizontalLayout_23.addWidget(self.select_yufa)
 
+        self.revise_column_name = QPushButton(self.data_tab)
+        self.revise_column_name.setObjectName(u"revise_column_name")
+        self.revise_column_name.setEnabled(False)
+        self.revise_column_name.setMinimumSize(QSize(100, 25))
+        self.revise_column_name.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_23.addWidget(self.revise_column_name)
+
+        self.horizontalSpacer_31 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_23.addItem(self.horizontalSpacer_31)
+
         self.db_select_but = QPushButton(self.data_tab)
         self.db_select_but.setObjectName(u"db_select_but")
-        self.db_select_but.setEnabled(True)
+        self.db_select_but.setEnabled(False)
+        self.db_select_but.setMinimumSize(QSize(100, 25))
+        self.db_select_but.setMaximumSize(QSize(100, 25))
 
         self.horizontalLayout_23.addWidget(self.db_select_but)
 
@@ -1401,10 +1456,10 @@ class Ui_zhu_windows(object):
         self.verticalLayout_9.addLayout(self.horizontalLayout_25)
 
 
-        self.verticalLayout_11.addLayout(self.verticalLayout_9)
+        self.verticalLayout_10.addLayout(self.verticalLayout_9)
 
-        self.verticalLayout_10 = QVBoxLayout()
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout_30 = QHBoxLayout()
         self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
         self.label_15 = QLabel(self.data_tab)
@@ -1417,33 +1472,62 @@ class Ui_zhu_windows(object):
         self.horizontalLayout_30.addItem(self.horizontalSpacer_23)
 
 
-        self.verticalLayout_10.addLayout(self.horizontalLayout_30)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_30)
 
-        self.data_input = QLineEdit(self.data_tab)
-        self.data_input.setObjectName(u"data_input")
+        self.horizontalLayout_38 = QHBoxLayout()
+        self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
+        self.select_one_up = QPushButton(self.data_tab)
+        self.select_one_up.setObjectName(u"select_one_up")
+        self.select_one_up.setEnabled(False)
+        self.select_one_up.setMinimumSize(QSize(100, 25))
+        self.select_one_up.setMaximumSize(QSize(100, 25))
 
-        self.verticalLayout_10.addWidget(self.data_input)
+        self.horizontalLayout_38.addWidget(self.select_one_up)
 
-        self.select_one = QPushButton(self.data_tab)
-        self.select_one.setObjectName(u"select_one")
-        self.select_one.setEnabled(False)
+        self.select_one_down = QPushButton(self.data_tab)
+        self.select_one_down.setObjectName(u"select_one_down")
+        self.select_one_down.setEnabled(False)
+        self.select_one_down.setMinimumSize(QSize(100, 25))
+        self.select_one_down.setMaximumSize(QSize(100, 25))
 
-        self.verticalLayout_10.addWidget(self.select_one)
+        self.horizontalLayout_38.addWidget(self.select_one_down)
+
+        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_38.addItem(self.horizontalSpacer_18)
 
         self.show_guanxi = QPushButton(self.data_tab)
         self.show_guanxi.setObjectName(u"show_guanxi")
         self.show_guanxi.setEnabled(False)
+        self.show_guanxi.setMinimumSize(QSize(100, 25))
+        self.show_guanxi.setMaximumSize(QSize(100, 25))
         self.show_guanxi.setAutoDefault(False)
         self.show_guanxi.setFlat(False)
 
-        self.verticalLayout_10.addWidget(self.show_guanxi)
+        self.horizontalLayout_38.addWidget(self.show_guanxi)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_38)
+
+        self.horizontalLayout_39 = QHBoxLayout()
+        self.horizontalLayout_39.setObjectName(u"horizontalLayout_39")
+        self.horizontalSpacer_29 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_39.addItem(self.horizontalSpacer_29)
+
+        self.horizontalSpacer_30 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_39.addItem(self.horizontalSpacer_30)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_39)
+
+
+        self.verticalLayout_10.addLayout(self.verticalLayout_2)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 196, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_10.addItem(self.verticalSpacer_2)
-
-
-        self.verticalLayout_11.addLayout(self.verticalLayout_10)
 
         self.function_list.addTab(self.data_tab, "")
         self.misc_tab = QWidget()
@@ -1737,7 +1821,6 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_5.addWidget(self.table_echo)
 
-        self.verticalLayout_5.setStretch(0, 9)
         self.verticalLayout_5.setStretch(1, 1)
 
         self.verticalLayout_6.addLayout(self.verticalLayout_5)
@@ -1751,7 +1834,7 @@ class Ui_zhu_windows(object):
 
         self.retranslateUi(zhu_windows)
 
-        self.function_list.setCurrentIndex(3)
+        self.function_list.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
         self.show_guanxi.setDefault(False)
 
@@ -2010,15 +2093,19 @@ class Ui_zhu_windows(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("zhu_windows", u"VOL2", None))
         self.function_list.setTabText(self.function_list.indexOf(self.vol_tab), QCoreApplication.translate("zhu_windows", u"\u5185\u5b58\u5206\u6790", None))
         self.label_2.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u8f93\u5165\u533a", None))
-        self.start_db_but.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5165\u5e93", None))
         self.db_clear.setText(QCoreApplication.translate("zhu_windows", u"\u5220\u9664\u6570\u636e\u5e93", None))
         self.list_clear.setText(QCoreApplication.translate("zhu_windows", u"\u8868\u683c\u6e05\u7406", None))
+        self.start_db_but.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5165\u5e93", None))
+        self.read_db.setText(QCoreApplication.translate("zhu_windows", u"\u8bfb\u53d6\u6570\u636e\u5e93", None))
+        self.label_22.setText(QCoreApplication.translate("zhu_windows", u"\u6587\u4ef6\u8f6c\u6362", None))
+        self.txt_csv.setText(QCoreApplication.translate("zhu_windows", u"TXT\u8f6cCSV", None))
         self.label_14.setText(QCoreApplication.translate("zhu_windows", u"SQL\u6570\u636e\u67e5\u8be2", None))
         self.select_yufa.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u8bed\u6cd5", None))
+        self.revise_column_name.setText(QCoreApplication.translate("zhu_windows", u"\u4fee\u6539\u6570\u636e\u5e93\u5217\u540d", None))
         self.db_select_but.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2", None))
-        self.label_15.setText(QCoreApplication.translate("zhu_windows", u"\u5c42\u7ea7\u5173\u7cfb\u5206\u6790\u533a", None))
-        self.data_input.setText(QCoreApplication.translate("zhu_windows", u"\u8bf7\u8f93\u5165\u8981\u67e5\u8be2\u7684\u552f\u4e00ID", None))
-        self.select_one.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u4e2a\u4eba\u4e0a\u7ebf", None))
+        self.label_15.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5206\u6790\u533a", None))
+        self.select_one_up.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u4e2a\u4eba\u4e0a\u7ebf", None))
+        self.select_one_down.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u4e2a\u4eba\u4e0b\u7ebf", None))
         self.show_guanxi.setText(QCoreApplication.translate("zhu_windows", u"\u5c42\u7ea7\u6811\u72b6\u56fe", None))
         self.function_list.setTabText(self.function_list.indexOf(self.data_tab), QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5206\u6790", None))
         self.label_5.setText(QCoreApplication.translate("zhu_windows", u"IOS\u5206\u6790", None))

@@ -89,8 +89,8 @@ class MainWindow(QWidget):
     #  FnMap(待办)
     def start_thread(self, func, *args, **kwargs):  # 启动线程函数，func为要执行的函数，*args和**kwargs为函数的参数
         thread = 多线程(func, *args, **kwargs)  # 创建线程对象
+        thread.setObjectName(func.__name__)  # 添加这行
         thread.执行结果信号.connect(self.text_输出)  # 连接线程的执行结果信号到输出函数
-
         thread.finished.connect(lambda: self.threads.remove(thread))  # 线程结束后从列表中移除
         thread.start()  # 启动线程
         self.threads.append(thread)  # 将线程对象添加到列表中
@@ -179,6 +179,7 @@ class MainWindow(QWidget):
                     self.ui.text_echo.append(f"已加载文件: {self.file_name}")
 
                     fun_file.文件处理(self)  # 识别文件头，并加载二进制文件数据
+                    fun_data.按钮开关判断(self)
 
     def file_but(self):  # 文件页面按钮功能设置
         self.ui.shibie_but.clicked.connect(lambda: fun_file.识别文件(self))
@@ -280,14 +281,20 @@ class MainWindow(QWidget):
 
 
     def data_but(self):  # 数据分析按钮功能设置
+
         self.ui.start_db_but.clicked.connect(lambda: fun_data.数据入库(self))
         self.ui.db_clear.clicked.connect(lambda: fun_data.删除数据库(self))
+        self.ui.list_clear.clicked.connect(lambda: fun_data.表格清理(self))
+        self.ui.read_db.clicked.connect(lambda: fun_data.数据显示(self))
+        self.ui.revise_column_name.clicked.connect(lambda: fun_data.修改列名(self))
 
         self.ui.select_yufa.clicked.connect(lambda: fun_data.查询语法(self))
         self.ui.db_select_but.clicked.connect(lambda: fun_data.数据库查询(self))
 
-        self.ui.select_one.clicked.connect(lambda: fun_data.查询上线(self))
-        self.ui.show_guanxi.clicked.connect(lambda: fun_data.生成树状图(self))
+        self.ui.txt_csv.clicked.connect(lambda: fun_data.txt转csv(self))
+
+        self.ui.select_one_up.clicked.connect(lambda: fun_data.查询上下线(self))
+        self.ui.show_guanxi.clicked.connect(lambda: fun_data.树状图(self))
 
 
     def msic_but(self):  # 流量分析按钮功能设置

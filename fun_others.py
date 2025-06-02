@@ -46,7 +46,7 @@ hook脚本 = {'获取全部字符串':'hook_strings_1.js',
           '绕过frida检测':'hook_anti.js'}
 
 def hook执行(self):
-    self.ui.print_echo.clear()
+    self.ui.text_echo.clear()
     selected_hook_script = self.ui.hook_fun.currentText()
     hook_script_name = hook脚本.get(selected_hook_script)
     package_name = self.ui.hook_name.text().strip()
