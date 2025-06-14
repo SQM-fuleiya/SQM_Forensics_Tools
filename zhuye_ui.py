@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'zhuye.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -371,13 +371,13 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_19.addWidget(self.exif_but)
 
-        self.tu_re = QPushButton(self.file_tab)
-        self.tu_re.setObjectName(u"tu_re")
-        self.tu_re.setMinimumSize(QSize(100, 25))
-        self.tu_re.setMaximumSize(QSize(100, 25))
-        self.tu_re.setFont(font1)
+        self.bin_image_but = QPushButton(self.file_tab)
+        self.bin_image_but.setObjectName(u"bin_image_but")
+        self.bin_image_but.setMinimumSize(QSize(100, 25))
+        self.bin_image_but.setMaximumSize(QSize(100, 25))
+        self.bin_image_but.setFont(font1)
 
-        self.verticalLayout_19.addWidget(self.tu_re)
+        self.verticalLayout_19.addWidget(self.bin_image_but)
 
         self.jpg_high_but = QPushButton(self.file_tab)
         self.jpg_high_but.setObjectName(u"jpg_high_but")
@@ -408,13 +408,13 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_20 = QVBoxLayout()
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
-        self.bin_image_but = QPushButton(self.file_tab)
-        self.bin_image_but.setObjectName(u"bin_image_but")
-        self.bin_image_but.setMinimumSize(QSize(100, 25))
-        self.bin_image_but.setMaximumSize(QSize(100, 25))
-        self.bin_image_but.setFont(font1)
+        self.tu_re = QPushButton(self.file_tab)
+        self.tu_re.setObjectName(u"tu_re")
+        self.tu_re.setMinimumSize(QSize(100, 25))
+        self.tu_re.setMaximumSize(QSize(100, 25))
+        self.tu_re.setFont(font1)
 
-        self.verticalLayout_20.addWidget(self.bin_image_but)
+        self.verticalLayout_20.addWidget(self.tu_re)
 
         self.heibai_but = QPushButton(self.file_tab)
         self.heibai_but.setObjectName(u"heibai_but")
@@ -451,6 +451,18 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_21 = QVBoxLayout()
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
+        self.mangshuiyin_but = QPushButton(self.file_tab)
+        self.mangshuiyin_but.setObjectName(u"mangshuiyin_but")
+        self.mangshuiyin_but.setEnabled(False)
+        sizePolicy.setHeightForWidth(self.mangshuiyin_but.sizePolicy().hasHeightForWidth())
+        self.mangshuiyin_but.setSizePolicy(sizePolicy)
+        self.mangshuiyin_but.setMinimumSize(QSize(100, 25))
+        self.mangshuiyin_but.setMaximumSize(QSize(100, 25))
+        self.mangshuiyin_but.setSizeIncrement(QSize(0, 0))
+        self.mangshuiyin_but.setFont(font1)
+
+        self.verticalLayout_21.addWidget(self.mangshuiyin_but)
+
         self.rgb2img_but = QPushButton(self.file_tab)
         self.rgb2img_but.setObjectName(u"rgb2img_but")
         sizePolicy4.setHeightForWidth(self.rgb2img_but.sizePolicy().hasHeightForWidth())
@@ -461,17 +473,6 @@ class Ui_zhu_windows(object):
         self.rgb2img_but.setFont(font1)
 
         self.verticalLayout_21.addWidget(self.rgb2img_but)
-
-        self.mangshuiyin_but = QPushButton(self.file_tab)
-        self.mangshuiyin_but.setObjectName(u"mangshuiyin_but")
-        sizePolicy.setHeightForWidth(self.mangshuiyin_but.sizePolicy().hasHeightForWidth())
-        self.mangshuiyin_but.setSizePolicy(sizePolicy)
-        self.mangshuiyin_but.setMinimumSize(QSize(100, 25))
-        self.mangshuiyin_but.setMaximumSize(QSize(100, 25))
-        self.mangshuiyin_but.setSizeIncrement(QSize(0, 0))
-        self.mangshuiyin_but.setFont(font1)
-
-        self.verticalLayout_21.addWidget(self.mangshuiyin_but)
 
         self.verticalSpacer_9 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -493,16 +494,20 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout_22 = QVBoxLayout()
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.pushButton_10 = QPushButton(self.file_tab)
+        self.pushButton_10.setObjectName(u"pushButton_10")
+        self.pushButton_10.setEnabled(False)
+        self.pushButton_10.setMinimumSize(QSize(100, 25))
+        self.pushButton_10.setMaximumSize(QSize(100, 25))
+
+        self.verticalLayout_22.addWidget(self.pushButton_10)
+
         self.coordinate_img = QPushButton(self.file_tab)
         self.coordinate_img.setObjectName(u"coordinate_img")
         self.coordinate_img.setMinimumSize(QSize(100, 25))
         self.coordinate_img.setMaximumSize(QSize(100, 25))
 
         self.verticalLayout_22.addWidget(self.coordinate_img)
-
-        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_22.addItem(self.verticalSpacer_5)
 
         self.verticalSpacer_11 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -621,6 +626,46 @@ class Ui_zhu_windows(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_6)
 
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.net_updata_but = QPushButton(self.pcap_tab)
+        self.net_updata_but.setObjectName(u"net_updata_but")
+        self.net_updata_but.setMinimumSize(QSize(100, 25))
+        self.net_updata_but.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_14.addWidget(self.net_updata_but)
+
+        self.pushButton_3 = QPushButton(self.pcap_tab)
+        self.pushButton_3.setObjectName(u"pushButton_3")
+        self.pushButton_3.setEnabled(False)
+        self.pushButton_3.setMinimumSize(QSize(100, 25))
+        self.pushButton_3.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_14.addWidget(self.pushButton_3)
+
+        self.pushButton = QPushButton(self.pcap_tab)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setEnabled(False)
+        self.pushButton.setMinimumSize(QSize(100, 25))
+        self.pushButton.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_14.addWidget(self.pushButton)
+
+        self.pushButton_5 = QPushButton(self.pcap_tab)
+        self.pushButton_5.setObjectName(u"pushButton_5")
+        self.pushButton_5.setEnabled(False)
+        self.pushButton_5.setMinimumSize(QSize(100, 25))
+        self.pushButton_5.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_14.addWidget(self.pushButton_5)
+
+        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_17)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_14)
+
         self.horizontalLayout_7 = QHBoxLayout()
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.mouse_but = QPushButton(self.pcap_tab)
@@ -670,8 +715,25 @@ class Ui_zhu_windows(object):
 
         self.horizontalLayout_12.addWidget(self.sql_but)
 
+        self.pushButton_8 = QPushButton(self.pcap_tab)
+        self.pushButton_8.setObjectName(u"pushButton_8")
+        self.pushButton_8.setEnabled(False)
+        self.pushButton_8.setMinimumSize(QSize(100, 25))
+        self.pushButton_8.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_12.addWidget(self.pushButton_8)
+
+        self.pushButton_9 = QPushButton(self.pcap_tab)
+        self.pushButton_9.setObjectName(u"pushButton_9")
+        self.pushButton_9.setEnabled(False)
+        self.pushButton_9.setMinimumSize(QSize(100, 25))
+        self.pushButton_9.setMaximumSize(QSize(100, 25))
+
+        self.horizontalLayout_12.addWidget(self.pushButton_9)
+
         self.pushButton_7 = QPushButton(self.pcap_tab)
         self.pushButton_7.setObjectName(u"pushButton_7")
+        self.pushButton_7.setEnabled(False)
         self.pushButton_7.setMinimumSize(QSize(100, 25))
         self.pushButton_7.setMaximumSize(QSize(100, 25))
 
@@ -683,36 +745,6 @@ class Ui_zhu_windows(object):
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_12)
-
-        self.horizontalLayout_14 = QHBoxLayout()
-        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
-        self.file_extract_but = QPushButton(self.pcap_tab)
-        self.file_extract_but.setObjectName(u"file_extract_but")
-        self.file_extract_but.setMinimumSize(QSize(100, 25))
-        self.file_extract_but.setMaximumSize(QSize(100, 25))
-
-        self.horizontalLayout_14.addWidget(self.file_extract_but)
-
-        self.pushButton_3 = QPushButton(self.pcap_tab)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setMinimumSize(QSize(100, 25))
-        self.pushButton_3.setMaximumSize(QSize(100, 25))
-
-        self.horizontalLayout_14.addWidget(self.pushButton_3)
-
-        self.pushButton = QPushButton(self.pcap_tab)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(100, 25))
-        self.pushButton.setMaximumSize(QSize(100, 25))
-
-        self.horizontalLayout_14.addWidget(self.pushButton)
-
-        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_14.addItem(self.horizontalSpacer_17)
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout_14)
 
         self.groupBox_2 = QGroupBox(self.pcap_tab)
         self.groupBox_2.setObjectName(u"groupBox_2")
@@ -1888,7 +1920,10 @@ class Ui_zhu_windows(object):
         self.hexin_but.setText(QCoreApplication.translate("zhu_windows", u"\u6838\u5fc3\u4ef7\u503c\u89c2\u89e3\u7801", None))
         self.label_11.setText(QCoreApplication.translate("zhu_windows", u"\u56fe\u7247\u5904\u7406", None))
         self.exif_but.setText(QCoreApplication.translate("zhu_windows", u"\u56fe\u7247exif\u4fe1\u606f", None))
-        self.tu_re.setText(QCoreApplication.translate("zhu_windows", u"\u56fe\u7247\u9006\u5e8f", None))
+#if QT_CONFIG(tooltip)
+        self.bin_image_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u4e8c\u8fdb\u5236\u6587\u672c\u6587\u4ef6,\u590d\u539f\u4e3a\u56fe\u7247,\u81ea\u52a8\u8ba1\u7b97\u5bbd\u9ad8", None))
+#endif // QT_CONFIG(tooltip)
+        self.bin_image_but.setText(QCoreApplication.translate("zhu_windows", u"\u4e8c\u8fdb\u5236\u8f6c\u56fe\u7247", None))
 #if QT_CONFIG(tooltip)
         self.jpg_high_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u6587\u4ef6,\u81ea\u52a8\u8ba1\u7b97crc\u5e76\u663e\u793a\u56fe\u7247", None))
 #endif // QT_CONFIG(tooltip)
@@ -1898,17 +1933,15 @@ class Ui_zhu_windows(object):
 #endif // QT_CONFIG(tooltip)
         self.png_high_but.setText(QCoreApplication.translate("zhu_windows", u"PNG\u9ad8\u5bbd\u7206\u7834", None))
         self.gif_fenli_but.setText(QCoreApplication.translate("zhu_windows", u"GIF\u5206\u79bb", None))
-#if QT_CONFIG(tooltip)
-        self.bin_image_but.setToolTip(QCoreApplication.translate("zhu_windows", u"\u6307\u5b9a\u4e8c\u8fdb\u5236\u6587\u672c\u6587\u4ef6,\u590d\u539f\u4e3a\u56fe\u7247,\u81ea\u52a8\u8ba1\u7b97\u5bbd\u9ad8", None))
-#endif // QT_CONFIG(tooltip)
-        self.bin_image_but.setText(QCoreApplication.translate("zhu_windows", u"\u4e8c\u8fdb\u5236\u8f6c\u56fe\u7247", None))
+        self.tu_re.setText(QCoreApplication.translate("zhu_windows", u"\u56fe\u7247\u9006\u5e8f", None))
         self.heibai_but.setText(QCoreApplication.translate("zhu_windows", u"\u9ed1\u767d\u56fe\u8f6c\u56fe\u7247", None))
         self.jpg_block_but.setText(QCoreApplication.translate("zhu_windows", u"JPG\u5757\u9690\u85cf", None))
         self.hide_str_but.setText(QCoreApplication.translate("zhu_windows", u"PNG\u89e3\u7801hide", None))
         self.gif_hebing.setText(QCoreApplication.translate("zhu_windows", u"GIF\u5408\u5e76", None))
+        self.mangshuiyin_but.setText(QCoreApplication.translate("zhu_windows", u"\u65e0", None))
         self.rgb2img_but.setText(QCoreApplication.translate("zhu_windows", u"RGB\u8f6c\u56fe\u7247", None))
-        self.mangshuiyin_but.setText(QCoreApplication.translate("zhu_windows", u"\u529f\u80fd\u672a\u5b9e\u73b0", None))
         self.png_idat_but.setText(QCoreApplication.translate("zhu_windows", u"PNG\u5206\u6790IDAT", None))
+        self.pushButton_10.setText(QCoreApplication.translate("zhu_windows", u"\u65e0", None))
         self.coordinate_img.setText(QCoreApplication.translate("zhu_windows", u"\u5750\u6807\u8f6c\u56fe\u7247", None))
         self.label_12.setText(QCoreApplication.translate("zhu_windows", u"\u538b\u7f29\u5305\u5904\u7406", None))
 #if QT_CONFIG(tooltip)
@@ -1927,15 +1960,18 @@ class Ui_zhu_windows(object):
         self.ttl_but.setText(QCoreApplication.translate("zhu_windows", u"\u8bfb\u53d6TLL\u957f\u5ea6", None))
         self.len_but.setText(QCoreApplication.translate("zhu_windows", u"\u8bfb\u53d6len\u957f\u5ea6", None))
         self.telnet_but.setText(QCoreApplication.translate("zhu_windows", u"\u8bfb\u53d6TELNET", None))
+        self.net_updata_but.setText(QCoreApplication.translate("zhu_windows", u"\u8bfb\u53d6\u6587\u4ef6\u4e0a\u4f20", None))
+        self.pushButton_3.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
+        self.pushButton.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
+        self.pushButton_5.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
         self.mouse_but.setText(QCoreApplication.translate("zhu_windows", u"\u9f20\u6807\u6d41\u91cf\u5206\u6790", None))
         self.keyboard_but.setText(QCoreApplication.translate("zhu_windows", u"\u952e\u76d8\u6d41\u91cf\u5206\u6790", None))
         self.Bluetooth_but.setText(QCoreApplication.translate("zhu_windows", u"\u84dd\u7259\u6d41\u91cf\u5206\u6790", None))
         self.pushButton_6.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
         self.sql_but.setText(QCoreApplication.translate("zhu_windows", u"SQL\u76f2\u6ce8\u5206\u6790", None))
+        self.pushButton_8.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
+        self.pushButton_9.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
         self.pushButton_7.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
-        self.file_extract_but.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
-        self.pushButton_3.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
-        self.pushButton.setText(QCoreApplication.translate("zhu_windows", u"\u7a7a", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("zhu_windows", u"webshell\u5206\u6790\u533a", None))
         self.shell_tab.setItemText(0, QCoreApplication.translate("zhu_windows", u"\u8bf7\u9009\u62e9shell\u5de5\u5177", None))
         self.shell_tab.setItemText(1, QCoreApplication.translate("zhu_windows", u"\u83dc\u5200", None))
@@ -2105,7 +2141,7 @@ class Ui_zhu_windows(object):
         self.db_select_but.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2", None))
         self.label_15.setText(QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5206\u6790\u533a", None))
         self.select_one_up.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u4e2a\u4eba\u4e0a\u7ebf", None))
-        self.select_one_down.setText(QCoreApplication.translate("zhu_windows", u"\u67e5\u8be2\u4e2a\u4eba\u4e0b\u7ebf", None))
+        self.select_one_down.setText(QCoreApplication.translate("zhu_windows", u"\u65e0", None))
         self.show_guanxi.setText(QCoreApplication.translate("zhu_windows", u"\u5c42\u7ea7\u6811\u72b6\u56fe", None))
         self.function_list.setTabText(self.function_list.indexOf(self.data_tab), QCoreApplication.translate("zhu_windows", u"\u6570\u636e\u5206\u6790", None))
         self.label_5.setText(QCoreApplication.translate("zhu_windows", u"IOS\u5206\u6790", None))

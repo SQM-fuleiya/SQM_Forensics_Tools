@@ -64,8 +64,8 @@ def 文件处理(self):
     文件扩展名 = os.path.splitext(self.file_name)[1]  # 获取文件扩展名
     if 文件扩展名 in [".png"]:  # png 文件处理
         识别文件(self)
-        png高宽爆破(self)
-        binwalk分离(self)
+        # png高宽爆破(self)
+        # binwalk分离(self)
 
 
 def 文件读取(self):
@@ -363,42 +363,21 @@ def base解码(self):
         ["base91", lambda: base91.decode(file_data).decode()],
         # ["base92", lambda: py3base92.b92decode(file_data).decode()],
         ["base100", lambda: pybase100.decode(file_data).decode()],
-        [
-            "base128",
-            lambda: b"".join(base128.base128(chars=None, chunksize=7).decode(file_data).decode()),
-        ],
-    ]
+        ["base128",lambda: b"".join(base128.base128(chars=None, chunksize=7).decode(file_data).decode()),],
+        ]
     i = 1
-    while True:
+    while i<=10:
         for n in range(len(命令)):
             x, y = 命令[n]
             try:
                 if y() != "":
                     data = y()
                     self.text_输出(f"第{i}次为{x}解码:{data}")
+                    i+=1
+                    break  # 找到一个可解码的就跳出循环
             except Exception:
                 pass
-        max_attempts = 10  # 最大尝试次数防止无限循环
-        data = file_data  # 初始化data变量
-
-        for i in range(1, max_attempts + 1):
-            decoded = False
-            for name, decoder in 命令:
-                try:
-                    result = decoder()
-                    if result and result != data:  # 有新解码结果
-                        self.text_输出(f"第{i}次为{name}解码:{result}")
-                        data = result
-                        decoded = True
-                        break  # 找到一个可解码的就跳出循环
-                except Exception:
-                    continue
-
-            if not decoded or data == file_data:
-                self.text_输出("解码完成")
-                break
-
-            file_data = data
+        file_data = data   # 初始化data变量
 
 
 def 栅栏密码(self):
@@ -514,7 +493,7 @@ def 核心价值观解码(self):
     except Exception:
         self.text_输出("输入错误")
 
-
+# bug 解码错误,需要查看
 def fuck解码(self, file_data):
     try:
         if not file_data:
@@ -564,7 +543,7 @@ def fuck解码(self, file_data):
     except Exception:
         self.text_输出("fuck解码错误,请确认字符串是否正确")
 
-
+# bug 解码错误,需要查看
 def ook解码(self):
     try:
         file_data = 文件读取(self).decode("utf-8")
@@ -933,7 +912,7 @@ def png高宽爆破(self):
             for i, j in itertools.product(range(1920), range(1080)):  # 理论上0x FF FF FF FF，但考虑到屏幕实际/cpu，0x 0F FF就差不多了，也就是4095宽度和高度
                 data = file_data[12:16] + struct.pack(">i", i) + struct.pack(">i", j) + file_data[24:29]
                 crc32 = zlib.crc32(data)
-                self.进度信号.emit(i)
+
                 if crc32 == original_crc32:  # 计算当图片大小为i:j时的CRC校验值，与图片中的CRC比较，当相同，则图片大小已经确定
                     self.text_输出(f"\nCRC32: {hex(original_crc32)}")
                     self.text_输出(f"正确宽度为: {i}, hex: {hex(i)}")
@@ -1057,6 +1036,7 @@ def 进制转图片(self, ttl):
                 img.putpixel([x, y], (255, 255, 255))
             i = i + 1
     img.show()
+    self.text_输出("转换完毕,请查看")
 
 
 def hide_str(self):
@@ -1086,21 +1066,28 @@ def hide_str(self):
 
     self.text_输出(f"提取的flag内容为:\n{flag}")
 
-
+# todo 坐标转图片没做
+def 坐标转图片(self):
+    pass
 """----------------------------------压缩包处理-------------------------------"""
 
 
 def 单压缩包内CRC爆破(self):
     CRC_str = ""
+    if not self.file_name:
+        self.text_输出("请先选择文件")
+        return
     try:
-        f = zipfile.ZipFile(self.file_name, "r")  # 读取单个文件
-        self.text_输出("开始执行CRC爆破")
-        for i in range(0, len(f.filelist)):
-            crc = f.filelist[i].CRC
-            CRC_ASK_str = CRC_ASK(hex(crc))  # 获取CRC值
-            self.text_输出(f"第{i + 1}个CRC的值为:{CRC_ASK_str}")
-            CRC_str += CRC_ASK_str
-        self.text_输出(f"最终结果为:{CRC_str}")
+        with zipfile.ZipFile(self.file_name, "r") as f:  # 使用with确保文件关闭
+            self.text_输出("开始执行CRC爆破")
+            for i in range(0, len(f.filelist)):
+                crc = f.filelist[i].CRC
+                CRC_ASK_str = CRC_ASK(self,hex(crc))  # 添加self调用
+                self.text_输出(f"第{i + 1}个CRC的值为:{CRC_ASK_str}")
+                CRC_str += CRC_ASK_str
+            self.text_输出(f"最终结果为:{CRC_str}")
+    except FileNotFoundError:
+        self.text_输出(f"文件不存在: {self.file_name}")
     except Exception as e:
         self.text_输出(f"CRC读取失败,原因:{e}")
 
@@ -1110,15 +1097,13 @@ def 多文件压缩包CRC爆破(self):
     try:
         self.text_输出("开始执行CRC爆破")
         files = os.listdir(self.file_path)  # 读取文件夹内所有文件                   # 计算文件个数
-        self.设置进度.emit(len(files))
         files.sort(key=lambda x: int(re.findall("([0-9]+)", x)[0]))
         for i in range(0, len(files)):
-            f = zipfile.ZipFile(self.file_path + files[i], "r")  # 读取单个文件
+            f = zipfile.ZipFile(self.file_path + '/' + files[i], "r")  # 读取单个文件
             zipinfo = f.getinfo(" ".join(list(f.NameToInfo.keys())))  # 获取文件信息
-            CRC_ASK_str = CRC_ASK(hex(zipinfo.CRC))  # 获取CRC值
+            CRC_ASK_str = CRC_ASK(self,hex(zipinfo.CRC))  # 获取CRC值
             self.text_输出(f"第{i + 1}个CRC的值为:{CRC_ASK_str}")
             CRC_str += CRC_ASK_str
-            self.进度信号.emit(i + 1)
         self.text_输出(f"最终结果为:{CRC_str}")
     except Exception as e:
         self.text_输出("CRC爆破失败,原因:{}".format(e))

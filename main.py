@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/python3
 # SQM的misc工具
-# 2025年5月1日 V1.1.1
+# 2025年6月14日 V1.1.2
 
 import os
 
@@ -209,19 +209,30 @@ class MainWindow(QWidget):
         self.ui.html_but.clicked.connect(lambda: fun_file.html解码(self))
         self.ui.url_but.clicked.connect(lambda: fun_file.url解码(self, ""))
 
-        # 图像处理
-        self.ui.png_high_but.clicked.connect(lambda: fun_file.png高宽爆破(self))
+        # 图像处理        
         self.ui.exif_but.clicked.connect(lambda: fun_file.图片元数据(self))
-        self.ui.rgb2img_but.clicked.connect(lambda: fun_file.RGB转图片(self))
+        self.ui.tu_re.clicked.connect(lambda: fun_file.图片逆序(self))
+
         self.ui.bin_image_but.clicked.connect(lambda: fun_file.bin_image(self))  # 二进制字符串转图片
+        self.ui.rgb2img_but.clicked.connect(lambda: fun_file.RGB转图片(self))
+        self.ui.heibai_but.clicked.connect(lambda: fun_file.黑白图(self))
+        self.ui.coordinate_img.clicked.connect(lambda: fun_file.坐标转图片(self))
+
         self.ui.jpg_high_but.clicked.connect(lambda: fun_file.jpg高宽爆破(self))
+        self.ui.jpg_block_but.clicked.connect(lambda: fun_file.JPG块分析(self))
+
+        self.ui.png_high_but.clicked.connect(lambda: fun_file.png高宽爆破(self))
+        self.ui.hide_str_but.clicked.connect(lambda: fun_file.hide_str(self))  # hide解码出字符串
+        self.ui.png_idat_but.clicked.connect(lambda: fun_file.PNG_IDAT分析(self))
+
+
         self.ui.gif_fenli_but.clicked.connect(lambda: fun_file.GIF帧分离(self))
         self.ui.gif_hebing.clicked.connect(lambda: fun_file.GIF合并(self))
-        self.ui.tu_re.clicked.connect(lambda: fun_file.图片逆序(self))
-        self.ui.heibai_but.clicked.connect(lambda: fun_file.黑白图(self))
-        self.ui.hide_str_but.clicked.connect(lambda: fun_file.hide_str(self))  # hide解码出字符串
-        self.ui.jpg_block_but.clicked.connect(lambda: fun_file.JPG块分析(self))
-        self.ui.png_idat_but.clicked.connect(lambda: fun_file.PNG_IDAT分析(self))
+
+        
+        
+        
+        
         # self.ui.mangshuiyin_but.clicked.connect(lambda:  file_fun.盲水印,self))
         # self.ui.f5_steg_but.clicked.connect(file_fun.F5隐写)
         # self.ui.Stegpy_but.clicked.connect(file_fun.Stegpy)
@@ -239,6 +250,8 @@ class MainWindow(QWidget):
         self.ui.ttl_but.clicked.connect(lambda: fun_net.TTL分析(self))
         self.ui.len_but.clicked.connect(lambda: fun_net.len长度分析(self))
         self.ui.telnet_but.clicked.connect(lambda: fun_net.telnet分析(self))
+
+        self.ui.net_updata_but.clicked.connect(lambda: fun_net.文件上传分析(self))
 
         self.ui.mouse_but.clicked.connect(lambda: fun_net.USB流量分析.鼠标流量分析(self))
         self.ui.keyboard_but.clicked.connect(lambda: fun_net.USB流量分析.键盘流量分析(self))

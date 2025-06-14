@@ -145,6 +145,43 @@ def telnet分析(self):
         except Exception:
             pass
 
+def 文件上传分析(self):
+    self.ui.text_echo.clear()
+    self.text_输出("开始分析文件上传流量")
+
+    流量数据 = 读取流量数据(self, 过滤器="http.request.method == POST")
+    if not 流量数据[0]:
+        self.text_输出("未发现POST请求流量")
+        return
+    上传文件列表 = []
+    try:
+        for 流量帧 in 流量数据:
+            try:
+                if hasattr(流量帧, "mime_multipart"):  # 检查是否有文件上传特征
+                    filename = re.findall(r'filename="([^"]+)"', str(流量帧.mime_multipart.header_content_disposition))
+                    file_type = 流量帧.mime_multipart.header_content_type
+                    self.text_输出(f"发现文件上传 - 源IP: {流量帧.ip.src} 目标IP: {流量帧.ip.dst} 文件名: {filename} 文件类型: {file_type}")
+                    # 尝试解码文件内容
+                    file_content = 流量帧.mime_multipart._all_fields['']        
+                    # 保存文件
+                    if filename:
+                        save_path = f"{self.file_path}/{filename[0]}"
+                        with open(save_path, "w") as f:
+                            f.write(file_content)
+                        self.text_输出(f"文件已保存到: {save_path}")
+                    else:
+                        # 如果没有文件名，使用默认名称
+                        save_path = f"{self.file_path}/uploaded_file_{len(上传文件列表)}"
+                        with open(save_path, "wb") as f:
+                            f.write(file_content)        
+            except Exception as e:
+                self.text_输出(f"文件内容提取失败: {str(e)}")
+
+    except Exception as e:
+        self.text_输出(f"文件上传分析失败: {str(e)}")
+    finally:
+        self.text_输出("文件上传分析完成")
+
 
 def 文件提取(self, 流量):
     self.ui.text_echo.clear()  # 清空text_输出框
@@ -525,99 +562,102 @@ class 注入分析:
     def 注入分析(self):
         self.ui.text_echo.clear()
         self.text_输出("开始分析流量包")
-
-        注入语句列表 = 注入分析.流量读取(self)
-        注入分析.流量分析(self, 注入语句列表)
-
-    def 流量读取(self):
-        try:
+        try:  # 读取流量数据
             jsonpath = FlowAnalyzer.get_json_data(self.file_name, display_filter="http.request or http.response")
         except Exception:
             self.text_输出("流量数据读取错误，请检查文件输入")
-        注入语句列表 = []
+            return
+
+        注入字典 = {}  # 注入检测
         for count, http in enumerate(FlowAnalyzer(jsonpath).generate_http_dict_pairs(), start=1):
-            if http.request.full_uri:
-                网址 = http.request.full_uri
-                if re.findall(r"([0-9]+).?1\W\W=([0-9]+)", 网址, re.I):  # 判断是否为布尔注入
-                    注入语句列表.append(网址)
-                if re.findall(r"([0-9 .,]+)..>([0-9]+)", 网址, re.I):  # 判断是否为盲注
-                    注入语句列表.append(网址)
+            self.text_输出(f"正在分析第{count}个请求")
+            req = http.request  # 请求数据
+            注入位置= ['req.full_uri',]  # todo 注入点检测
+            注入方式 = {                 # todo 注入方式检测
+                    '联合注入':   r"(union)",
+                    '布尔盲注':   r"(limit)",
+                    '时间盲注':   r"(sleep\(\d+\)|benchmark\(\d+|waitfor\s+delay\s+)",
+                    '宽字节注入': r"(%[a-f0-9]{2}%[a-f0-9]{2}%[a-f0-9]{2}|\\x[a-f0-9]{2})",
+                    '报错注入':   r"(extractvalue|updatexml|floor\s*\(rand)",
+                    '堆叠查询':   r";\s*(insert|update|delete|create|drop)"}
+            for 位置 in 注入位置:
+                if 位置:
+                    内容 = eval(f"{位置}")
+                    for 类型, 正则 in 注入方式.items():
+                        if re.search(正则, 内容, re.I):
+                            if 类型 not in 注入字典:
+                                注入字典[类型] = []
+                            注入字典[类型].append(内容)
+
+        # 测试读取到的注入语句                    
+        # for 类型 , 语句 in 注入字典.items():
+        #     print(类型)
+        #     for i in 语句:
+        #         print(i)
+
+        结果 = 注入分析.解析注入语句(注入字典)
+        def 打印嵌套字典(字典, 缩进=0):
+            for 键, 值 in 字典.items():
+                if isinstance(值, dict):
+                    self.text_输出("  " * 缩进 + f"{键}:")
+                    打印嵌套字典(值, 缩进 + 1)
+                else:
+                    self.text_输出("  " * 缩进 + f"{键}: {值}")
+        # 打印结果
+        self.text_输出("注入检测结果:")
+        打印嵌套字典(结果)
         self.text_输出("注入语句解析完成")
 
-        return 注入语句列表
+    def 解析注入语句(字典):
+        # 增强的解析逻辑
+        解析规则 = {   # todo 解析规则 要配合上面的 注入方式检测 进行
+            '联合注入': [],
+            '布尔盲注': [ r'(\d+\s*,\s*\d+)\).?=\s*(\d+)',
+                         r'(\d+\s*,\s*\d+)\).?>\s*(\d+)',],
+            '时间盲注':[],
+            # 下面的没验证,就是个占位符
+            '宽字节注入': [r'(%[a-f0-9]{2}%[a-f0-9]{2}%[a-f0-9]{2})',],
+            '报错注入': [r'(extractvalue|updatexml|floor\s*\(rand)',],
+            '堆叠查询': [r';\s*(insert|update|delete|create|drop)',],
+            }
+            
+        结果 = {}
+        数据字典 = {}
+        for 类型 , 注入语句 in 字典.items():
+            for 语句 in 注入语句:
+                if re.findall(r"database\s+([0-9a-z_]+)", 语句, re.I):   # 数据库名提取
+                    db_name = re.findall(r"database\s+([0-9a-z_]+)", 语句, re.I)[-1]
+                else:
+                    db_name = '未知数据库'
+                table_name = re.findall(r'from\s+([0-9a-z_.]+)', 语句, re.I)[-1]  # 表名提取
+                column_name = re.findall(r"select\s+(.+)\s+from", 语句, re.I)[-1]  # 列名提取
 
-    def 流量分析(self, 注入语句列表):
-        表名_字典 = {}
-        列名_字典 = {}
-        flag_字典 = {}
-        数据库 = []
-        x = 1
-        y = 1
-        for 注入语句 in 注入语句列表:
-            self.text_输出(注入语句)
-            if "user" in 注入语句:
-                用户名 = re.findall(r"user\s+([0-9a-z_]+)", 注入语句, re.I)[-1]
-                self.text_输出(用户名)
-            if "database" in 注入语句:
-                数据库名 = re.findall(r"database\s+([0-9a-z_]+)", 注入语句, re.I)[-1]
-                self.text_输出(数据库名)
-            if re.findall(r"select\s+(.+)\s+from", 注入语句, re.I):
-                表名_字典[re.findall(r"select\s+(.+)\s+from", 注入语句, re.I)[0]] = re.findall(r"select\s+(.+)\s+from", 注入语句, re.I)[0]
-                列名_字典[re.findall(r"from\s+([0-9a-z_.]+)", 注入语句, re.I)[0]] = re.findall(r"from\s+([0-9a-z_.]+)", 注入语句, re.I)[0]
-                try:  # 布尔注入
-                    字符 = re.findall(r"([0-9]+..[0-9]+)\W\W=([0-9]+)", 注入语句)[-1]
-                    if len(list(表名_字典)) != x:
-                        聚合 = [
-                            list(表名_字典.values())[-1],
-                            list(列名_字典.values())[-1],
-                            "".join(list(flag_字典.values())),
-                        ]
-                        数据库.append(聚合)
-                        flag_字典 = {}
-                        x += 1
-                    if len(list(列名_字典)) != y:
-                        聚合 = [
-                            list(表名_字典.values())[-1],
-                            list(列名_字典.values())[-1],
-                            "".join(list(flag_字典.values())),
-                        ]
-                        数据库.append(聚合)
-                        flag_字典 = {}
-                        y += 1
-                    flag_字典[字符[0]] = chr(int(字符[1]))
-                except Exception:  # 盲注
+                # print(table_name, column_name)
+
+                if db_name not in 结果: # 结果字典生成
+                    结果[db_name] = {}
+                if table_name not in 结果[db_name] : # 表名字典生成
+                    结果[db_name][table_name] = {}
+                if column_name not in 结果[db_name][table_name]: # 列名字典生成
+                    结果[db_name][table_name][column_name] = {}
+                
+                for 正则 in 解析规则[类型]:
                     try:
-                        字符 = re.findall(r"([0-9 .,]+)..>([0-9]+)", 注入语句)[-1]
-                        if len(list(表名_字典)) != x:
-                            聚合 = [
-                                list(表名_字典.values())[-1],
-                                list(列名_字典.values())[-1],
-                                "".join(list(flag_字典.values())),
-                            ]
-                            数据库.append(聚合)
-                            flag_字典 = {}
-                            x += 1
-                        if len(list(列名_字典)) != y:
-                            聚合 = [
-                                list(表名_字典.values())[-1],
-                                list(列名_字典.values())[-1],
-                                "".join(list(flag_字典.values())),
-                            ]
-                            数据库.append(聚合)
-                            flag_字典 = {}
-                            y += 1
-                        flag_字典[字符[0]] = chr(int(字符[-1]))
+                        注入内容 = re.findall(正则, 语句, re.I)[-1]   # 注入内容提取
+                        数据字典[注入内容[0]]=注入内容[1]
                     except Exception:
                         pass
-        try:
-            self.text_输出("流量分析结果:\n")
-            数据库.append([list(表名_字典.values())[-1], list(列名_字典.values())[-1], "".join(list(flag_字典.values()))])
-            for i in 数据库:
-                self.text_输出(f"\n表名:{i[0]}\n列名:{i[1]}\n字段:{i[2]}")
-        except Exception as e:
-            self.text_输出(f"数据打印错误:{e}")
-        self.text_输出("流量分析结束")
-        self.text_输出("如果可能存在字符串错误，请在搜索字符串中输入注入成功的参数，例如 200 OK 或 其他可能判断正确的参数")
+
+            # 注入内容解析
+            数据列表 = []
+            for 序号 , 数据 in 数据字典.items():
+                数据列表.append(chr(int(数据)))
+              
+
+        数据值= ''.join(数据列表) 
+        # print(数据值) # 测试输出结果 
+        结果[db_name][table_name][column_name]['注入结果'] = 数据值
+        return 结果
 
 
 def shell数据读取(self):
@@ -641,6 +681,7 @@ def 获取shell表(self):
         self.ui.shell_type.addItems(["PHP", "JAVA", "ASP"])
 
 
+# 提醒 读取shell类型, 菜刀未验证,正在写蚁剑的bas64 ,哥斯拉和冰蝎3能用了.冰蝎4还没验证
 def 获取shell类型(self):
     shell工具 = self.ui.shell_tab.currentText()
     self.ui.shell_manner.clear()
@@ -648,13 +689,10 @@ def 获取shell类型(self):
         self.ui.shell_manner.clear()
         if self.ui.shell_type.currentText() == "PHP":
             self.ui.shell_manner.addItems(["PHP"])
-    elif shell工具 == "蚁剑":  # 蚁剑没做
+    elif shell工具 == "蚁剑": 
+        self.ui.shell_manner.clear()
         if self.ui.shell_type.currentText() == "PHP":
-            self.ui.shell_manner.addItems(["PHP"])
-        elif self.ui.shell_type.currentText() == "JAVA":
-            self.ui.shell_manner.addItems(["JAVA"])
-        elif self.ui.shell_type.currentText() == "ASP":
-            self.ui.shell_manner.addItems(["ASP"])
+            self.ui.shell_manner.addItems(["PHP_base64"])
     elif shell工具 == "哥斯拉":
         if self.ui.shell_type.currentText() == "PHP":
             self.ui.shell_manner.addItems(["PHP_XOR_BASE64", "PHP_XOR_RAW", "PHP_EVAL_XOR_BASE64"])
@@ -665,6 +703,8 @@ def 获取shell类型(self):
         elif self.ui.shell_type.currentText() == "CSHAP":
             self.ui.shell_manner.addItems(["CSHAP_AES_BASE64", "CSHAP_EVAL_AES_BASE64", "CSHAP_ASMX_AES_BASE64", "CSHAP_AES_RAW"])
         self.ui.find_key.setEnabled(True)  # 启用按钮
+        self.ui.input_key.setEnabled(True)  # 启用输入框
+        self.ui.input_pass.setEnabled(True)  # 启用输入框
     elif shell工具 == "冰蝎3":
         if self.ui.shell_type.currentText() == "PHP":
             self.ui.shell_manner.addItems(["PHP"])
@@ -675,11 +715,14 @@ def 获取shell类型(self):
         elif self.ui.shell_type.currentText() == "ASPX":
             self.ui.shell_manner.addItems(["CSHARP"])
         self.ui.find_key.setEnabled(True)  # 启用按钮
+        self.ui.input_key.setEnabled(True)  # 启用输入框
+        self.ui.input_pass.setEnabled(True)  # 启用输入框
     elif shell工具 == "冰蝎4":
         if self.ui.shell_type.currentText() == "PHP":
             self.ui.shell_manner.addItems(["PHP"])
-    self.ui.input_key.setEnabled(True)  # 启用输入框
-    self.ui.input_pass.setEnabled(True)  # 启用输入框
+        self.ui.input_key.setEnabled(True)  # 启用输入框
+        self.ui.input_pass.setEnabled(True)  # 启用输入框
+
     self.ui.input_srt.setEnabled(True)  # 启用输入框
     self.ui.sd_but.setEnabled(True)  # 启用按钮
     self.ui.auto_but.setEnabled(True)  # 启用按钮
@@ -696,15 +739,15 @@ def 搜索KEY(self):
     elif self.ui.shell_tab.currentText() == "冰蝎4":
         冰蝎4流量分析.搜索key(self)
 
-
+# webshell分析功能按钮入口
 def 单条shell解析(self):
     self.ui.text_echo.clear()
-    if self.ui.shell_tab.currentText() == "菜刀":  # 完成
+    if self.ui.shell_tab.currentText() == "菜刀":  # TODO 菜刀完成10%
         字符串 = self.ui.input_srt.toPlainText()
         菜刀流量分析.单条解密(self, 字符串)
-    elif self.ui.shell_tab.currentText() == "蚁剑":  # 完成
-        self.ui.input_srt.toPlainText()
-        蚁剑流量分析.单条解密(self, 字符串)
+    elif self.ui.shell_tab.currentText() == "蚁剑":  # TODO 蚁剑完成10%
+        字符串 = self.ui.input_srt.toPlainText()
+        蚁剑流量分析.单条分析(self, 字符串)
     elif self.ui.shell_tab.currentText() == "哥斯拉":  # 完成
         字符串 = self.ui.input_srt.toPlainText()
         哥斯拉流量分析.单条解密(self, 字符串)
@@ -737,191 +780,6 @@ def 写文件(self, decoded_data):
             f.write(decoded_data + "\n")  # 添加换行符分隔记录
     except Exception as e:
         self.text_输出(f"写入文件失败: {str(e)}")
-
-
-class 哥斯拉流量分析:  # 基本完成，搜索key待优化
-    def 搜索key(self):
-        self.ui.text_echo.clear()
-        流量包 = 读取流量数据(self, 过滤器="http.response.code == 200")
-        if 流量包 is None:
-            self.text_输出("无法读取流量数据")
-            return
-        发现的keys = set()  # 3. 使用集合避免重复key
-        for 流量帧 in 流量包:
-            try:
-                if ":" in 流量帧.http.file_data:  # 判断是不是16进制格式
-                    需要解码的数据 = "".join(流量帧.http.file_data.split(":"))  # 去除冒号
-                    需要解码的数据 = binascii.unhexlify(需要解码的数据).decode("utf-8", errors="ignore")  # hex 解码
-
-                    try:
-                        keys = re.findall(r'xc="([0-9a-f]{16})"', 需要解码的数据)  #  xc="3c6e0b8a9c15224a"
-                        for key in keys:
-                            if key not in 发现的keys:
-                                发现的keys.add(key)
-                                self.text_输出(f"发现有效key: {key}")
-                    except (binascii.Error, UnicodeDecodeError) as e:
-                        self.text_输出(f"数据处理错误: {str(e)}")
-                        continue
-            except Exception as e:
-                self.text_输出(f"处理流量帧时出错: {str(e)}")
-                continue
-        if not 发现的keys:
-            self.text_输出("未发现有效key")
-        self.text_输出("搜索key完毕")
-
-    def 单条解密(self, 字符串):
-        key, pass_, shell_manner = shell数据读取(self)
-        if pass_ == "":
-            pass_ = "pass"
-        if key == "":
-            key = "3c6e0b8a9c15224a"
-        命令 = f'{shell_manner}(pass_="{pass_}",key="{key}")'
-        decrypter = eval(命令)  # 实例化PHP类
-        特殊列表 = ["PHP_XOR_RAW", "JAVA_AES_RAW", "ASP_XOR_RAW", "CSHAP_AES_RAW"]
-        i = 1
-        if self.ui.req_box.isChecked():
-            try:
-                if any(element in shell_manner for element in 特殊列表):
-                    data = decrypter.decrypt_req_payload(bytes(bytearray.fromhex(字符串.hex())))
-                else:
-                    data = decrypter.decrypt_req_payload(字符串.encode())
-                self.text_输出(f"第{i}条请求结果为:\n{data.decode()}")
-                i += 1
-                return data.decode()
-            except Exception:
-                self.text_输出(f"{shell_manner}解密失败\n")
-        elif self.ui.res_box.isChecked():
-            try:
-                if any(element in shell_manner for element in 特殊列表):
-                    data = decrypter.decrypt_res_payload(bytes(bytearray.fromhex(字符串.hex())))
-                else:
-                    data = decrypter.decrypt_res_payload(字符串.encode())
-                self.text_输出(f"第{i}条响应结果为:\n{data.decode()}")
-                i += 1
-                return data.decode()
-            except Exception:
-                self.text_输出(f"{shell_manner}解密失败\n")
-
-    def 批量解密(self):
-        self.ui.text_echo.clear()
-        # jsonpath = FlowAnalyzer.get_json_data(self.file_name,display_filter='tcp and http.request or http.response.code == 200')
-        jsonpath = FlowAnalyzer.get_json_data(self, 过滤器="http.request.method == POST or http.response.code == 200")
-        for count, http in enumerate(FlowAnalyzer(jsonpath).generate_http_dict_pairs(), start=1):
-            request, response = http.request, http.response
-            try:
-                if self.ui.rep_or_rsp.currentText() == "请求":
-                    file_data = request.file_data
-                elif self.ui.rep_or_rsp.currentText() == "响应":
-                    file_data = response.file_data
-
-                decoded_data = 哥斯拉流量分析.单条解密(self, file_data)
-                写文件(self, decoded_data)
-            except Exception:
-                pass
-
-
-class 冰蝎3流量分析:  # 基本完成，搜索key待优化
-    def 搜索key(self):
-        self.ui.text_echo.clear()
-        数据包 = 读取流量数据(self, 过滤器="http.content_length")
-        if 数据包 is None:
-            self.text_输出("无法读取流量数据")
-            return
-        发现的keys = set()  # 3. 使用集合避免重复key
-        for 数据帧 in 数据包:
-            try:
-                if ":" in 数据帧.file_data:  # 5. 优化hex数据处理逻辑
-                    try:
-                        hex_data = 数据帧.file_data.replace(":", "")
-                        decoded_data = binascii.unhexlify(hex_data).decode("utf-8", errors="ignore")
-                        # 冰蝎3的key通常是16位hex字符串
-                        keys = re.findall(r"(?<![0-9a-fA-F])([0-9a-fA-F]{16})(?![0-9a-fA-F])", decoded_data)
-                        for key in keys:
-                            if key.lower() not in 发现的keys:  # 统一转为小写比较
-                                发现的keys.add(key.lower())
-                                self.text_输出(f"发现有效key: {key}")
-
-                    except (binascii.Error, UnicodeDecodeError) as e:
-                        self.text_输出(f"数据处理错误: {str(e)}")
-                        continue
-            except Exception as e:
-                self.text_输出(f"处理流量帧时出错: {str(e)}")
-                continue
-        # 7. 优化结果text_输出
-        if not 发现的keys:
-            self.text_输出("未发现有效key")
-        self.text_输出("key搜索完成")
-
-    def 单条解密(self, 字符串):
-        key, pass_, shell_manner = shell数据读取(self)
-        if not key:  # 更简洁的判断空值方式
-            key = "e45e329feb5d925b"  # 这里是默认密码 rebeyond key值为密码的md5值前16位
-        try:
-            # 使用字典映射代替多重if-else
-            decrypters = {"PHP": Behinder.PHP, "ASP": Behinder.ASP, "ASPX": Behinder.CSHARP, "JAVA": Behinder.JAVA}
-
-            if shell_manner not in decrypters:
-                self.text_输出(f"不支持的shell类型: {shell_manner}")
-                return
-
-            decrypter = decrypters[shell_manner](key)
-
-            # 统一处理请求/响应逻辑
-            if self.ui.req_box.isChecked():
-                data = decrypter.decrypt_req_payload(字符串.encode())
-                prefix = "请求"
-            elif self.ui.res_box.isChecked():
-                data = decrypter.decrypt_res_payload(字符串.encode())
-                prefix = "响应"
-            else:
-                self.text_输出("请选择请求或响应类型")
-                return
-
-            # 统一解码处理
-            try:
-                encoding = chardet.detect(data)["encoding"]
-                decoded_data = data.decode(encoding)
-                self.text_输出(f"{prefix}内容为:\n{decoded_data}")
-                return decoded_data
-            except Exception as e:
-                self.text_输出(f"解码失败: {str(e)}")
-
-        except Exception as e:
-            self.text_输出(f"解密失败: {str(e)}")
-
-    def 批量解密(self):
-        self.ui.text_echo.clear()
-        jsonpath = FlowAnalyzer.get_json_data(self, 过滤器="http.request or http.response")
-        for count, http in enumerate(FlowAnalyzer(jsonpath).generate_http_dict_pairs(), start=1):
-            if http.request:
-                file_data = http.request.file_data.decode()
-                try:
-                    if "<" in file_data:
-                        pass
-                    elif "\n" in file_data:
-                        pass
-                    else:
-                        self.text_输出(f"[+] 正在处理第{count}个HTTP流!")
-                        decoded_data = 冰蝎3流量分析.单条解密(self, file_data)
-                        写文件(self, decoded_data)
-
-                except Exception:
-                    pass
-            if http.response:
-                file_data = http.response.file_data.decode()
-                try:
-                    if "<" in file_data:
-                        pass
-                    elif "\n" in file_data:
-                        pass
-                    else:
-                        self.text_输出(f"[+] 正在处理第{count}个HTTP流!")
-                        decoded_data = 冰蝎3流量分析.单条解密(self, file_data)
-                        写文件(self, decoded_data)
-
-                except Exception:
-                    pass
-        self.text_输出("自动解密完成")
 
 
 class 菜刀流量分析:  # 完成40%
@@ -981,7 +839,7 @@ class 菜刀流量分析:  # 完成40%
 
     def 批量解密(self):
         try:
-            jsonpath = FlowAnalyzer.get_json_data(self, 过滤器="http.request or http.response")
+            jsonpath = FlowAnalyzer.get_json_data(self.file_name, display_filter="http.request or http.response")
             if not jsonpath:
                 self.text_输出("未获取到有效的流量数据")
                 return
@@ -1020,14 +878,16 @@ class 菜刀流量分析:  # 完成40%
 
 
 class 蚁剑流量分析:  # 未完成
-    def 单条分析(self):
+    def 单条分析(self,字符串):
         try:
             key, pass_, shell_manner = shell数据读取(self)
-            字符串 = self.ui.input_srt.toPlainText()
-            if shell_manner == "PHP":
+            if shell_manner == "PHP_base64":
                 解码字符串 = parse.unquote(字符串)
-                self.text_输出(f"请求命令:\n{解码字符串}")
-                return 解码字符串
+                webshell , z1 ,z2 = 蚁剑.PHP.PHP_base64_req(解码字符串)
+                self.text_输出(f"webshell:\n{webshell}")
+                self.text_输出(f"z1:\n{z1}")
+                self.text_输出(f"z2:\n{z2}")
+
 
             elif shell_manner == "PHP_RSA":
                 if self.ui.req_box.isChecked():
@@ -1043,25 +903,35 @@ class 蚁剑流量分析:  # 未完成
                     return 请求命令
         except Exception as e:
             self.text_输出(f"单条分析出错: {str(e)}")
+        
 
-    def 批量分析(self):
+    def 批量解密(self):
         try:
-            shell_maner = self.ui.shell_maner.currentText()
-            jsonpath = FlowAnalyzer.get_json_data(self, 过滤器="http.request.method == POST or http.response.code == 200")
+            key, pass_, shell_manner = shell数据读取(self)
+            jsonpath = FlowAnalyzer.get_json_data(self.file_name, display_filter="http.request.method or http.response.code == 200")
             if not jsonpath:
                 self.text_输出("未获取到有效的流量数据")
                 return
             for count, http in enumerate(FlowAnalyzer(jsonpath).generate_http_dict_pairs(), start=1):
                 request, response = http.request, http.response
-                self.text_输出(f"正在处理第{count}个HTTP流...")
+                self.text_输出(f"正在处理第{count}个HTTP流...\n")
 
-                try:
-                    if shell_maner == "PHP":
+                try:  # 数据解读
+                    if shell_manner == "PHP_base64":
                         if request and hasattr(request, "file_data"):
-                            decoded = 蚁剑流量分析.单条解密(self, request.file_data.decode("utf-8", errors="ignore"))
-                            if decoded:
-                                写文件(self, decoded)
-                    elif shell_maner == "PHP_RSA":
+                            try:
+                                webshell , z1 ,z2 = 蚁剑.PHP.PHP_base64_req(request.file_data.decode("utf-8", errors="ignore"))
+                                self.text_输出(f"请求内容:\n{webshell}\n{z1}\n{z2}")
+                                if response and hasattr(response, "file_data"):
+                                    try:
+                                        self.text_输出(f'响应内容:\n{response.file_data.decode("utf-8", errors="ignore")}')
+                                    except Exception:
+                                        pass
+                            except Exception :
+                                pass
+
+
+                    elif shell_manner == "PHP_RSA":
                         if request and hasattr(request, "file_data"):
                             req_data = request.file_data.decode("utf-8", errors="ignore")
                             if req_data:
@@ -1090,6 +960,197 @@ class 蚁剑流量分析:  # 未完成
             self.text_输出(f"批量分析出错: {str(e)}")
         finally:
             self.text_输出("批量分析完成")
+
+
+class 哥斯拉流量分析:  # 基本完成，搜索key待优化
+    def 搜索key(self):
+        self.ui.text_echo.clear()
+        流量包 = 读取流量数据(self, 过滤器="http.response.code == 200")
+        if 流量包 is None:
+            self.text_输出("无法读取流量数据")
+            return
+        发现的keys = set()  # 3. 使用集合避免重复key
+        for 流量帧 in 流量包:
+            try:
+                if ":" in 流量帧.http.file_data:  # 判断是不是16进制格式
+                    需要解码的数据 = "".join(流量帧.http.file_data.split(":"))  # 去除冒号
+                    需要解码的数据 = binascii.unhexlify(需要解码的数据).decode("utf-8", errors="ignore")  # hex 解码
+
+                    try:
+                        keys = re.findall(r'xc="([0-9a-f]{16})"', 需要解码的数据)  #  xc="3c6e0b8a9c15224a"
+                        for key in keys:
+                            if key not in 发现的keys:
+                                发现的keys.add(key)
+                                self.text_输出(f"发现有效key: {key}")
+                    except (binascii.Error, UnicodeDecodeError) as e:
+                        self.text_输出(f"数据处理错误: {str(e)}")
+                        continue
+            except Exception as e:
+                self.text_输出(f"处理流量帧时出错: {str(e)}")
+                continue
+        if not 发现的keys:
+            self.text_输出("未发现有效key")
+        self.text_输出("搜索key完毕")
+
+    def 单条解密(self, 字符串):
+        key, pass_, shell_manner = shell数据读取(self)
+        if pass_ == "":
+            pass_ = "pass"
+        if key == "":
+            key = "3c6e0b8a9c15224a"
+        命令 = f'{shell_manner}(pass_="{pass_}",key="{key}")'
+        decrypter = eval(命令)  # 实例化PHP类
+        特殊列表 = ["PHP_XOR_RAW", "JAVA_AES_RAW", "ASP_XOR_RAW", "CSHAP_AES_RAW"]
+        i = 1
+        if self.ui.req_box.isChecked():
+            try:
+                if any(element in shell_manner for element in 特殊列表):
+                    data = decrypter.decrypt_req_payload(bytes(bytearray.fromhex(字符串.hex())))
+                else:
+                    data = decrypter.decrypt_req_payload(字符串.encode())
+                self.text_输出(f"第{i}条请求结果为:\n{data.decode()}")
+                i += 1
+                return data.decode()
+            except Exception as e:
+                pass
+                print(f"解密失败: {str(e)}")
+                # self.text_输出(f"{shell_manner}解密失败\n")
+        elif self.ui.res_box.isChecked():
+            try:
+                if any(element in shell_manner for element in 特殊列表):
+                    data = decrypter.decrypt_res_payload(bytes(bytearray.fromhex(字符串.hex())))
+                else:
+                    data = decrypter.decrypt_res_payload(字符串.encode())
+                self.text_输出(f"第{i}条响应结果为:\n{data.decode()}")
+                i += 1
+                return data.decode()
+            except Exception as e:
+                print(f"解密失败: {str(e)}")
+                pass
+                # self.text_输出(f"{shell_manner}解密失败\n")
+
+    def 批量解密(self):
+        self.ui.text_echo.clear()
+        # jsonpath = FlowAnalyzer.get_json_data(self.file_name,display_filter='tcp and http.request or http.response.code == 200')
+        jsonpath = FlowAnalyzer.get_json_data(self.file_name, display_filter="http.request.method == POST or http.response.code == 200")
+        for count, http in enumerate(FlowAnalyzer(jsonpath).generate_http_dict_pairs(), start=1):
+            request, response = http.request, http.response
+            try:
+                if self.ui.rep_or_rsp.currentText() == "请求":
+                    file_data = request.file_data
+                elif self.ui.rep_or_rsp.currentText() == "响应":
+                    file_data = response.file_data
+
+                decoded_data = 哥斯拉流量分析.单条解密(self, file_data)
+                写文件(self, decoded_data)
+            except Exception:
+                pass
+
+
+class 冰蝎3流量分析:  # 基本完成，搜索key待优化
+    def 搜索key(self):
+        self.ui.text_echo.clear()
+        数据包 = 读取流量数据(self, 过滤器="http.content_length")
+        if 数据包 is None:
+            self.text_输出("无法读取流量数据")
+            return
+        发现的keys = set()  # 3. 使用集合避免重复key
+        for 数据帧 in 数据包:
+            try:
+                if ":" in 数据帧.http.file_data:  # 5. 优化hex数据处理逻辑
+                    try:
+                        hex_data = 数据帧.http.file_data.replace(":", "")
+                        decoded_data = binascii.unhexlify(hex_data).decode("utf-8", errors="ignore")
+                        # 冰蝎3的key通常是16位hex字符串
+                        keys = re.findall(r"(?<![0-9a-fA-F])([0-9a-fA-F]{16})(?![0-9a-fA-F])", decoded_data)
+                        for key in keys:
+                            if key.lower() not in 发现的keys:  # 统一转为小写比较
+                                发现的keys.add(key.lower())
+                                self.text_输出(f"发现有效key: {key}")
+
+                    except (binascii.Error, UnicodeDecodeError) as e:
+                        self.text_输出(f"数据处理错误: {str(e)}")
+                        continue
+            except Exception as e:
+                self.text_输出(f"处理流量帧时出错: {str(e)}")
+                continue
+        # 7. 优化结果text_输出
+        if not 发现的keys:
+            self.text_输出("未发现有效key")
+        self.text_输出("key搜索完成")
+
+    def 单条解密(self, 字符串):
+        key, pass_, shell_manner = shell数据读取(self)
+        if not key:  # 更简洁的判断空值方式
+            key = "e45e329feb5d925b"  # 这里是默认密码 rebeyond key值为密码的md5值前16位
+        try:
+            # 使用字典映射代替多重if-else
+            decrypters = {"PHP": Behinder.PHP, "ASP": Behinder.ASP, "ASPX": Behinder.CSHARP, "JAVA": Behinder.JAVA}
+
+            if shell_manner not in decrypters:
+                self.text_输出(f"不支持的shell类型: {shell_manner}")
+                return
+
+            decrypter = decrypters[shell_manner](key)
+
+            # 统一处理请求/响应逻辑
+            if self.ui.req_box.isChecked():
+                data = decrypter.decrypt_req_payload(字符串.encode())
+                prefix = "请求"
+            elif self.ui.res_box.isChecked():
+                data = decrypter.decrypt_res_payload(字符串.encode())
+                prefix = "响应"
+            else:
+                self.text_输出("请选择请求或响应类型")
+                return
+
+            # 统一解码处理
+            try:
+                encoding = chardet.detect(data)["encoding"]
+                decoded_data = data.decode(encoding)
+                self.text_输出(f"{prefix}内容为:\n{decoded_data}")
+                return decoded_data
+            except Exception as e:
+                self.text_输出(f"解码失败: {str(e)}")
+
+        except Exception as e:
+            print(f"解密失败: {str(e)}")
+            pass
+            #self.text_输出(f"解密失败: {str(e)}")
+
+    def 批量解密(self):
+        self.ui.text_echo.clear()
+        jsonpath = FlowAnalyzer.get_json_data(self.file_name, display_filter="http.request or http.response")
+        for count, http in enumerate(FlowAnalyzer(jsonpath).generate_http_dict_pairs(), start=1):
+            if http.request:
+                file_data = http.request.file_data.decode()
+                try:
+                    if "<" in file_data:
+                        pass
+                    elif "\n" in file_data:
+                        pass
+                    else:
+                        self.text_输出(f"[+] 正在处理第{count}个HTTP流!")
+                        decoded_data = 冰蝎3流量分析.单条解密(self, file_data)
+                        写文件(self, decoded_data)
+
+                except Exception:
+                    pass
+            if http.response:
+                file_data = http.response.file_data.decode()
+                try:
+                    if "<" in file_data:
+                        pass
+                    elif "\n" in file_data:
+                        pass
+                    else:
+                        self.text_输出(f"[+] 正在处理第{count}个HTTP流!")
+                        decoded_data = 冰蝎3流量分析.单条解密(self, file_data)
+                        写文件(self, decoded_data)
+
+                except Exception:
+                    pass
+        self.text_输出("自动解密完成")
 
 
 class 冰蝎4流量分析:
@@ -1152,12 +1213,14 @@ class 冰蝎4流量分析:
                 return result
 
         except Exception as e:
-            self.text_输出(f"解密失败: {str(e)}")
+            print(f"解密失败: {str(e)}")
+            pass
+            # self.text_输出(f"解密失败: {str(e)}")
             return None
 
     def 批量解密(self):
         self.ui.text_echo.clear()
-        jsonpath = FlowAnalyzer.get_json_data(self, 过滤器="http.request or http.response")
+        jsonpath = FlowAnalyzer.get_json_data(self.file_name, display_filter="http.request or http.response")
         if not jsonpath:
             self.text_输出("未获取到有效的流量数据")
             return
@@ -1167,7 +1230,7 @@ class 冰蝎4流量分析:
                 if http.request:
                     file_data = http.request.file_data.decode("utf-8", errors="ignore")
                     if file_data.strip():
-                        self.text_输出(f"[+] 正在处理第{count}个请求流")
+                        self.text_输出(f"\n[+] 正在处理第{count}个请求流")
                         decoded = self.单条解密(file_data)
                         if decoded:
                             写文件(self, decoded)
@@ -1175,7 +1238,7 @@ class 冰蝎4流量分析:
                 if http.response:
                     file_data = http.response.file_data.decode("utf-8", errors="ignore")
                     if file_data.strip():
-                        self.text_输出(f"[+] 正在处理第{count}个响应流")
+                        self.text_输出(f"\n[+] 正在处理第{count}个响应流")
                         decoded = self.单条解密(file_data)
                         if decoded:
                             写文件(self, decoded)
@@ -1183,3 +1246,5 @@ class 冰蝎4流量分析:
                 self.text_输出(f"处理第{count}个HTTP流出错: {str(e)}")
 
         self.text_输出("批量解密完成")
+
+
