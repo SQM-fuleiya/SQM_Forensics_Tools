@@ -87,7 +87,7 @@
         </font>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="file_tab">
         <attribute name="title">

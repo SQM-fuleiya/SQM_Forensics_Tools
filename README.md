@@ -5,25 +5,33 @@
 ## 主要功能模块
 
 ### 文件分析
-- 图片分析：LSB隐写检测、PNG高宽爆破、JPG块分析
-- 压缩包分析：伪加密检测、CRC爆破
-- 多媒体处理：GIF帧分离与合并
-- 数据转换：RGB转图片、坐标转图片
+- 文本分析：字符统计、关键字搜索、字符串提取、文件类型识别等
+- 编码转换: html编码 url编码 全base64编码 栅栏凯撒编码等
+- 图片处理: LSB隐写检测、PNG高宽爆破、JPG块分析等
+- 压缩包分析：伪加密检测、CRC爆破等
 
 ### 网络分析
-- 流量包解析：HTTP请求/响应分析
-- 注入检测：SQL注入、XSS等攻击检测
-- 协议分析：支持常见网络协议解析
+- 常用ctf流量解析
+- SQL注入解析
+- webshell分析：菜刀 蚁剑 哥斯拉 冰蝎3 冰蝎4 流量解析
 
 ### 内存取证
 - 集成Volatility 2/3框架
 - 进程分析、注册表解析、恶意软件检测
 - 支持Windows/Linux内存镜像分析
 
-### 其他工具
-- 编码转换：摩斯密码、云隐密码等
-- 数据可视化：关系图谱生成
-- 数据库操作：SQLite数据查询与分析
+### 数据分析
+- txt excel csv 等文件转换为SQLite数据库 
+- SQLite数据库自定义查询与分析
+- 上线下分析及层级关系图谱生成
+
+### 逆向分析
+- ios分析：Plist文件解析
+- android：frida hook 
+- python: 反编译
+- 人工智能软件: facefusion配置文件分析
+- 常用软件配置分析: 还没做
+- 各种小脚本合集
 
 ## 运行环境
 
@@ -33,17 +41,18 @@
   pip install -r requirements.txt
 
 ## 项目结构
-.
-├── main.py              # 主程序入口
-├── main_ui.py           # Qt界面定义
-├── fun_file.py          # 文件分析模块
-├── fun_net.py           # 网络分析模块  
-├── fun_vol.py           # 内存取证模块
-├── fun_others.py        # 其他工具模块
-├── fun_data.py          # 数据处理模块
-├── tools/               # 集成工具(Volatility等)
-├── mod/                 # 扩展模块
-└── output/              # 输出目录
+
+- main.py              # 主程序入口
+- main_ui.py           # Qt界面定义
+- fun_file.py          # 文件分析模块
+- fun_net.py           # 网络分析模块  
+- fun_vol.py           # 内存取证模块
+- fun_others.py        # 其他工具模块
+- fun_data.py          # 数据处理模块
+- tools/               # 集成工具(Volatility等)
+- mod/                 # 扩展模块
+- output/              # 输出目录
+
 
 ## 使用说明
 ### 源码使用

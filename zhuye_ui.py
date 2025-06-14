@@ -1866,7 +1866,7 @@ class Ui_zhu_windows(object):
 
         self.retranslateUi(zhu_windows)
 
-        self.function_list.setCurrentIndex(0)
+        self.function_list.setCurrentIndex(4)
         self.tabWidget.setCurrentIndex(0)
         self.show_guanxi.setDefault(False)
 
